@@ -1,16 +1,16 @@
 {
-    "name": "hlack/underz",
+    "name": "mphpmaster/underz",
     "description": "A tiny Library With huge use.",
     "type": "library",
     "license": "GPL-3.0-only",
     "authors": [
         {
-            "name": "hlaCk",
+            "name": "mPhpMaster",
             "email": "somaxy@gmail.com"
         }
     ],
     "minimum-stability": "dev",
     "require": {
-		"hlack/underz": "dev-master"
+		"mphpmaster/underz": "dev-master"
 	}
 }
