@@ -113,15 +113,15 @@
         });
 
     /**
-     * console.dir(Object)
+     * console.ldir(Object)
      */
-    if(typeof Object.prototype.dir !== 'function')
-        Object.defineProperty( Object.prototype, 'dir', {
+    if(typeof Object.prototype.ldir !== 'function')
+        Object.defineProperty( Object.prototype, 'ldir', {
             value ( ...obj ) {
-            let self = this;
-            [self, ...obj].forEach(args => console.dir(args));
+                let self = this;
+                [self, ...obj].forEach(args => console.dir(args));
 
-            return self;
+                return self;
             },
 
             enumerable: false,
@@ -130,28 +130,28 @@
         });
 
     /**
-     * console.log(Object, log type[e,w,t,T,i,l]) default: l
+     * console.llog(Object, log type[e,w,t,T,i,l]) default: l
      */
-    if(typeof Object.prototype.log !== 'function')
-        Object.defineProperty( Object.prototype, 'log', {
+    if(typeof Object.prototype.llog !== 'function')
+        Object.defineProperty( Object.prototype, 'llog', {
             value ( obj, logType = 'l' ) {
-            logType = logType || 'l';
-            let self = this;
+                logType = logType || 'l';
+                let self = this;
 
-            if(logType === false) return self;
+                if(logType === false) return self;
 
-            logType = logType === 'l' ? 'log' : logType;
-            logType = logType === 'e' ? 'error' : logType;
-            logType = logType === 'w' ? 'warn' : logType;
-            logType = logType === 't' ? 'trace' : logType;
-            logType = logType === 'T' ? 'table' : logType;
-            logType = logType === 'i' ? 'info' : logType;
+                logType = logType === 'l' ? 'log' : logType;
+                logType = logType === 'e' ? 'error' : logType;
+                logType = logType === 'w' ? 'warn' : logType;
+                logType = logType === 't' ? 'trace' : logType;
+                logType = logType === 'T' ? 'table' : logType;
+                logType = logType === 'i' ? 'info' : logType;
 
-            obj = Array.isArray(obj) ? obj : [obj];
-            if(logType in console)
-                [self, ...obj].forEach(args => console[logType](args));
+                obj = Array.isArray(obj) ? obj : [obj];
+                if(logType in console)
+                    [self, ...obj].forEach(args => console[logType](args));
 
-            return self;
+                return self;
             },
 
             enumerable: false,
@@ -2698,7 +2698,7 @@
             badge : "favicon.ico",
 
             dir : "auto",
-            lang : "",
+            lang : "ar",
             tag : "DefaultTag",
 
             data: []
@@ -2713,7 +2713,7 @@
             delete newOptions['events'];
             delete newOptions['data'];
             newOptions = _z.extend({}, newOptions || {} );
-
+            console.warn(newOptions);
             var n = new Notification( newOptions['title']||"", newOptions||{} );
 
             // add registered handleEvent to current notification

@@ -14,10 +14,10 @@
         });
         // if you have jQuery comment this line
         $ = _z;
-        _z.getScript('./addons/jq.js');
+        //_z.getScript('./addons/jq.js');
     </script>
 
-    <script type="text/javascript">
+    <script type="text/javascript2">
         // when document ready
         _z.ready(()=>{
             // jquery methods * addon
@@ -99,6 +99,7 @@
                 title: 'UnderZ',
                 body: 'UnderZ Running\nClick To Open GitHub.',
                 image: undefined,
+                dir: 'auto',
                 onclick: ()=>window.open("https://github.com/mPhpMaster/UnderZ")&&notify[notify.length-1].close()
             }).open();
         }
