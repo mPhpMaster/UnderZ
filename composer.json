@@ -1,5 +1,6 @@
 {
     "name": "mphpmaster/underz",
+    "version": "1.1.0",
     "description": "A tiny Library With huge use.",
     "type": "library",
     "license": "GPL-3.0-only",

@@ -57,11 +57,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_z.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_z.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_z.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
-              <caret line="4818" column="17" lean-forward="true" selection-start-line="4818" selection-start-column="17" selection-end-line="4818" selection-end-column="17" />
+            <state relative-caret-position="195">
+              <caret line="4642" lean-forward="true" selection-start-line="4642" selection-end-line="4642" />
               <folding>
                 <element signature="e#186#415#0" />
                 <element signature="e#611#800#0" />
@@ -1437,6 +1437,15 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="composer.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/composer.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="88">
+              <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -1638,7 +1647,7 @@
       <workItem from="1571785167561" duration="6436000" />
       <workItem from="1578587459538" duration="2422000" />
       <workItem from="1578600825451" duration="929000" />
-      <workItem from="1578601786250" duration="6635000" />
+      <workItem from="1578601786250" duration="7130000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1.0">
       <created>1578587523228</created>
@@ -1707,7 +1716,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="548583000" />
+    <option name="totallyTimeSpent" value="549078000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1720,6 +1729,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32963374" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
@@ -3397,13 +3407,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="242">
-          <caret line="11" column="29" selection-start-line="11" selection-start-column="26" selection-end-line="11" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/LICENSE">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="741">
@@ -3430,8 +3433,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_z.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
-          <caret line="4818" column="17" lean-forward="true" selection-start-line="4818" selection-start-column="17" selection-end-line="4818" selection-end-column="17" />
+        <state relative-caret-position="195">
+          <caret line="4642" lean-forward="true" selection-start-line="4642" selection-end-line="4642" />
           <folding>
             <element signature="e#186#415#0" />
             <element signature="e#611#800#0" />
@@ -4803,6 +4806,13 @@
             <element signature="e#328888#329050#0" />
             <element signature="e#328936#328943#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/composer.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="4" column="22" lean-forward="true" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
         </state>
       </provider>
     </entry>
