@@ -89,15 +89,19 @@
     </script>
 </head>
 <body>
+    <button onclick="notify()">Notify</button>
+
     <script type="text/javascript">
-        // notification example
-        var notify = new _z.notification({
-            tag: "mainNot",
-            title: 'UnderZ',
-            body: 'UnderZ Running\nClick To Open GitHub.',
-            image: undefined,
-            onclick: ()=>window.open("https://github.com/hlaCk/UnderZ")&&notify[notify.length-1].close()
-        }).open();
+        function notify() {
+            // notification example
+            var notify = new _z.notification({
+                tag: "mainNot",
+                title: 'UnderZ',
+                body: 'UnderZ Running\nClick To Open GitHub.',
+                image: undefined,
+                onclick: ()=>window.open("https://github.com/mPhpMaster/UnderZ")&&notify[notify.length-1].close()
+            }).open();
+        }
     </script>
 </body>
 </html>
