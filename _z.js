@@ -2713,7 +2713,7 @@
             delete newOptions['events'];
             delete newOptions['data'];
             newOptions = _z.extend({}, newOptions || {} );
-            console.warn(newOptions);
+
             var n = new Notification( newOptions['title']||"", newOptions||{} );
 
             // add registered handleEvent to current notification
@@ -5666,8 +5666,6 @@
         }
     })
         .core();
-
-    // var __zAjax = ;
 
     // queue by element
     var queue = function queue(elm, func, doNotRun) { doNotRun = doNotRun || false;

@@ -16,7 +16,7 @@
 
 * [Getting Started](http://hlack.xyz/UnderZ/Getting_Started) 
 
-* [Library Page](https://github.com/hlaCk/UnderZ) 
+* [Library Page](https://github.com/mPhpMaster/UnderZ) 
 
 * [Wiki Page](http://hlack.xyz/UnderZ/)
 
@@ -29,7 +29,7 @@
 
 
 ## Required to start
-* [_z.js](https://github.com/hlaCk/UnderZ) 
+* [_z.js](https://github.com/mPhpMaster/UnderZ) 
 
 
 ***
@@ -54,4 +54,4 @@
 
 Copyright © 2008-2019 hlaCk (https://github.com/hlaCk)
 
-Licensed under the **GNU General Public License v3.0** (https://github.com/hlaCk/UnderZ/blob/master/LICENSE) license.
+Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
