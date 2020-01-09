@@ -10,7 +10,5 @@
         }
     ],
     "minimum-stability": "dev",
-    "require": {
-        "mphpmaster/underz": "dev-master"
-    }
+    "require": {}
 }
