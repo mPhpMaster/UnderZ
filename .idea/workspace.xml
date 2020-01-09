@@ -12,7 +12,9 @@
     <bookmark url="file://$PROJECT_DIR$/_z.js" line="5397" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7f3d5f6a-0753-4325-b5d3-a46c930d11b6" name="Default" comment="v1.1.0">
+    <list default="true" id="7f3d5f6a-0753-4325-b5d3-a46c930d11b6" name="Release v1.1.0" comment="Release v1.1.0">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_z.js" beforeDir="false" afterPath="$PROJECT_DIR$/_z.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -73,8 +75,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_z.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="281">
-              <caret line="8796" column="3" selection-start-line="8796" selection-start-column="3" selection-end-line="8796" selection-end-column="3" />
+            <state relative-caret-position="481">
+              <caret line="8804" column="1" selection-start-line="8804" selection-start-column="1" selection-end-line="8804" selection-end-column="1" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -133,6 +135,11 @@
     <option name="SHOW_TAGS" value="true" />
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="mPhpMaster@gmail.com" />
+      </list>
+    </option>
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="PUSH_TAGS">
@@ -166,6 +173,7 @@
         <option value="$PROJECT_DIR$/../btest2/definitions.php" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/addons/jq.js" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/_z.js" />
       </list>
     </option>
@@ -260,7 +268,7 @@
       <workItem from="1554225459414" duration="1793000" />
       <workItem from="1554235229328" duration="30000" />
       <workItem from="1571785167561" duration="6436000" />
-      <workItem from="1578587459538" duration="734000" />
+      <workItem from="1578587459538" duration="2422000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1.0">
       <created>1578587523228</created>
@@ -276,11 +284,25 @@
       <option name="project" value="LOCAL" />
       <updated>1578587749750</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Release v1.1.0">
+      <created>1578588383786</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1578588383786</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Release v1.1.0">
+      <created>1578589814161</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1578589814161</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="537483000" />
+    <option name="totallyTimeSpent" value="539171000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -293,7 +315,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Designer" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20469083" />
@@ -351,8 +372,12 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <MESSAGE value="v1.1.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="v1.1.0" />
+    <MESSAGE value="Merge remote-tracking branch 'origin/master'" />
+    <MESSAGE value="Release v1.1.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="Release v1.1.0" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -568,10 +593,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="7" column="1" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/_z.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="281">
-          <caret line="8796" column="3" selection-start-line="8796" selection-start-column="3" selection-end-line="8796" selection-end-column="3" />
+        <state relative-caret-position="481">
+          <caret line="8804" column="1" selection-start-line="8804" selection-start-column="1" selection-end-line="8804" selection-end-column="1" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>

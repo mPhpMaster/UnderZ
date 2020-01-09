@@ -6,3 +6,4 @@ plugins/NOTUnderZ/
 composer.lock
 /src/
 tests/test.php
+.idea/workspace.xml
