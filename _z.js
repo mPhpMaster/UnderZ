@@ -8794,7 +8794,7 @@
     typeOfVar.varsType = varsType;
     _z.typeOfVar = typeOfVar;
     return _z;
-})( this, this.document || {
+})(this, this.document || {
     isdocument: false,
     getRootNode: ()=>{},
     ELEMENT_NODE: 1,

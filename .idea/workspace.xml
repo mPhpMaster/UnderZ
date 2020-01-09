@@ -73,8 +73,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_z.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="106">
-              <caret line="8789" column="11" lean-forward="true" selection-start-line="8789" selection-start-column="11" selection-end-line="8789" selection-end-column="11" />
+            <state relative-caret-position="281">
+              <caret line="8796" column="3" selection-start-line="8796" selection-start-column="3" selection-end-line="8796" selection-end-column="3" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
               </folding>
@@ -129,12 +129,19 @@
       <dir>H:\AppServ\www\UnderZ</dir>
     </dirStrings>
   </component>
+  <component name="Git.Rebase.Settings">
+    <option name="SHOW_TAGS" value="true" />
+  </component>
   <component name="Git.Settings">
     <option name="ROOT_SYNC" value="DONT_SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="PUSH_TAGS">
       <GitPushTagMode />
     </option>
+    <option name="SIGN_OFF_COMMIT" value="true" />
+  </component>
+  <component name="GithubDefaultAccount">
+    <option name="defaultAccountId" value="86b6cd9c-9c70-4f6f-96c0-8ca7325c5e5a" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -253,7 +260,7 @@
       <workItem from="1554225459414" duration="1793000" />
       <workItem from="1554235229328" duration="30000" />
       <workItem from="1571785167561" duration="6436000" />
-      <workItem from="1578587459538" duration="238000" />
+      <workItem from="1578587459538" duration="734000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1.0">
       <created>1578587523228</created>
@@ -262,11 +269,18 @@
       <option name="project" value="LOCAL" />
       <updated>1578587523228</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="v1.1.0">
+      <created>1578587749750</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1578587749750</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="536987000" />
+    <option name="totallyTimeSpent" value="537483000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -282,7 +296,7 @@
     <editor active="true" />
     <layout>
       <window_info id="Designer" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20469083" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20469083" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -292,7 +306,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32963374" />
-      <window_info active="true" anchor="bottom" id="Version Control" order="7" visible="true" weight="0.3288889" />
+      <window_info anchor="bottom" id="Version Control" order="7" visible="true" weight="0.3288889" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Floobits" order="10" />
@@ -309,6 +323,32 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="RECENTLY_FILTERED_USER_GROUPS">
+                <collection />
+              </option>
+              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
+                <collection />
+              </option>
+              <option name="COLUMN_ORDER">
+                <list>
+                  <option value="0" />
+                  <option value="1" />
+                  <option value="2" />
+                  <option value="3" />
+                </list>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="v1.1.0" />
@@ -530,8 +570,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_z.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="8789" column="11" lean-forward="true" selection-start-line="8789" selection-start-column="11" selection-end-line="8789" selection-end-column="11" />
+        <state relative-caret-position="281">
+          <caret line="8796" column="3" selection-start-line="8796" selection-start-column="3" selection-end-line="8796" selection-end-column="3" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
