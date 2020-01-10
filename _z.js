@@ -1,5 +1,3 @@
-// UnderZ
-
 /**
  * **UnderZ** *`"JavaScript Library"`*
  *
@@ -3878,7 +3876,7 @@
             var t = triming,
                 trimmedContext = str.selector ? String(str.selector) : false;
 
-            trimmedContext = trimmedContext || str.element(0) || trimmedContext;
+            trimmedContext = trimmedContext || ('element' in str && str.element(0)) || trimmedContext;
             if (!trimmedContext) return "";
 
             if (_z.isDOM(trimmedContext) && trimmedContext['textContent'])
