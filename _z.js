@@ -3874,7 +3874,7 @@
             // if( !str.selector && !str.length ) return "";
 
             var t = triming,
-                trimmedContext = str.selector ? String(str.selector) : false;
+                trimmedContext = str.selector ? String(str.selector) : (typeOfVar(str)===varsType.s ? str : false);
 
             trimmedContext = trimmedContext || (is_z(str) && str.element(0)) || trimmedContext;
             if (!trimmedContext) return "";
