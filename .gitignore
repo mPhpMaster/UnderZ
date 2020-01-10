@@ -8,3 +8,4 @@ composer.lock
 tests/test.php
 .idea
 /.idea/workspace.xml
+tmp
