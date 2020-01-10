@@ -1,0 +1,33 @@
+{
+  "name": "underz",
+  "version": "1.1.0",
+  "description": "UnderZ JS Library",
+  "main": "_z.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mPhpMaster/UnderZ.git"
+  },
+  "keywords": [
+    "javascript",
+    "library",
+    "underz",
+    "framework",
+    "ajax",
+    "js",
+    "dom"
+  ],
+  "author": "hlaCk <mrhlaCk@gmail.com>, TurkiRF <turkiaamer@gmail.com>",
+  "license": "MIT",
+  "wiki": {
+    "url": "https://hlack.xyz/UnderZ/"
+  },
+  "homepage": "https://hlack.xyz/UnderZ/"
+}

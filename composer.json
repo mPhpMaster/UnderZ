@@ -1,14 +1,27 @@
 {
     "name": "mphpmaster/underz",
     "version": "1.1.0",
-    "description": "A tiny Library With huge use.",
+    "description": "UnderZ JS Library",
+    "keywords": [
+        "javascript",
+        "library",
+        "underz",
+        "framework",
+        "ajax",
+        "js",
+        "dom"
+    ],
     "type": "library",
     "license": "MIT",
     "license-url": "",
     "authors": [
         {
-            "name": "mPhpMaster",
-            "email": "somaxy@gmail.com"
+            "name": "hlaCk",
+            "email": "mrhlaCk@gmail.com"
+        },
+        {
+            "name": "TurkiRF",
+            "email": "turkiaamer@gmail.com"
         }
     ],
     "minimum-stability": "dev",

@@ -2,7 +2,9 @@
  * **UnderZ** *`"JavaScript Library"`*
  *
  * *composer:* `composer require mphpmaster/underz`
- * [packagist](https://packagist.org/p/mphpmaster/underz) [github](https://github.com/mPhpMaster/UnderZ)
+ * [packagist](https://packagist.org/p/mphpmaster/underz)
+ * [github](https://github.com/mPhpMaster/UnderZ)
+ * [npm](https://www.npmjs.com/package/underz)
  *
  * @copyright Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
  * @license Licensed under MIT License: https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt
