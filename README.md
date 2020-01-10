@@ -1,4 +1,7 @@
 
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_shield)
+
 # UnderZ JS Library
 ## A tiny Library With huge use.
 ### Built to be:
@@ -52,6 +55,6 @@
 
 ## Copyright and license
 
-Copyright © 2008-2019 hlaCk (https://github.com/hlaCk)
+Copyright © 2008-2019 hlaCk (https://github.com/mPhpMaster)
 
 Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
