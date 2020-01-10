@@ -12,7 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2710b757-84fd-4837-a8be-dd80bd787f01" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/_z.js" beforeDir="false" afterPath="$PROJECT_DIR$/_z.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,16 +44,16 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="composer.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="composer.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/composer.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="110">
-              <caret line="5" column="21" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="21" />
+              <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="_z.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="_z.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/_z.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="198">
@@ -66,8 +66,8 @@
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="315">
-                <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="106" selection-end-line="61" selection-end-column="106" />
+              <first_editor relative-caret-position="293">
+                <caret line="61" column="32" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="32" />
               </first_editor>
               <second_editor />
             </state>
@@ -172,8 +172,8 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/README.md" />
-        <option value="$PROJECT_DIR$/composer.json" />
         <option value="$PROJECT_DIR$/_z.js" />
+        <option value="$PROJECT_DIR$/composer.json" />
       </list>
     </option>
   </component>
@@ -277,7 +277,7 @@
       <workItem from="1571785167561" duration="6436000" />
       <workItem from="1578587459538" duration="2422000" />
       <workItem from="1578600825451" duration="929000" />
-      <workItem from="1578601786250" duration="11938000" />
+      <workItem from="1578601786250" duration="12085000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1.0">
       <created>1578587523228</created>
@@ -346,7 +346,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="553886000" />
+    <option name="totallyTimeSpent" value="554033000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -676,27 +676,27 @@
         <state relative-caret-position="-3102" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/composer.json">
+    <entry file="file://$PROJECT_DIR$/_z.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="110">
-          <caret line="5" column="21" selection-start-line="5" selection-start-column="16" selection-end-line="5" selection-end-column="21" />
+        <state relative-caret-position="198">
+          <caret line="9" column="38" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="38" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="315">
-            <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="106" selection-end-line="61" selection-end-column="106" />
+          <first_editor relative-caret-position="293">
+            <caret line="61" column="32" selection-start-line="61" selection-start-column="25" selection-end-line="61" selection-end-column="32" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/_z.js">
+    <entry file="file://$PROJECT_DIR$/composer.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="9" column="38" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="38" />
+        <state relative-caret-position="110">
+          <caret line="5" column="19" selection-start-line="5" selection-start-column="19" selection-end-line="5" selection-end-column="19" />
         </state>
       </provider>
     </entry>
