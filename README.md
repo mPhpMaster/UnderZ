@@ -57,9 +57,9 @@
 
 ## Copyright and license
 
-Copyright © 2008-2019 hlaCk (https://github.com/mPhpMaster)
+Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
 
-Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
+Licensed under the **MIT License** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt) license.
 
 ***
 
