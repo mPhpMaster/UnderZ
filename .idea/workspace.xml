@@ -12,10 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2710b757-84fd-4837-a8be-dd80bd787f01" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/_z.js" beforeDir="false" afterPath="$PROJECT_DIR$/_z.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -59,8 +56,8 @@
       <file leaf-file-name="_z.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/_z.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+            <state relative-caret-position="198">
+              <caret line="9" column="38" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -70,7 +67,7 @@
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
               <first_editor relative-caret-position="315">
-                <caret line="61" column="122" lean-forward="true" selection-start-line="61" selection-end-line="61" selection-end-column="122" />
+                <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="106" selection-end-line="61" selection-end-column="106" />
               </first_editor>
               <second_editor />
             </state>
@@ -89,7 +86,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>: toLC</find>
       <find>capi</find>
       <find>trim:</find>
       <find>capitalize</find>
@@ -116,9 +112,10 @@
       <find>pathToArray</find>
       <find>hlack</find>
       <find>lic</find>
-      <find>LICENSE</find>
       <find>LICENSE.md</find>
       <find>/hlaCk</find>
+      <find>LICENSE</find>
+      <find>2019</find>
     </findStrings>
     <dirStrings>
       <dir>H:\AppServ\www\UnderZ</dir>
@@ -280,7 +277,7 @@
       <workItem from="1571785167561" duration="6436000" />
       <workItem from="1578587459538" duration="2422000" />
       <workItem from="1578600825451" duration="929000" />
-      <workItem from="1578601786250" duration="11307000" />
+      <workItem from="1578601786250" duration="11938000" />
     </task>
     <task id="LOCAL-00001" summary="v1.1.0">
       <created>1578587523228</created>
@@ -349,7 +346,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="553255000" />
+    <option name="totallyTimeSpent" value="553886000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -690,7 +687,7 @@
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
           <first_editor relative-caret-position="315">
-            <caret line="61" column="122" lean-forward="true" selection-start-line="61" selection-end-line="61" selection-end-column="122" />
+            <caret line="61" column="106" lean-forward="true" selection-start-line="61" selection-start-column="106" selection-end-line="61" selection-end-column="106" />
           </first_editor>
           <second_editor />
         </state>
@@ -698,8 +695,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/_z.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="10" column="3" lean-forward="true" selection-start-line="10" selection-start-column="3" selection-end-line="10" selection-end-column="3" />
+        <state relative-caret-position="198">
+          <caret line="9" column="38" selection-start-line="9" selection-start-column="12" selection-end-line="9" selection-end-column="38" />
         </state>
       </provider>
     </entry>
