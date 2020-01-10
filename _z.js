@@ -2860,7 +2860,7 @@
             badge: "favicon.ico",
 
             dir: "auto",
-            lang: "ar",
+            lang: "en",
             tag: "DefaultTag",
 
             data: []
