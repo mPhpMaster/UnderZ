@@ -41,6 +41,23 @@
 
 ***
 
+## Installation
+
+In a browser:
+```html
+<script type="text/javascript" src="_z.js"></script>
+```
+
+Using npm:
+```shell
+$ npm i underz
+```
+Note: add --save if you are using npm < 5.0.0
+
+Using composer:
+```shell
+$ composer require mphpmaster/underz
+```
 
 ## Dependencies
 * NONE
@@ -48,11 +65,9 @@
 
 ***
 
-
 ## Collaborators
 
 * [TurkiRF](https://github.com/BlackEagleSA)
-
 
 ***
 

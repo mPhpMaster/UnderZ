@@ -1,0 +1,11 @@
+
+lessmore.js
+plugins/NOTUnderZ/
+
+/vendor/
+composer.lock
+/src/
+tests/test.php
+.idea
+/.idea/workspace.xml
+tmp
