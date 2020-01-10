@@ -2386,37 +2386,37 @@
 
             let
                 /**
-                 *
+                 * Optimize selector
                  * @type {string|null} = null|DOM|LIST|SELECTOR
                  */
                 elementsFound = null,
                 // object, DOM, window
                 $elements = arguments[0] &&
-                (_z.isDOMOW(arguments[0]) || (isObj = _z.isObject(arguments[0])) || arguments[0]['nodeType']) &&
-                [arguments[0]] || false;
+                    (_z.isDOMOW(arguments[0]) || (isObj = _z.isObject(arguments[0])) || arguments[0]['nodeType']) &&
+                    [arguments[0]] || false;
 
-            if($elements)
-                elementsFound && (elementsFound = 'DOM');
+            // the given argument is DOM
+            $elements && (elementsFound = 'DOM');
 
             // NodeList, HTMLCollection
             $elements = $elements || arguments[0] &&
                 (_z.type(arguments[0]) === 'NodeList' || (arguments[0] instanceof HTMLCollection)) &&
                 _z.toArray(arguments[0]) || false;
 
-            if($elements && elementsFound != null)
-                elementsFound && (elementsFound = 'LIST');
+            // the given argument is LIS of elements
+            !elementsFound && $elements && (elementsFound = 'LIST');
 
             // !string, !number
             $elements = $elements || arguments[0] &&
                 !(_z.isString(arguments[0]) || _z.isNumber(arguments[0])) &&
                 arguments[0] || false;
 
-            if($elements != false && elementsFound != null)
-                elementsFound && (elementsFound = 'SELECTOR');
+            // the given argument is Selector
+            !elementsFound && $elements && (elementsFound = 'SELECTOR');
 
             var head;
             // context
-            if (!!!isObj) {
+            if (!isObj) {
                 // DOM
                 head = arguments[1] &&
                     (_z.isDOM(arguments[1]) || _z.is_z(arguments[1])) &&
@@ -2449,7 +2449,7 @@
                             _lastElementArgs = arguments;
                         _z.for(testPattrens, function (i, path) {
                             // no pattren result
-                            if (!!!(path[2] && path[1])) {
+                            if (!(path[2] && path[1])) {
                                 path[0] = triming.call(path[0]);
 
                                 if (_lastElement === false)
@@ -2471,7 +2471,7 @@
 
                             _lastElement = _lastElement[path[2]]();
 
-                            return;
+                            // return ;
                         });
 
                         return _lastElement;
@@ -2493,7 +2493,7 @@
                 var qSelector = arguments[0];
                 $elements = [];
                 _z(head).for(function (k, v, _all) {
-                    if (_z.isDOM(v) || _z.type(v) != 'NodeList')
+                    if (_z.isDOM(v) || _z.type(v) !== 'NodeList')
                         v = _z.toNodeList(v)[0];
 
                     if (v && v['querySelectorAll'] && isValidSelector(qSelector)) {
@@ -2506,20 +2506,20 @@
 
             // try querySelector
             try {
-                if (!elementsFound && !isValidSelector(arguments[0])) {
+                if (!elementsFound && !isValidSelector(arguments[0]))
                     throw new Error('not query selector: ' + arguments[0]);
 
+                if(!elementsFound)
                     $elements = $elements || _z.toArray(
                         (window.document || window.ownerDocument).querySelectorAll(arguments[0]) || []
                     );
-                }
             }
                 // try parseHTML
             catch (e) {
                 // try to parse html
                 try {
                     if(!elementsFound)
-                        // is string
+                    // is string
                         if (isset(arguments[0]) && _z.isTypes('HTMLDOM', arguments[0]) && arguments[0].length) {
                             $elements = parssing.parseHTML(arguments[0]);
                             // not html code
@@ -2539,9 +2539,11 @@
                 }
             }
 
+            // the given argument is Selector
             if (elementsFound === 'SELECTOR' && arguments[0] && _z.isString(arguments[0]))
                 arguments[0] && (this.selector = arguments[0]);
 
+            // the given argument is List of elements
             if(elementsFound === 'LIST' && !$elements.length) {
                 $elements = _z.toArray(arguments[0]);
             }
