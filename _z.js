@@ -2384,20 +2384,35 @@
             this.stamp = fns.time();
             this.args = arguments;
 
-            // object, DOM, window
-            var $elements = arguments[0] &&
+            let
+                /**
+                 *
+                 * @type {string|null} = null|DOM|LIST|SELECTOR
+                 */
+                elementsFound = null,
+                // object, DOM, window
+                $elements = arguments[0] &&
                 (_z.isDOMOW(arguments[0]) || (isObj = _z.isObject(arguments[0])) || arguments[0]['nodeType']) &&
                 [arguments[0]] || false;
+
+            if($elements)
+                elementsFound && (elementsFound = 'DOM');
 
             // NodeList, HTMLCollection
             $elements = $elements || arguments[0] &&
                 (_z.type(arguments[0]) === 'NodeList' || (arguments[0] instanceof HTMLCollection)) &&
                 _z.toArray(arguments[0]) || false;
 
+            if($elements && elementsFound != null)
+                elementsFound && (elementsFound = 'LIST');
+
             // !string, !number
             $elements = $elements || arguments[0] &&
                 !(_z.isString(arguments[0]) || _z.isNumber(arguments[0])) &&
                 arguments[0] || false;
+
+            if($elements != false && elementsFound != null)
+                elementsFound && (elementsFound = 'SELECTOR');
 
             var head;
             // context
@@ -2418,7 +2433,7 @@
              var head;*/
 
             // search by underZ pattrens
-            if (isset(arguments[0]) && _z.isString(arguments[0]) && $elements === false) {
+            if ($elements === false && isset(arguments[0]) && _z.isString(arguments[0])) {
                 if (
                     selectorPatterns.index &&
                     (arguments[0].match(new RegExp(selectorPatterns.index)) || []).length > 0 &&
@@ -2474,7 +2489,7 @@
             }
 
             // string selector
-            if (isset(arguments[0]) && head && head !== doc && _z.isString(arguments[0])) {
+            if (elementsFound === 'SELECTOR' && isset(arguments[0]) && head && head !== doc && _z.isString(arguments[0])) {
                 var qSelector = arguments[0];
                 $elements = [];
                 _z(head).for(function (k, v, _all) {
@@ -2491,38 +2506,45 @@
 
             // try querySelector
             try {
-                if (!isValidSelector(arguments[0]))
+                if (!elementsFound && !isValidSelector(arguments[0])) {
                     throw new Error('not query selector: ' + arguments[0]);
 
-                $elements = $elements || _z.toArray(
-                    (window.document || window.ownerDocument).querySelectorAll(arguments[0]) || []
-                );
+                    $elements = $elements || _z.toArray(
+                        (window.document || window.ownerDocument).querySelectorAll(arguments[0]) || []
+                    );
+                }
             }
                 // try parseHTML
             catch (e) {
                 // try to parse html
                 try {
-                    // is string
-                    if (isset(arguments[0]) && _z.isTypes('HTMLDOM', arguments[0]) && arguments[0].length) {
-                        $elements = parssing.parseHTML(arguments[0]);
-                        // not html code
-                        if (!!!$elements.length)
-                            fns.t.generate(e);
-                        else { // html code
-                            head = document;
-                            $elements = _z.toArray($elements) || [];
+                    if(!elementsFound)
+                        // is string
+                        if (isset(arguments[0]) && _z.isTypes('HTMLDOM', arguments[0]) && arguments[0].length) {
+                            $elements = parssing.parseHTML(arguments[0]);
+                            // not html code
+                            if (!!!$elements.length)
+                                fns.t.generate(e);
+                            else { // html code
+                                head = document;
+                                $elements = _z.toArray($elements) || [];
+                            }
                         }
-                    }
-                    // empty
-                    else fns.t.generate(e);
+                        // empty
+                        else fns.t.generate(e);
                 }
                 catch (eParse) {
-                    $elements = [arguments[0]];
+                    if(!elementsFound)
+                        $elements = [arguments[0]];
                 }
             }
 
-            if (arguments[0] && _z.isString(arguments[0]))
+            if (elementsFound === 'SELECTOR' && arguments[0] && _z.isString(arguments[0]))
                 arguments[0] && (this.selector = arguments[0]);
+
+            if(elementsFound === 'LIST' && !$elements.length) {
+                $elements = _z.toArray(arguments[0]);
+            }
 
             this.length = ($elements.length || 0);
             this.extend($elements);
