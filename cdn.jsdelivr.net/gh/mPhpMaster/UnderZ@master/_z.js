@@ -2412,14 +2412,14 @@
             // the given argument is LIS of elements
             !elementsFound && $elements && (elementsFound = 'LIST');
 
-            if (
+            if(
                 !elementsFound && (
                     _z.isArray(arguments[0]) && (elementsFound = _z.Array(arguments[0])) ||
                     arguments.length > 2 && (elementsFound = _z.Array(arguments))
                 ) &&
                 _z.isNotEmpty(elementsFound)
             ) {
-                $elements = tap(_z(), x => x.push(...elementsFound));
+                $elements = tap(_z(), x=>x.push(...elementsFound));
                 return $elements;
                 // elmFunc.elmLoop(, function (e, k) {
                 //     _z.for($var, function ($k, $v) {
@@ -2531,7 +2531,7 @@
                 if (!elementsFound && !isValidSelector(arguments[0]))
                     throw new Error('not query selector: ' + arguments[0]);
 
-                if (!elementsFound)
+                if(!elementsFound)
                     $elements = $elements || _z.toArray(
                         (window.document || window.ownerDocument).querySelectorAll(arguments[0]) || []
                     );
@@ -2540,7 +2540,7 @@
             catch (e) {
                 // try to parse html
                 try {
-                    if (!elementsFound)
+                    if(!elementsFound)
                     // is string
                         if (isset(arguments[0]) && _z.isTypes('HTMLDOM', arguments[0]) && arguments[0].length) {
                             $elements = parssing.parseHTML(arguments[0]);
@@ -2556,7 +2556,7 @@
                         else fns.t.generate(e);
                 }
                 catch (eParse) {
-                    if (!elementsFound)
+                    if(!elementsFound)
                         $elements = [arguments[0]];
                 }
             }
@@ -2566,7 +2566,7 @@
                 arguments[0] && (this.selector = arguments[0]);
 
             // the given argument is List of elements
-            if (elementsFound === 'LIST' && !$elements.length) {
+            if(elementsFound === 'LIST' && !$elements.length) {
                 $elements = _z.toArray(arguments[0]);
             }
 
@@ -3920,7 +3920,7 @@
             // if( !str.selector && !str.length ) return "";
 
             var t = triming,
-                trimmedContext = str.selector ? String(str.selector) : (typeOfVar(str) === varsType.s ? str : false);
+                trimmedContext = str.selector ? String(str.selector) : (typeOfVar(str)===varsType.s ? str : false);
 
             trimmedContext = trimmedContext || (is_z(str) && str.element(0)) || trimmedContext;
             if (!trimmedContext) return "";
@@ -4415,9 +4415,9 @@
         subArray: subArray,
 
         /**
-         * filter Array
-         * @return _z.prototype
-         */
+        * filter Array
+        * @return _z.prototype
+        */
         filter: filterArray,
 
         // apply function to all array membar
@@ -9090,9 +9090,9 @@
             },
 
             get: function (name) {
-                name = name || "";
-                let nameEQ = name + "=",
-                    ca = document.cookie.split(';').filter(Boolean),
+                var name = name || "",
+                    nameEQ = name + "=";
+                var ca = document.cookie.split(';').filter(Boolean),
                     cs = {};
                 for (var i = 0, caL = ca.length; i < caL; i++) {
                     var c = ca[i];
