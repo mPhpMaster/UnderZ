@@ -55,6 +55,6 @@
 
 Copyright © 2008-2019 hlaCk (https://github.com/hlaCk)
 
-Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
+Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.md) license.
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_large)
