@@ -51,7 +51,7 @@
 
 ## Collaborators
 
-* [Turki Alrifaie](https://github.com/BlackEagleSA)
+* [TurkiRF](https://github.com/BlackEagleSA)
 
 
 ***
