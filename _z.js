@@ -1,12 +1,13 @@
 // UnderZ
-// Copyright © 2008-2019 hlaCk (https://github.com/mPhpMaster)
-// Licensed under the GNU General Public License v3.0 (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.md) license.
 
 /**
  * **UnderZ** *`"JavaScript Library"`*
  *
  * *composer:* `composer require hlack/underz`
  * [packagist](https://packagist.org/p/mphpmaster/underz) [github](https://github.com/mPhpMaster/UnderZ)
+ *
+ * @copyright Copyright © 2008-2019 hlaCk (https://github.com/mPhpMaster)
+ * @license Licensed under the GNU General Public License v3.0 (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
  *
  * @version 1.1.0
  * @author hlaCk

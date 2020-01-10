@@ -1,8 +1,12 @@
-# UnderZ JS Library
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_shield)
+# ~ [UnderZ.JS](https://github.com/mPhpMaster/_UnderZ/blob/master/_z.js)
 
-## A tiny Library With huge use.
-### Built to be:
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_shield)
+[![Gitter](https://badges.gitter.im/mPhpMaster/community.svg)](https://gitter.im/mPhpMaster/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
+
+## UnderZ JS Library
+### A tiny Library With huge use.
+#### Built to be:
 1. **Easier** to use with each call.
 2. **Resources friendly**, _shouldn't eat all your cake_.
 3. **Optimized performance**, each call should execute and finish ASAP.
@@ -30,7 +34,7 @@
 
 
 ## Required to start
-* [_z.js](https://github.com/mPhpMaster/UnderZ) 
+* [_z.js](https://github.com/mPhpMaster/_UnderZ/blob/master/_z.js) 
 
 
 ***
@@ -53,8 +57,10 @@
 
 ## Copyright and license
 
-Copyright © 2008-2019 hlaCk (https://github.com/hlaCk)
+Copyright © 2008-2019 hlaCk (https://github.com/mPhpMaster)
 
-Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.md) license.
+Licensed under the **GNU General Public License v3.0** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE) license.
+
+***
 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_large)

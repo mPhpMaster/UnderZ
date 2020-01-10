@@ -4,6 +4,7 @@
     "description": "A tiny Library With huge use.",
     "type": "library",
     "license": "GPL-3.0-only",
+    "license-url": "",
     "authors": [
         {
             "name": "mPhpMaster",
