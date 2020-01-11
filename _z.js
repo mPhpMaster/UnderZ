@@ -289,7 +289,7 @@
                     l = this.length;
                 for (; i < l; ++i) {
                     let currentKeyElement = this[i];
-                    currentKey = this[i][keyUnique];
+                    let currentKey = this[i][keyUnique];
 
                     if (u.hasOwnProperty(currentKey)) continue;
 
