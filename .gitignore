@@ -9,3 +9,6 @@ tests/test.php
 .idea
 /.idea/workspace.xml
 tmp
+STORAGE_SERVE.db
+STORAGE_PATH_SERVE.db
+STORAGE_HOST_SERVE.db

@@ -348,14 +348,14 @@
             value(from, to) {
                 var args = arguments;
                 if (args.length > 0)
-                    from = typeof(from) == typeof(7) ? from : this.indexOf(from);
+                    from = typeof (from) == typeof (7) ? from : this.indexOf(from);
 
                 if (args.length > 1)
-                    to = typeof(to) == typeof(6) ? to : this.indexOf(to);
+                    to = typeof (to) == typeof (6) ? to : this.indexOf(to);
 
                 from = (from === -1 && args[0] !== -1) ? false : from;
                 to = (to === -1 && args[1] !== -1) ? false : to;
-                if ((!!!from && typeof(from) != typeof(4)) && (!!!to && typeof(to) != typeof(5)))
+                if ((!!!from && typeof (from) != typeof (4)) && (!!!to && typeof (to) != typeof (5)))
                     return this;
 
                 // Array Remove - By John Resig (MIT Licensed)
@@ -624,7 +624,7 @@
                 for (let i = 0, i2 = arguments.length; i < i2; i++)
                     if (!isset(arguments[i])) return false;
 
-            return val !== void 0 || typeof(val) !== 'undefined';
+            return val !== void 0 || typeof (val) !== 'undefined';
         },
 
         // toString `val` to String - public function in _z.toString( Object ), _z(Object).toString()
@@ -654,27 +654,26 @@
         },
 
         // type of `val` as string toLowerCase
-        TOV = function typeOfVar(val) {
-            return protos.object.toString.call(val).replaceAll('[object ', '').replaceAll(']', '').trim();
-        },
+        typeOf = function typeOfVar(val) {
+            return protos.object.toString.call(val).replaceAll('[object ', '').replaceAll(']', '').trim().toLowerCase();
+        };
 
-        typeOfVar = function type(val) {
-            return TOV(val).toLowerCase();
-        },
+    // to avoid calling twice typeOf
+    [
+        "number",
+        "string",
+        "array",
+        "object",
+        "function",
+        "boolean",
+    ].forEach(function (v) {
+        typeOf[v[0]] = v;
+    });
 
-        // to avoid calling twice typeOfVar
-        varsType = {
-            "n": "number",
-            "s": "string",
-            "a": "array",
-            "o": "object",
-            "f": "function",
-            "b": "boolean",
-        },
-
+    var
         // toLowerCase
         toLC = function ($var, $reDefine) {
-            if (typeOfVar($var) === varsType.a) {
+            if (typeOf($var) === typeOf.a) {
                 if (!isset($reDefine))
                     $var = ($var2 = Array.from($var));
 
@@ -689,7 +688,7 @@
         },
         // toUpperCase
         toUC = function ($var, $reDefine) {
-            if (typeOfVar($var) === varsType.a) {
+            if (typeOf($var) === typeOf.a) {
                 if (!isset($reDefine))
                     $var = ($var2 = Array.from($var));
 
@@ -838,14 +837,14 @@
 
         // forEach
         foreach = function foreach(obj, cb, context) {
-            if (typeOfVar(obj) === varsType.f) {
+            if (typeOf(obj) === typeOf.f) {
                 context = cb || this;
                 cb = obj;
                 obj = this['element'] && this.element() || [];
             }
 
             obj = obj || false;
-            if (!obj || !cb || typeOfVar(cb) !== varsType.f)
+            if (!obj || !cb || typeOf(cb) !== typeOf.f)
                 return false;
 
             obj = is_z(obj) ? obj.element() : obj;
@@ -855,8 +854,8 @@
 
             let returns =
                 (
-                    (typeOfVar(obj) === varsType.a && []) ||
-                    (typeOfVar(obj) === varsType.o && {}) ||
+                    (typeOf(obj) === typeOf.a && []) ||
+                    (typeOf(obj) === typeOf.o && {}) ||
                     (_z['createAs'] && _z.createAs(obj, false, {}))
                 ) || {};
 
@@ -899,7 +898,7 @@
         // subArray
         subArray = function subArray(startFrom, endTo, array) {
             if (endTo && !isset(array))
-                if (typeOfVar(endTo) != varsType.n)
+                if (typeOf(endTo) != typeOf.n)
                     array = endTo,
                         endTo = false;
             var sliceit = [startFrom || 0];
@@ -992,8 +991,7 @@
         isValidSelector = selector => {
             try {
                 document.createDocumentFragment().querySelector(selector);
-            }
-            catch (e) {
+            } catch (e) {
                 return false
             }
             return true
@@ -1022,7 +1020,7 @@
             lastEvent: version,
             // addEventListener
             register: function eventListenerHandler(data) {
-                if (typeOfVar(data) !== varsType.o || !data['eventName'] || !data['element']) return false;
+                if (typeOf(data) !== typeOf.o || !data['eventName'] || !data['element']) return false;
 
                 let eventName, target = data['element'];
                 let listenerMethod = (eventName = data['eventName']) && target.addEventListener ||
@@ -1057,7 +1055,7 @@
             },
             // removeEventListener
             unRegister: function eventUnListenerHandler(data) {
-                if (typeOfVar(data) !== varsType.o) return false;
+                if (typeOf(data) !== typeOf.o) return false;
                 let rEL = events.find(data);
 
                 if (!rEL)
@@ -1103,8 +1101,7 @@
                                             return false;
                                     });
                                     if (match.length != $v.length) match = [];
-                                }
-                                else return $return2 = false, false;
+                                } else return $return2 = false, false;
 
                                 $return2 = !!match.length;
                                 return false;
@@ -1118,7 +1115,7 @@
                 return $return || false;
             },
             add: function addRegisteredEvents(data) {
-                data = arguments.length === 1 && typeOfVar(data) === varsType.o ? data : {name: data};
+                data = arguments.length === 1 && typeOf(data) === typeOf.o ? data : {name: data};
                 let _data = {
                     element: data['element'] || false,
                     eventName: data['eventName'] || data['name'] || false,
@@ -1163,8 +1160,7 @@
                     let dE = e.dispatchEvent(event, true);
                     events.lastEvent = version;
                     return dE;
-                }
-                else {
+                } else {
                     let _elmentWithNS = events.find(data || {
                         element: e,
                         eventName: event.type || false,
@@ -1314,7 +1310,7 @@
                  */
                 let $return = [];
                 if (arguments.length) {
-                    let __sel = typeOfVar($elm) === varsType.s ? [$elm] : $elm;
+                    let __sel = typeOf($elm) === typeOf.s ? [$elm] : $elm;
                     let $arguments = arguments;
                     $elm = _z(__sel);
 
@@ -1325,7 +1321,7 @@
                         elmFunc.elmLoop(_z($elm), function (e2) {
                             e2 = e2 === doc ? doc.documentElement : e2;
 
-                            if (!_z.isDOM(e2) && toLC(typeOfVar(e2)) === varsType.s)
+                            if (!_z.isDOM(e2) && toLC(typeOf(e2)) === typeOf.s)
                                 $currentElement.push((elmFunc.matches(e, e2) !== $not && !$return.includes(_e)) ? _e : false);
                             else
                                 $currentElement.push((e['isEqualNode'] && e['isEqualNode'](e2) !== $not && !$return.includes(_e)) ? _e : false);
@@ -1345,8 +1341,7 @@
                     newInstance.selector = eSelector.toString();
 
                     return newInstance;
-                }
-                else return _z($return);
+                } else return _z($return);
             },
 
             // prepare css style
@@ -1663,8 +1658,18 @@
             inputbox: function inputbox() {
                 return prompt.apply(window, arguments) || undefined;
             },
+            argLimit: function consoleArgumentsLimited(limitStart = 0, LimitEnd = null) {
+                return function () {
+                    let lStart = limitStart === 0 ? limitStart : (Number(limitStart) || 0);
+                    let lEnd = LimitEnd === null ? arguments.length : (Number(LimitEnd) || arguments.length);
+                    console.log.apply(console, subArray(lStart, lEnd, arguments));
+                };
+            },
             arg: function consoleArguments() {
                 console.log.apply(console, arguments)
+            },
+            argRev: function consoleArgumentsReversed() {
+                console.log.apply(console, toArray(arguments).reverse())
             },
             trc: function consoleTrace() {
                 console.trace.apply(console, arguments)
@@ -1718,7 +1723,7 @@
                 newProping['enumerable'] = ps['e'] !== undefined ? !!ps['e'] : true;
                 newProping['configurable'] = ps['c'] !== undefined ? !!ps['c'] : true;
                 newProping['writable'] = ps['w'] !== undefined ? !!ps['w'] : true;
-                newProping['add'] = ps['add'] !== undefined && typeOfVar(ps['add']) == varsType.a ? ps['add'] : false;
+                newProping['add'] = ps['add'] !== undefined && typeOf(ps['add']) == typeOf.a ? ps['add'] : false;
                 newProping['skip'] = ps['skip'] !== undefined ? !!ps['skip'] : false;
 
                 if (newProping['add'])
@@ -2117,7 +2122,7 @@
             length = arguments.length,
             args = arguments;
 
-        if (typeOfVar(args[0]) === varsType.b) {
+        if (typeOf(args[0]) === typeOf.b) {
             deep = args[idx++];
             extended = args[idx] || extended;
         }
@@ -2127,7 +2132,7 @@
             extended = this;
 
         // extend as ArrayLike
-        if (typeOfVar(args[0]) == varsType.a && Object.keys(extended).length === 0)
+        if (typeOf(args[0]) == typeOf.a && Object.keys(extended).length === 0)
             extended = [];
 
         // Merge the object into the extended object
@@ -2139,8 +2144,8 @@
                 ) continue;
 
                 if (hasProp(obj, prop))//&& !(obj[prop] && extended[prop] && obj[prop] === extended[prop]))
-                // If deep merge and property is an object, merge properties
-                    if (deep && typeOfVar(obj[prop]) === varsType.o)
+                    // If deep merge and property is an object, merge properties
+                    if (deep && typeOf(obj[prop]) === typeOf.o)
                         extended[prop] = extend(true, extended[prop], obj[prop]);
                     else
                         extended[prop] = obj[prop];
@@ -2289,13 +2294,13 @@
         // do not override// if( isset( _z['is' + name] ) && !override )// return;
         if (!isset(_z['is' + name]))
             _z['is' + name] = function (obj) {
-                return typeOfVar(obj) == toLC(name);
+                return typeOf(obj) == toLC(name);
             };
     });
 
     // do not return if NaN #fix
     _z.isNumber = function isNumber(n) {
-        return typeOfVar(n) === varsType.n && !isNaN(n);
+        return typeOf(n) === typeOf.n && !isNaN(n);
     };
 
     // attach Promiser module to engine
@@ -2543,7 +2548,7 @@
                 // try to parse html
                 try {
                     if (!elementsFound)
-                    // is string
+                        // is string
                         if (isset(arguments[0]) && _z.isTypes('HTMLDOM', arguments[0]) && arguments[0].length) {
                             $elements = parssing.parseHTML(arguments[0]);
                             // not html code
@@ -2556,8 +2561,7 @@
                         }
                         // empty
                         else fns.t.generate(e);
-                }
-                catch (eParse) {
+                } catch (eParse) {
                     if (!elementsFound)
                         $elements = [arguments[0]];
                 }
@@ -2683,7 +2687,7 @@
             } catch (err) {
             }
 
-            ($anElements = this.element()).push(...(typeOfVar(anElements) === varsType.a ? anElements : [anElements]));
+            ($anElements = this.element()).push(...(typeOf(anElements) === typeOf.a ? anElements : [anElements]));
             return this.newSelector($anElements);
         },
 
@@ -2693,7 +2697,7 @@
                 (aE = toArray(anElements)) && (anElements = aE);
             } catch (err) {
             }
-            ($anElements = this.element()).push(...(typeOfVar(anElements) === varsType.a ? anElements : [anElements]));
+            ($anElements = this.element()).push(...(typeOf(anElements) === typeOf.a ? anElements : [anElements]));
 
             this.update($anElements);
             return this;
@@ -2805,8 +2809,7 @@
                     if (!!$var && !!$isVal && !!e[version]) {
                         crnt_zIDData['idata'][$var] = $val;
                         $return.push(e);
-                    }
-                    else if (!!$var && !!!$isVal)
+                    } else if (!!$var && !!!$isVal)
                         if (!_z.isObject($var)) // get data
                             $return.push(getSet.call(true, crnt_zIDData['idata'][$var], undefined));
                         else { // set data
@@ -2849,140 +2852,6 @@
             return _iData.remData(...arguments);
         },
     };
-
-    // notification module
-    _z.notification = function Notifications(options, options2) {
-        if (!!!(this instanceof Notifications))
-            return fns.t.e("Failed to construct 'Notifications': Please use the 'new' operator.");
-
-        // if notification blocked try to grant permission
-        if (!!!this.status && !!!this.blocked)
-            return this.request(() => new Notifications(...(arguments || [])));
-
-        options2 = options2 || {};
-        options = options || "DefaultTag";
-        options = _z.isObject(options) ? options : (
-            _z.isString(options) ? {tag: options} : options || {}
-        );
-        options = _z.extend({},
-            this.options || {},
-            {data: arguments},
-            options || {},
-            options2 || {}
-        );
-        options['data'] && (options.data = _z.extend({}, options || {}));
-        options['events'] = options['events'] || {};
-
-        // remove events from options to this
-        _z.for(this.events, function (eIdx, eName) {
-            eName = (eName && _z.isArray(eName) ? eName : [eName])[0] || false;
-            if (
-                eName &&
-                (isset(options['events'][eName]) || (options['events'][eName] = [])) &&
-                (_z.isArray(options['events'][eName]) || (options['events'][eName] = [options['events'][eName]])) &&
-                isset(options[eName]) &&
-                (
-                    (_z.isArray(options[eName]) && options[eName]) ||
-                    (options[eName] = [options[eName]])
-                ) &&
-                (options['events'][eName].push(... (options[eName] || [])))
-            ) delete options[eName];
-
-        }, options['events']);
-
-        // current notification options
-        this.options = _z.extend({}, options);
-        this.length = _z.toArray(this).length || 0;
-
-        return this;
-    };
-    _z.notification.prototype = {
-        options: {
-            title: "UnderZ Notifications.",
-            body: "By M.F.Al-Safadi, UnderZ Library.",
-
-            icon: "favicon.ico",
-            image: "favicon.ico",
-            badge: "favicon.ico",
-
-            dir: "auto",
-            lang: "en",
-            tag: "DefaultTag",
-
-            data: []
-        },
-
-        // open notification module
-        open: function openNotification(options) {
-            if (!!!this.options) this.options = {};
-
-            var newOptions = _z.extend({}, this['options'] || {}, {data: false, events: false});
-
-            delete newOptions['events'];
-            delete newOptions['data'];
-            newOptions = _z.extend({}, newOptions || {});
-
-            var n = new Notification(newOptions['title'] || "", newOptions || {});
-
-            // add registered handleEvent to current notification
-            _z.for(this.events, function (eIdx, eName) {
-                eName = eName && _z.isArray(eName) ? eName : [eName];
-                eName = eName[0] || false;
-
-                if (isset(this['events'][eName]) && (this['events'][eName].length)) {
-                    _z.for(this['events'][eName], function (fIdx, fName) {
-                        var ELArgs = [(eName || 'click').replace(/^on/, ''), fName],
-                            addEL;
-                        if (n.addEventListener) {
-                            ELArgs.push(false);
-                            addEL = n.addEventListener;
-                        } else addEL = n.detachEvent;
-
-                        if (fns.isSetisFunc(fName))
-                            return addEL.apply(n, ELArgs);
-
-                    });
-                }
-
-            }, this['options']);
-
-            // attach notification object to options
-            this.push(n);
-            // options.instance = this.instance = n;
-            return this;
-        },
-
-        // update notification status - request permission
-        request: function requestPermission() {
-            try {
-                return Notification.requestPermission(...(arguments || []));
-            } catch (NotificationException) {
-                return false;
-            }
-        },
-
-        // all available eventhandlers
-        events: [
-            'onclick',
-            'onshow',
-            'onerror',
-            'onclose'
-        ],
-
-        // notification status get
-        get status() {
-            return Notification.permission == 'granted' || false;
-        },
-        // notification status is denied
-        get blocked() {
-            return Notification.permission == 'denied' || false;
-        },
-
-        length: 0,
-    };
-    _z.notification.prototype.extend = extendFunction;
-    _z.notification.prototype.extend(protos.likeArray);
-    // notification module
 
     // element/elements value
     Object.defineProperty(_z.$, 'value', {
@@ -3051,7 +2920,7 @@
                 var _ks = Object.keys(obj);
 
                 for (var li = 0, l = _ks.length; li < l; li++)
-                    if (typeOfVar(obj[_ks[li]]) === varsType.s && isset(aData[obj[_ks[li]]]))
+                    if (typeOf(obj[_ks[li]]) === typeOf.s && isset(aData[obj[_ks[li]]]))
                         aData[_ks[li]] = aData[obj[_ks[li]]];
                     else
                         aData[_ks[li]] = obj[_ks[li]];
@@ -3922,7 +3791,7 @@
             // if( !str.selector && !str.length ) return "";
 
             var t = triming,
-                trimmedContext = str.selector ? String(str.selector) : (typeOfVar(str) === varsType.s ? str : false);
+                trimmedContext = str.selector ? String(str.selector) : (typeOf(str) === typeOf.s ? str : false);
 
             trimmedContext = trimmedContext || (is_z(str) && str.element(0)) || trimmedContext;
             if (!trimmedContext) return "";
@@ -4405,7 +4274,7 @@
         // argument to array
         Array: function Array(input) {
             input = input || [];
-            if (_z.isString(input)) input = [input];
+            if (_z.isString(input) || _z.isFunction(input) || _z.isNumber(input)) input = [input];
 
             return _z.toArray(input);
         },
@@ -4583,6 +4452,11 @@
 
     // serialize data
     join({
+        // serialize Json
+        // serializeJson: function serializeJson(elm) {
+        //
+        // },
+
         // serialize array
         serializeArray: function serializeArray(elm) {
             var field, length, $return = [];
@@ -4849,8 +4723,7 @@
                 if (this.isRunning) return this.stop().remove(keepData);
                 // remove it
                 interval.instances.remove(thisIndex);
-            }
-            else
+            } else
                 return false;
 
             // delete data
@@ -5270,8 +5143,7 @@
             if (!!!param['url'])
                 try {
                     param['url'] = location.href;
-                }
-                catch (e) {
+                } catch (e) {
                     // Use the href attribute of an A element
                     // since IE will modify it given document.location
                     param['url'] = document.createElement("a");
@@ -5662,22 +5534,21 @@
             // append
             if (perfix) {
                 // array
-                if (typeOfVar(object) === varsType.a) {
+                if (typeOf(object) === typeOf.a) {
                     for (i = 0, len = object.length; i < len; i++)
                         if (/\[\]$/.test(perfix))
                             add(perfix, object[i]);
                         else
-                            param(object[i], perfix + '[' + (typeOfVar(object[i]) === varsType.o ? i : '') + ']', parts);
+                            param(object[i], perfix + '[' + (typeOf(object[i]) === typeOf.o ? i : '') + ']', parts);
                 }
                 // object
-                else if (typeOfVar(object) === varsType.o) {
+                else if (typeOf(object) === typeOf.o) {
                     for (var prop in object)
                         param(object[prop], perfix + '[' + prop + ']', parts);
                 }
                 // string
                 else add(perfix, object);
-            }
-            else if (typeOfVar(object) === varsType.a) {
+            } else if (typeOf(object) === typeOf.a) {
                 // elements
                 elmFunc.elmLoop(object, function (e, v) {
                     if (e.name)
@@ -7264,8 +7135,7 @@
                 if (!!selector && e['parentNode'] && _z(e['parentNode']).is(selector))
                     $return.push(e['parentNode']);
                 else if (!!selector && (!e['parentNode'] || !_z(e['parentNode']).is(selector))) {
-                }
-                else if (!!!selector)
+                } else if (!!!selector)
                     $return.push(e['parentNode']);
             });
 
@@ -7737,7 +7607,7 @@
                 events.lastEvent = version;
                 if (hasVar(document, 'createEvent')) {
                     var keyboardEvent = document.createEvent("KeyboardEvent");
-                    var initMethod = typeof(keyboardEvent.initKeyboardEvent) !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+                    var initMethod = typeof (keyboardEvent.initKeyboardEvent) !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
 
                     keyboardEvent[initMethod](
                         evtN, // event type : keydown, keyup, keypress
@@ -7923,8 +7793,7 @@
                     if (!!$var && !!$isVal && !!e[version]) {
                         crnt_zIDData['data'][$var] = $val;
                         $return.push(e);
-                    }
-                    else if (!!$var && !!!$isVal)
+                    } else if (!!$var && !!!$isVal)
                         if (!_z.isObject($var)) // get data
                             $return.push(getSet(crnt_zIDData['data'][$var], undefined));
                         else { // set data
@@ -7949,9 +7818,9 @@
 
                 if (!!$var && !!e[version])
                     delete new_zID.data[e[version]]['data'][$var];
-                // else if( !!!$var && !!e[ version ] ) {
-                //     delete new_zID.data[ e[ version ] ];
-                //     delete e[ version ];
+                    // else if( !!!$var && !!e[ version ] ) {
+                    //     delete new_zID.data[ e[ version ] ];
+                    //     delete e[ version ];
                 // }
                 else if (!!!$var && !!e[version]) {
                     new_zID.data[e[version]]['data'] = {};
@@ -8103,7 +7972,7 @@
                 var isJQ = !!(step[0] && step[1]),
                     isDOM = !!(step[2] && step[1]),
                     isArray = !!((!isJQ && !isDOM) && (obj instanceof Array)),
-                    isObject = !!((!isJQ && !isDOM && !isArray && !step[3]) && typeof(obj) == typeof({})),
+                    isObject = !!((!isJQ && !isDOM && !isArray && !step[3]) && typeof (obj) == typeof ({})),
                     isWindow = !!(step[3]);
 
                 return {
@@ -8112,7 +7981,7 @@
                     'object': isObject,
                     'array': isArray,
                     'window': isWindow,
-                    'typeof': typeof(obj),
+                    'typeof': typeof (obj),
                     'document': !!(obj == doc || obj == doc.documentElement),
                 };
             },
@@ -8181,12 +8050,7 @@
 
         // type of `val`
         type: function type(val) {
-            return TOV(val);
-        },
-
-        // type of `val`
-        typeOf: function typeOf() {
-            return TOV(arguments[0]).toLowerCase();
+            return typeOf(val);
         },
 
         // check if object is Object
@@ -8353,7 +8217,7 @@
 
             // is part of a document
             if (!context && elm.ownerDocument)
-            // is <html> or in a fragment
+                // is <html> or in a fragment
                 if (elm === elm.ownerDocument.documentElement || elm.ownerDocument.constructor.name === 'DocumentFragment')
                     context = elm.ownerDocument;
 
@@ -8730,7 +8594,7 @@
                     ))) return _ret;
 
                 if (getAll)
-                    return TOV(this) == TOV.types.s ? asArrayIndexing : asArray;
+                    return typeOf(this) == typeOf.s ? asArrayIndexing : asArray;
 
                 return '';
             } catch (e) {
@@ -9081,7 +8945,7 @@
                 if (!!!name) return this;
 
                 var expires = "";
-                if (seconds && typeOfVar(seconds) == varsType.n) {
+                if (seconds && typeOf(seconds) == typeOf.n) {
                     var date = new Date();
                     date.setTime(date.getTime() + (seconds * 1000));
                     expires = "; expires=" + date.toGMTString();
@@ -9142,10 +9006,166 @@
             console.error(e);
         }
 
-    // assign function
-    typeOfVar.varsType = varsType;
-    _z.typeOfVar = typeOfVar;
-    return _z;
+    return tap(_z, function (_z) {
+        // assign function
+
+        // notification module
+        _z.notification = function Notifications(options, options2) {
+            if (!!!(this instanceof Notifications))
+                return fns.t.e("Failed to construct 'Notifications': Please use the 'new' operator.");
+
+            // if notification blocked try to grant permission
+            if (!!!this.status && !!!this.blocked)
+                return this.request(() => new Notifications(...(arguments || [])));
+
+            options2 = options2 || {};
+            options = options || "DefaultTag";
+            options = _z.isObject(options) ? options : (
+                _z.isString(options) ? {tag: options} : options || {}
+            );
+            options = _z.extend({},
+                this.options || {},
+                {data: arguments},
+                options || {},
+                options2 || {}
+            );
+            options['data'] && (options.data = _z.extend({}, options || {}));
+            options['events'] = options['events'] || {};
+
+            // remove events from options to this
+            _z.for(this.events, function (eIdx, eName) {
+                eName = (eName && _z.isArray(eName) ? eName : [eName])[0] || false;
+                if (
+                    eName &&
+                    (isset(options['events'][eName]) || (options['events'][eName] = [])) &&
+                    (_z.isArray(options['events'][eName]) || (options['events'][eName] = [options['events'][eName]])) &&
+                    isset(options[eName]) &&
+                    (
+                        (_z.isArray(options[eName]) && options[eName]) ||
+                        (options[eName] = [options[eName]])
+                    ) &&
+                    (options['events'][eName].push(...(options[eName] || [])))
+                ) delete options[eName];
+
+            }, options['events']);
+
+            this.length = _z.toArray(this).filter(x => x).length || 0;
+            // current notification options
+            this.options = _z.extend({}, options);
+
+            return this;
+        };
+
+        tap(_z.notification.prototype = {
+            options: {
+                title: "UnderZ Notifications.",
+                body: "By M.F.Al-Safadi, UnderZ Library.",
+
+                icon: "favicon.ico",
+                image: "favicon.ico",
+                badge: "favicon.ico",
+
+                dir: "auto",
+                lang: "en",
+                tag: "DefaultTag",
+
+                data: []
+            },
+
+            // engine version
+            underZ: version,
+
+            constructor: _z.notification,
+
+            // open notification module
+            open: function openNotification(options) {
+                if (!!!this.options) this.options = {};
+
+                var newOptions = _z.extend({}, this['options'] || {}, {data: false, events: false});
+
+                delete newOptions['events'];
+                delete newOptions['data'];
+                newOptions = _z.extend({}, newOptions || {}, options || {});
+
+                var n = new Notification(newOptions['title'] || "", newOptions || {});
+
+                this['options']['events'] = _z.extend({}, newOptions['events'] || {});
+
+                // add registered handleEvent to current notification
+                _z.for(this.events, function (eIdx, eName) {
+                    eName = eName && _z.isArray(eName) ? eName : [eName];
+                    eName = eName[0] || false;
+
+                    if (isset(newOptions[eName])) {
+                        this['events'][eName] = tap(_z.Array(this['events'][eName]), x => x.add(...(_z.Array(newOptions[eName]) || [])));
+                    }
+
+                    if (isset(this['events'][eName]) && (this['events'][eName].length)) {
+                        _z.for(this['events'][eName], function (fIdx, fName) {
+                            var ELArgs = [(eName || 'click').replace(/^on/, ''), fName],
+                                addEL;
+                            if (n.addEventListener) {
+                                ELArgs.push(false);
+                                addEL = n.addEventListener;
+                            } else addEL = n.detachEvent;
+
+                            if (fns.isSetisFunc(fName))
+                                return addEL.apply(n, ELArgs);
+
+                        });
+                    }
+
+                }, this['options']);
+
+                // attach notification object to options
+                let nodes = tap(_z.toArray(this).filter(x => x), $nodes => $nodes.push(n));
+                nodes.forEach((function (v, k) {
+                    if (v) {
+                        this[k] = v;
+                    } else {
+                        delete this[k];
+                    }
+                }).bind(this));
+
+                return tap(this, (e) => e.length = nodes.length);
+            },
+
+            // update notification status - request permission
+            request: function requestPermission() {
+                try {
+                    return Notification.requestPermission(...(arguments || []));
+                } catch (NotificationException) {
+                    return false;
+                }
+            },
+
+            // all available eventhandlers
+            events: [
+                'onclick',
+                'onshow',
+                'onerror',
+                'onclose'
+            ],
+
+            // notification status get
+            get status() {
+                return Notification.permission == 'granted' || false;
+            },
+            // notification status is denied
+            get blocked() {
+                return Notification.permission == 'denied' || false;
+            },
+
+            extend: extendFunction,
+
+            length: 0,
+        }, function ($prototype) {
+            $prototype.extend(protos.likeArray);
+        });
+        // notification module
+
+        return _z;
+    });
 })(this, this.document || {
     isdocument: false,
     getRootNode: () => {
