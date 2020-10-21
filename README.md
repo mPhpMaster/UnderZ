@@ -1,7 +1,7 @@
 *`This repo belongs to `[hlaCk](https://github.com/hlaCk)*
-# ~ [UnderZ.JS](https://github.com/mPhpMaster/_UnderZ/blob/master/_z.js)
+# ~ [UnderZ.JS](https://github.com/mPhpMaster/UnderZ/blob/master/_z.js)
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_shield)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_shield)
 [![Gitter](https://badges.gitter.im/mPhpMaster/community.svg)](https://gitter.im/mPhpMaster/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## UnderZ JS Library
@@ -36,7 +36,7 @@
 
 
 ## Required to start
-* [_z.js](https://github.com/mPhpMaster/_UnderZ/blob/master/_z.js) 
+* [_z.js](https://github.com/mPhpMaster/UnderZ/blob/master/_z.js) 
 
 
 ***
@@ -50,7 +50,7 @@ In a browser:
 
 Using npm:
 ```shell
-$ npm i underz
+$ npm i @mphpmaster/underz
 ```
 Note: add --save if you are using npm < 5.0.0
 
@@ -80,4 +80,4 @@ Licensed under the **MIT License** (https://github.com/mPhpMaster/UnderZ/blob/ma
 
 ***
 
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_large)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FmPhpMaster%2F_UnderZ?ref=badge_large)
