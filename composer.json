@@ -9,7 +9,8 @@
     "framework",
     "ajax",
     "js",
-    "dom"
+    "dom",
+    "light"
   ],
   "type": "library",
   "license": "MIT",
