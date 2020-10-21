@@ -1,7 +1,7 @@
 {
   "name": "underz",
   "title": "UnderZ",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "UnderZ JS Library",
   "main": "_z.js",
   "directories": {
@@ -32,6 +32,5 @@
   "wiki": {
     "url": "https://underz.decodercan.com/UnderZ/"
   },
-  "homepage": "https://underz.decodercan.com/UnderZ/",
-  "publishConfig": { "registry": "https://npm.pkg.github.com/" }
+  "homepage": "https://underz.decodercan.com/UnderZ/"
 }
