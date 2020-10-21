@@ -1,29 +1,27 @@
 {
-    "name": "mphpmaster/underz",
-    "version": "1.1.2",
-    "description": "UnderZ JS Library",
-    "keywords": [
-        "javascript",
-        "library",
-        "underz",
-        "framework",
-        "ajax",
-        "js",
-        "dom"
-    ],
-    "type": "library",
-    "license": "MIT",
-    "license-url": "",
-    "authors": [
-        {
-            "name": "hlaCk",
-            "email": "mrhlaCk@gmail.com"
-        },
-        {
-            "name": "TurkiRF",
-            "email": "turkiaamer@gmail.com"
-        }
-    ],
-    "minimum-stability": "dev",
-    "require": {}
+  "name": "mphpmaster/underz",
+  "version": "1.1.2",
+  "description": "UnderZ JS Library",
+  "keywords": [
+    "javascript",
+    "library",
+    "underz",
+    "framework",
+    "ajax",
+    "js",
+    "dom"
+  ],
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "hlaCk",
+      "email": "mPhpMaster@gmail.com"
+    },
+    {
+      "name": "TurkiRF",
+      "email": "turkiaamer@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev"
 }
