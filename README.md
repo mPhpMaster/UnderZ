@@ -19,15 +19,15 @@
 
 # Links:
 
-* [Getting Started](http://hlack.xyz/UnderZ/Getting_Started) 
+* [Getting Started](http://underz.decodercan.com/UnderZ/Getting_Started) 
 
 * [Library Page](https://github.com/mPhpMaster/UnderZ) 
 
-* [Wiki Page](http://hlack.xyz/UnderZ/)
+* [Wiki Page](http://underz.decodercan.com/UnderZ/)
 
-* [Features Page](http://hlack.xyz/UnderZ/Features)
+* [Features Page](http://underz.decodercan.com/UnderZ/Features)
 
-* [Syntax Page](http://hlack.xyz/UnderZ/Syntax)
+* [Syntax Page](http://underz.decodercan.com/UnderZ/Syntax)
 
 * [Old Library](https://github.com/hlaCk/UnderZ) 
 
