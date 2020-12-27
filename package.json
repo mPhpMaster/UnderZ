@@ -30,9 +30,9 @@
   "author": "hlaCk <mrhlaCk@gmail.com>, TurkiRF <turkiaamer@gmail.com>",
   "license": "MIT",
   "wiki": {
-    "url": "https://underz.decodercan.com/UnderZ/"
+    "url": "https://underz.hlack.net/UnderZ/"
   },
-  "homepage": "https://underz.decodercan.com/UnderZ/",
+  "homepage": "https://underz.hlack.net/UnderZ/",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   }
