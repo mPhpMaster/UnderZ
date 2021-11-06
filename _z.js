@@ -1,17 +1,3 @@
-/**
- * **UnderZ** *`"JavaScript Library"`*
- *
- * *composer:* `composer require mphpmaster/underz`
- * [packagist](https://packagist.org/p/mphpmaster/underz)
- * [github](https://github.com/mPhpMaster/UnderZ)
- * [npm](https://www.npmjs.com/package/@mphpmaster/underz)
- *
- * @copyright Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
- * @license Licensed under MIT License: https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt
- *
- * @version 1.1.2
- * @author hlaCk
- */
 (function (window, document) {
 // new Date().getUnixTime() = Unix timestamp
     if (typeof Date.prototype.getUnixTime !== 'function')
@@ -215,7 +201,7 @@
             }, configurable: false
         });
 
-// todo: add in wiki
+// todo: add in wiki (added local)
 // Object.getSize => size of object
     if (typeof Object.prototype.getSize !== 'function')
         Object.defineProperty(Object.prototype, 'getSize', {
@@ -569,11 +555,9 @@
 
         // prototypes of objects - public var in _z.$underz.protos
         protos = {
-            object: "Object" in window ? Object.prototype : () => {
-            },
+            object: Object && Object.prototype || emptyFunction,
             element: Element.prototype,
-            array: "Array" in window ? Array.prototype : () => {
-            },
+            array: Array && Array.prototype || emptyFunction,
             likeArray: {
                 push: [].push,
                 sort: [].sort,
@@ -654,8 +638,9 @@
         },
 
         // type of `val` as string toLowerCase
-        typeOf = function typeOfVar(val) {
-            return protos.object.toString.call(val).replaceAll('[object ', '').replaceAll(']', '').trim().toLowerCase();
+        typeOf = function typeOfVar(val, cb) {
+            let $val = protos.object.toString.call(val).replaceAll('[object ', '').replaceAll(']', '').trim();
+            return cb && typeof cb === 'function' ? cb($val) : $val.toLowerCase();
         };
 
     // to avoid calling twice typeOf
@@ -742,9 +727,11 @@
                 }
 
                 if (!_z.isFunction(callback)) {
-                    throw new TypeError('Invalid `callback` (callback), NOT callable.');
+                    callback = () => callback;
 
-                } else if (object === false || !(_z.isObject(object) || _z.isArray(object))) {
+                }
+
+                if (object === false || !(_z.isObject(object) || _z.isArray(object))) {
                     throw new TypeError('Invalid `object` (object), NOT Arrayable.');
 
                 }
@@ -2067,6 +2054,7 @@
 
     // register global variables
     window.fns = window.fns || fns;
+    window.Math = window.Math || Math;
     window.Math.__random = isset(window.Math['__random']) ? window.Math['__random'].bindSelf() : window.Math['random'].bindSelf();
     window.Math.random = function () {
         return arguments.length ? _z.rnd(...arguments) : window.Math['__random']();
@@ -2413,7 +2401,7 @@
 
             // NodeList, HTMLCollection
             $elements = $elements || arguments[0] &&
-                (_z.type(arguments[0]) === 'NodeList' || (arguments[0] instanceof HTMLCollection)) &&
+                (_z.type(arguments[0]) === 'nodelist' || (arguments[0] instanceof HTMLCollection)) &&
                 _z.toArray(arguments[0]) || false;
 
             // the given argument is LIS of elements
@@ -2451,7 +2439,7 @@
                     (_z.isDOM(arguments[1]) || _z.is_z(arguments[1])) &&
                     arguments[1] || false;
                 // nodeList
-                head = head || _z.type(arguments[1]) === 'NodeList' &&
+                head = head || _z.type(arguments[1]) === 'nodelist' &&
                     _z.toArray(arguments[1]) || false;
                 // string
                 head = head || _z.isString(arguments[1]) &&
@@ -2522,7 +2510,7 @@
                 var qSelector = arguments[0];
                 $elements = [];
                 _z(head).for(function (k, v, _all) {
-                    if (_z.isDOM(v) || _z.type(v) !== 'NodeList')
+                    if (_z.isDOM(v) || _z.type(v) !== 'nodelist')
                         v = _z.toNodeList(v)[0];
 
                     if (v && v['querySelectorAll'] && isValidSelector(qSelector)) {
@@ -3828,7 +3816,7 @@
             if (!!!obj) return false;
 
             try {
-                var newObject = eval(_z.type(obj));
+                var newObject = eval(_z.type(obj, x => x));
                 if (newObject['constructor'])
                     if (sameValue)
                         return new newObject(obj);
@@ -3838,7 +3826,7 @@
                 if (arguments.length === 3)
                     return $default;
 
-                console.error("No Constructor in `" + (obj.toString() || String(obj) || obj.name || _z.type(obj) || "Unknown") + "` !!");
+                console.error("No Constructor in `" + (obj.toString() || String(obj) || obj.name || _z.type(obj, x => x) || "Unknown") + "` !!");
             }
             return false;
         },
@@ -4370,13 +4358,13 @@
             // d=_z.toArray("DELETE_VAR").map(x=>{ cc += x.charCodeAt(0); return x.charCodeAt(0); })
             if (_z.isFunction(array) && !!!func) {
                 func = array;
-                array = this['element'] && this.element() || [];
+                array = this['element'] && this.element() || this || [];
             }
 
-            if (_z.type(array) != "Array")
+            if (_z.type(array) != "array")
                 array = this.toArray(array);
 
-            if (_z.type(func) != "Function")
+            if (_z.type(func) != "function")
                 throw new TypeError('Second argument IS NOT a Function!');
 
             var l = array.length;
@@ -6180,7 +6168,7 @@
                 if (!e['appendChild']) return;
 
                 $val.for(function (key, value) {
-                    if (_z.isDOM(value) || _z.type(value) == 'Text') {
+                    if (_z.isDOM(value) || _z.type(value) == 'text') {
 
                         e['appendChild'](value);
 
@@ -6220,7 +6208,7 @@
                 if (!e['insertBefore'] || !e['firstChild']) return;
 
                 $val.for(function (key, value) {
-                    if (_z.isDOM(value) || _z.type(value) == 'Text') {
+                    if (_z.isDOM(value) || _z.type(value) == 'text') {
                         e['insertBefore'](value, e['firstChild']);
 
                         if (_z(value).tagName() == "script")
@@ -6385,207 +6373,6 @@
             opacity = _z.isNumber(opacity) ? ((opacity >= 0 || opacity <= 1) ? opacity : 1) : 1;
 
             return elmFunc.fade.apply(this, ['To', speed, opacity, callback]);
-        },
-
-        // change element/s opacity
-        opacity: function elementOpacity(options) {
-            // get opacity controller
-            if (arguments.length == 0) {
-                var opt = {
-                    // cancel this and undo changes
-                    cancel: () => {
-                        var d = opt.getAll();
-                        if (d.length == 0) return this;
-
-                        _z.for(d, function (k, data) {
-                            data["cancel"] && data.cancel();
-                        });
-                        return this;
-                    },
-                    // finish changes immediately
-                    finish: () => {
-                        var d = opt.getAll();
-                        if (d.length == 0) return this;
-
-                        _z.for(d, function (k, data) {
-                            data["finish"] && data.finish();
-                        });
-                        return this;
-                    },
-
-                    getAll: () => {
-                        var dID = _z.map((_iData.data(this, "OpacityData")[0] || []), function (_OData) {
-                            return _OData.isFinish() ? false : _OData;
-                        }).filter(x => x);
-
-                        return dID || {};
-                    }
-                };
-
-                return opt;
-            }
-
-            if (is_z(options) || !_z.isObject(options) || options.getSize() < 1)
-                options = {};
-
-            var elm = options["elm"] = getSet(options["elm"], this); // elements to change opacity
-            if (elm && !is_z(elm))
-                elm = options["elm"] = _z(elm);
-
-            var speed = options["speed"] = getSet(options["speed"], options["duration"], 0); // change speed
-            var type = options["type"] = getSet(options["type"], "ease"); // change type
-            var delay = options["delay"] = getSet(options["delay"], 0); // deley before change
-            var whenDone = options["done"] = getSet(options["done"], options["complete"], false); // function to call after finish
-            var opacity = options["opacity"] = getSet(options["opacity"], 0); // opacity value
-
-            // multi element
-            if (_z.size(elm) > 1) {
-                // elements loop
-                elmFunc.elmLoop(elm, function (e, eIndex) {
-                    _z.queue(e, (new _z.timer(function () {
-                        elementOpacity(_z.extend({}, options, {elm: _z(e)}));
-                    }, 2)).once(true));
-                });
-
-                return this;
-            }
-
-            // busy
-            if (getSet(_iData.data(elm, "OpacityRunning")[0], false) === true) {
-                (new _z.timer(function () {
-                    // not finish
-                    if (getSet(_iData.data(elm, "OpacityRunning")[0], false) === true)
-                        return this.setInterval(16, true);
-
-                    this.remove();
-                    elementOpacity(options);
-                }, 16)).once(true).start();
-
-                return this;
-            }
-
-            var oldOpacity; // save old opacity for cancellation
-            var _timers = [], // checker ro remove css transition
-                oTypes = ["ease", "ease-in", "ease-out", "ease-in-out", "linear"], // transition type
-                oProps = _z.eff === false ? [] : ["-webkit-transition", "-moz-transition", "-ms-transition", "-o-transition", "transition"];
-
-            // check type
-            type = _z.cssPropName(type, true);
-            type = options["type"] = oTypes.includes(type) ? type : oTypes[0];
-
-            opacity = _z.toNum(opacity);
-            opacity = (opacity >= 0 || opacity <= 1) ? opacity : (opacity < 0 ? 0 : 1);
-
-            delay = _z.toNum(delay) == 0 ? "" : " " + Number((delay / 1000).toFixed(2)) + "s";
-
-            // elements loop
-            elmFunc.elmLoop(elm, function (e, eIndex) {
-                // register as inproggress
-                _iData.data(_z(e), "OpacityRunning", true);
-
-                var newCSS = {opacity: opacity};
-
-                // apply css transition
-                if (speed) {
-                    var applyOpacityTrans = {},
-                        oldOpacityTrans = {};
-
-                    _z.for(oProps, function (oPK, oPV) {
-                        var cssPN = _z.cssPropName(oPV, true);
-                        applyOpacityTrans[cssPN] = "opacity " + Number((speed / 1000).toFixed(2)) + "s " + (type || "ease") + delay;
-                        oldOpacityTrans[cssPN] = _z(e).css(cssPN);
-                    });
-
-                    _z(e).css(applyOpacityTrans);
-                }
-
-                oldOpacity = _z.toNum(_z(e).css("opacity"));
-                _z(e).css(newCSS);
-
-                if (speed) {
-                    // checker
-                    _timers[eIndex] = {status: true, timer: null};
-                    _timers[eIndex]["timer"] = (new _z.timer(function () {
-                        // not finish
-                        if (_z.toNum(_z(e).css("opacity")) != opacity && _timers[eIndex]["status"] == true)
-                            return this.setInterval(16, true);
-
-                        // assign old css
-                        if (_timers[eIndex]["status"] != "ended")
-                            _z(e).css(oldOpacityTrans);
-
-                        // on cancel
-                        if (_timers[eIndex]["status"] == false) {
-                            _z(e).css("opacity", oldOpacity);
-                        } else {
-                            // on end
-                            if (_timers[eIndex]["status"] == "end") {
-                                _timers[eIndex]["status"] = "ended";
-                                _z(e).css("opacity", (opacity + 0.11) >= 1 ? (opacity - 0.11) : (opacity + 0.11));
-                                return this.setInterval(16, true);
-                            }
-
-                            // when finish
-                            // _z(e).css( "opacity", newCSS["opacity"] );
-                            _z(e).css(newCSS);
-                            if (_z.isFunction(whenDone))
-                                whenDone.call(e, _z.toNum(_z(e).css("opacity")));
-                        }
-                        this.remove();
-
-                        // register as finished
-                        _timers[eIndex]["status"] = "ended";
-                        _iData.data(_z(e), "OpacityRunning", false);
-
-                    }, 2)).once(true).start();
-                } else {
-                    // register as finished
-                    _iData.data(_z(e), "OpacityRunning", false);
-                    if (_z.isFunction(whenDone))
-                        whenDone.call(e, opacity);
-                }
-            });
-
-            var returns = {
-                // cancel this and undo changes
-                cancel: () => {
-                    if (returns['s']) return elm;
-                    _timers.length && _z.for(_timers, function (_tI, _tT) {
-                        _timers[_tI]["status"] = false;
-                        _timers[_tI]["timer"].stop().execFunction(true);
-                    });
-                    returns['s'] = true;
-
-                    return elm;
-                },
-
-                // finish changes immediately
-                finish: () => {
-                    if (returns['s']) return elm;
-                    _timers.length && _z.for(_timers, function (_tI, _tT) {
-                        _timers[_tI]["status"] = "end";
-                        _timers[_tI]["timer"].stop().execFunction(true);
-                    });
-                    returns['s'] = true;
-
-                    return elm;
-                },
-
-                // check status
-                isFinish: () => {
-                    return _timers.filter(x => _z.isset(x["timer"].stamp)).length == 0;
-                },
-                element: elm
-            };
-
-            // elements loop
-            elmFunc.elmLoop(elm, function (e, eIndex) {
-                var oldOData = _iData.data(_z(e), "OpacityData")[0] || [];
-                oldOData = _z.size(oldOData) == 0 ? [] : oldOData;
-                _iData.data(_z(e), "OpacityData", oldOData.push(returns) && oldOData);
-            });
-
-            return this;
         },
 
         // todo:animate element
@@ -6970,8 +6757,8 @@
 
                 if (isWindow(e)) {
                     var height = e.innerHeight ||
-                        e.document.documentElement.clientHeight ||
-                        e.document.body.clientHeight || 0,
+                            e.document.documentElement.clientHeight ||
+                            e.document.body.clientHeight || 0,
 
                         width = e.innerWidth ||
                             e.document.documentElement.clientWidth ||
@@ -6996,9 +6783,9 @@
                 }// document
                 else if (e.nodeType === 9) {
                     var height = Math.max(
-                        e.body["scroll" + 'Height'], e.documentElement["scroll" + 'Height'],
-                        e.body["offset" + 'Height'], e.documentElement["offset" + 'Height'],
-                        e.documentElement["client" + 'Height']
+                            e.body["scroll" + 'Height'], e.documentElement["scroll" + 'Height'],
+                            e.body["offset" + 'Height'], e.documentElement["offset" + 'Height'],
+                            e.documentElement["client" + 'Height']
                         ),
                         width = Math.max(
                             e.body["scroll" + 'Width'], e.documentElement["scroll" + 'Width'],
@@ -8049,8 +7836,8 @@
         },
 
         // type of `val`
-        type: function type(val) {
-            return typeOf(val);
+        type: function type(val, cb) {
+            return typeOf(val, cb);
         },
 
         // check if object is Object
@@ -9006,7 +8793,7 @@
             console.error(e);
         }
 
-    return tap(_z, function (_z) {
+    const $_z = tap(_z, function (_z) {
         // assign function
 
         // notification module
@@ -9166,10 +8953,14 @@
 
         return _z;
     });
+
+    if (module && module.exports) {
+        module.exports = _z;
+    }
+    return $_z;
 })(this, this.document || {
     isdocument: false,
-    getRootNode: () => {
-    },
+    getRootNode: () => {},
     ELEMENT_NODE: 1,
     ATTRIBUTE_NODE: 2,
     TEXT_NODE: 3,

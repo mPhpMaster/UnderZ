@@ -14,23 +14,23 @@
         });
         // if you have jQuery comment this line
         $ = _z;
-        // _z.f.status(true)
+        _z.f.status(true)
     </script>
 
     <script type="text/javascript">
 		
 		// load plugin: inlineEdit
-		 _z
-			 .declare('inlineEdit', _z.$)
-			 .require({ js: [ './plugins/inlineEdit.jPlugin.js' ] })
-			 .init(fns.true); 
+		//  _z
+		// 	 .declare('inlineEdit', _z.$)
+		// 	 .require({ js: [ './plugins/inlineEdit.jPlugin.js' ] })
+		// 	 .init(fns.true);
 		
 		// load plugin: hotkey
-		 _z
-			 .declare('hotkey', _z.$)
-			 .hook(_z)
-			 .require({ js: [ './plugins/hotkey.jPlugin.js' ] })
-			 .init(fns.true); 
+		//  _z
+		// 	 .declare('hotkey', _z.$)
+		// 	 .hook(_z)
+		// 	 .require({ js: [ './plugins/hotkey.jPlugin.js' ] })
+		// 	 .init(fns.true);
 /*
 _z.hotkey({
     code: "f",
@@ -66,6 +66,7 @@ _z("#text1").hotkey({
 
         // when document ready
         _z.ready(()=>{
+            return;
 			// apply plugin input
 			_z('.p1t').inlineEdit({
 				blur: false,
@@ -105,8 +106,7 @@ _z("#text1").hotkey({
 <button class="btnCTitle">Change Title</button>
 <button class="btnUBEvent">Unbind "Change Title" event</button>
 
-<script>
-
+<script type="text/javascript">
     // bind click event by element id
     _z("#button").click(function () {
         alert("Button clicked!");
@@ -154,6 +154,12 @@ _z("#text1").hotkey({
 <button id="btn3t">Remove third line hover in/out</button>
 
 
-
+<script type="text/javascript" underZ>
+        // issetAnd
+        _z
+            .declare('serializeJson')
+            .require({ js: [ './plugins/serializeJson.jPlugin.js' ] })
+            .init(fns.false);
+</script>
 </body>
 </html>
