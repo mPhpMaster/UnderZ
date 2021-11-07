@@ -4,134 +4,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
     <title>UnderZ library</title>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="_z.js" underZ>
-        _z&&
-        ( _z.$Langs = {
-            ok: "OK",
-            styledir: './theme/',
-            varName: "varValue"
-        });
-        // if you have jQuery comment this line
-        $ = _z;
-        _z.f.status(true)
+        _z &&
+        (
+            _z.$Langs = {
+                ok: "OK",
+                styledir: './theme/',
+                varName: "varValue",
+            }
+        );
     </script>
 
-    <script type="text/javascript">
-		
-		// load plugin: inlineEdit
-		//  _z
-		// 	 .declare('inlineEdit', _z.$)
-		// 	 .require({ js: [ './plugins/inlineEdit.jPlugin.js' ] })
-		// 	 .init(fns.true);
-		
-		// load plugin: hotkey
-		//  _z
-		// 	 .declare('hotkey', _z.$)
-		// 	 .hook(_z)
-		// 	 .require({ js: [ './plugins/hotkey.jPlugin.js' ] })
-		// 	 .init(fns.true);
-/*
-_z.hotkey({
-    code: "f",
-    desc: "Shift and F HK",
-    function: function(event) { 
-		console.log(event);
-	},
-    ctrl: false,
-    shift: true, 
-    alt: false, 
-    target: null
-});
-_z.hotkey({
-    code: "shift+f",
-    desc: "Shift and F HK",
-    function: function(event) { 
-		console.log(event);
-	}
-});
-_z.hotkey({
-    code: "shift+f",
-    function: function(event) { 
-		console.log(event);
-	}
-});
-_z("#text1").hotkey({
-    code: "shift+f",
-    function: function(event) { 
-		console.log(event);
-	}
-});
-*/
-
-        // when document ready
-        _z.ready(()=>{
-            return;
-			// apply plugin input
-			_z('.p1t').inlineEdit({
-				blur: false,
-				bottons: false
-			});
-			
-			// apply plugin textarea
-			_z('[inlineEdit]').inlineEdit({
-				blur: true,
-				allowEmpty: true,
-				maxLength: 50,
-				bottons: true,
-				inputMode: "textarea",
-				submit: function(element, newValue) {
-					console.log(newValue);
-					return newValue.replaceAll("\n", "[LINE]");
-				}
-			});
-			
-            fns.arg( _z.is_z($), _z.isCore($) );
-        });
-    </script>
+    <!--<script type="text/javascript">
+        // load plugin: hotkey
+        //  _z
+        // 	 .declare('hotkey', _z.$)
+        // 	 .hook(_z)
+        // 	 .require({ js: [ './plugins/hotkey.jPlugin.js' ] })
+        // 	 .init(fns.true);
+        /*
+         _z.hotkey({
+         code: "f",
+         desc: "Shift and F HK",
+         function: function(event) {
+         console.log(event);
+         },
+         ctrl: false,
+         shift: true,
+         alt: false,
+         target: null
+         });
+         _z.hotkey({
+         code: "shift+f",
+         function: function(event) {
+         console.log(event);
+         }
+         });
+         */
+    </script>-->
+    <style>
+        .p1t {
+            font-size: 16px;
+            background: red;
+        }
+    </style>
 </head>
 <body>
-<script type="text/javascript">
-    // notification example
-    /*var notify = new _z.notification({
-        tag: "mainNot",
-        title: 'UnderZ',
-        body: 'UnderZ Running\nClick To Open GitHub.',
-        image: undefined,
-        onclick: ()=>window.open("https://github.com/hlaCk/UnderZ")&&notify[notify.length-1].close()
-    }).open();*/
-</script>
 
 <button id="button">Show Message & Change Title</button>
 <button class="btnCTitle">Change Title</button>
 <button class="btnUBEvent">Unbind "Change Title" event</button>
 
-<script type="text/javascript">
-    // bind click event by element id
-    _z("#button").click(function () {
-        alert("Button clicked!");
-    });
+<br>
+<div id="div">
+    I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element. I'm an unknown content height element.
+</div>
 
-    // bind click event by element tag - this will bind the event with all elements with "button" tag.
-    _z("button").click(function () {
-// set title as clicked button text
-        document.title = _z(this).text();
-    });
-
-    // unbind click event by element class.
-    _z(".btnUBEvent").click(function () {
-        _z(".btnCTitle").un("click");
-    });
-
-</script>
-<style>
-.p1t {
-	font-size: 16px;
-	background: red;
-}
-</style>
+<br>
 <label id="label">Label</label>
-<span id="span1">
+<span id="span1" style="background-color: red; padding: 20px">
     <input type="text" value="Text" id="text1">
     <span id="span2">
         <input type="text" value="Text2" id="text2">
@@ -141,25 +73,24 @@ _z("#text1").hotkey({
     </span>
 </span>
 
-<button id="buttont">Show Message & Change Title</button>
-<button class="btnCTitlet">Change Title</button>
-<button class="btnUBEventt">Unbind "Change Title" event</button>
+<script type="text/javascript">
+    // bind click event by element id
+    _z( "#button" ).click( function () {
+        alert( "Button clicked!" );
+    } );
 
-<p class="p1t" style="">p1 line</p>
-<p class="p2t" inlineEdit>p2 line</p>
-<p class="p3t"><a href="#clicked" aa>click</a></p>
+    // bind click event by element tag - this will bind the event with all elements with "button" tag.
+    _z( "button" ).click( function () {
+// set title as clicked button text
+        document.title = _z( this ).text();
+    } );
 
-<button id="btn1t">Remove first line hover out</button>
-<button id="btn2t">Remove second line hover in</button>
-<button id="btn3t">Remove third line hover in/out</button>
+    // unbind click event by element class.
+    _z( ".btnUBEvent" ).click( function () {
+        _z( ".btnCTitle" ).un( "click" );
+    } );
 
-
-<script type="text/javascript" underZ>
-        // issetAnd
-        _z
-            .declare('serializeJson')
-            .require({ js: [ './plugins/serializeJson.jPlugin.js' ] })
-            .init(fns.false);
 </script>
+
 </body>
 </html>
