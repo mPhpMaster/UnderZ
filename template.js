@@ -1,7 +1,15 @@
 (
     function (window, document) {
+        const props = {
 
-        return ;
+        };
+
+        const props$ = {
+
+        };
+
+        _z.$.extend(props$);
+        return _z.extend(props);
     }
 )
 (

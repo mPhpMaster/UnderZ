@@ -156,12 +156,11 @@
                 arguments = Array.from(arguments);
                 let valid;
                 if (this === true) // just skip undefined
+                {
                     while (!isset(valid = arguments.shift()) && arguments.length) ;
-                else
-                    while (!(
-                        valid = arguments.shift()
-                    ) && arguments.length) ;
-
+                } else {
+                    while (!(valid = arguments.shift()) && arguments.length) ;
+                }
                 return valid;
             },
 
@@ -510,9 +509,7 @@
             },
 
             // values of all CSS properties of an element
-            compStyle = (
-                window.getComputedStyle || falseFunction
-            ),
+            compStyle = window.getComputedStyle || falseFunction,
 
             // clone object
             cloneObj = function cloneObj(obj) {
@@ -542,7 +539,6 @@
                 return true
             },
 
-
             // Element.matches function
             matchesFunction = prototypies.element.matches ||
                 prototypies.element.matchesSelector ||
@@ -565,148 +561,6 @@
                     }
                     return i > -1;
                 };
-
-        // opacity default values
-        const fadeOpacityValue = {In: 0, Out: 1};
-        /**
-         * todo: slde is week
-         * @type {any}
-         */
-        const slideQueue = {
-            running: false,
-            queue: [],
-
-            init() {
-                if (slideQueue.running) return;
-
-                slideQueue.run();
-            },
-
-            add($method, $arguments) {
-                const methodInfo = {
-                    "name": $method && $method.name || $method,
-                    "method": $method,
-                    "arguments": $arguments,
-                };
-                slideQueue.queue.push(methodInfo);
-
-                return slideQueue;
-            },
-
-            next() {
-                let methodInfo = slideQueue.queue.shift();
-
-                slideQueue.run();
-                return methodInfo;
-            },
-
-            run() {
-                if (slideQueue.queue.length) {
-                    slideQueue.running = true;
-
-                    let nextMethodInfo = slideQueue.queue.slice(0, 1);
-                    nextMethodInfo = nextMethodInfo && nextMethodInfo.length ? nextMethodInfo.shift() : nextMethodInfo;
-
-                    setTimeout(() => nextMethodInfo.method(...nextMethodInfo.arguments), 16);
-                } else {
-                    slideQueue.running = false;
-                }
-            },
-
-        };
-
-        const slideUps = {
-            add(target, duration = 1000) {
-                slideQueue.add(slideUps.start, [target, duration]);
-            },
-
-            start(target, duration = 1000) {
-                target.style.transitionProperty = 'height, margin, padding';
-                target.style.transitionDuration = duration + 'ms';
-                target.style.boxSizing = 'border-box';
-                target.style.height = target.offsetHeight + 'px';
-                target.offsetHeight;
-                target.style.overflow = 'hidden';
-                target.style.height = 0;
-                target.style.paddingTop = 0;
-                target.style.paddingBottom = 0;
-                target.style.marginTop = 0;
-                target.style.marginBottom = 0;
-
-                setTimeout(() => {
-                    target.style.display = 'none';
-                    target.style.removeProperty('height');
-                    target.style.removeProperty('padding-top');
-                    target.style.removeProperty('padding-bottom');
-                    target.style.removeProperty('margin-top');
-                    target.style.removeProperty('margin-bottom');
-                    target.style.removeProperty('overflow');
-                    target.style.removeProperty('transition-duration');
-                    target.style.removeProperty('transition-property');
-
-                    slideQueue.next();
-                }, duration + 1);
-
-                return slideUps;
-            }
-        };
-
-        const slideDowns = {
-            toggle(target, duration = 1000) {
-                slideQueue.add(slideDowns.start, [target, duration]);
-            },
-
-            start(target, duration = 1000) {
-                target.style.removeProperty('display');
-                let display = compStyle(target).display;
-                if (display === 'none') {
-                    display = 'block';
-                }
-
-                target.style.display = display;
-                let height = target.offsetHeight;
-                target.style.overflow = 'hidden';
-                target.style.height = 0;
-                target.style.paddingTop = 0;
-                target.style.paddingBottom = 0;
-                target.style.marginTop = 0;
-                target.style.marginBottom = 0;
-                target.offsetHeight;
-                target.style.boxSizing = 'border-box';
-                target.style.transitionProperty = "height, margin, padding";
-                target.style.transitionDuration = duration + 'ms';
-                target.style.height = height + 'px';
-                target.style.removeProperty('padding-top');
-                target.style.removeProperty('padding-bottom');
-                target.style.removeProperty('margin-top');
-                target.style.removeProperty('margin-bottom');
-
-                setTimeout(() => {
-                    target.style.removeProperty('height');
-                    target.style.removeProperty('overflow');
-                    target.style.removeProperty('transition-duration');
-                    target.style.removeProperty('transition-property');
-
-                    slideQueue.next();
-                }, duration + 1);
-
-                return slideDowns;
-            }
-        };
-
-        // const slideToggle = ($e, duration = 1000) => {
-        //     const toggle = (e, d) => {
-        //         if( _z( e ).isHidden() || compStyle( e ).display === 'none' ) {
-        //             slideDowns.toggle( e, d );
-        //         } else {
-        //             slideUps.toggle( e, d );
-        //         }
-        //         slideQueue.next();
-        //     };
-        //
-        //     slideQueue.add( toggle, [ $e, duration ] );
-        //     slideQueue.init();
-        // };
 
 // all registeredEvents
         var events = {
@@ -980,7 +834,7 @@
 
                         if (arg && element && _z(element).length) {
                             element = _z(element);
-                            elmFunc.elmLoop(
+                            elmFunc.elementMap(
                                 element,
                                 function (e) {
                                     try {
@@ -1040,13 +894,13 @@
                         let $arguments = arguments;
                         $elm = _z(__sel);
 
-                        elmFunc.elmLoop(
+                        elmFunc.elementMap(
                             elm,
                             function (e) {
                                 let _e = e;
                                 e = e === doc ? doc.documentElement : e;
                                 let $currentElement = [];
-                                elmFunc.elmLoop(
+                                elmFunc.elementMap(
                                     _z($elm),
                                     function (e2) {
                                         e2 = e2 === doc ? doc.documentElement : e2;
@@ -1137,29 +991,23 @@
                 },
 
                 // set or get element prop
-                elmLoop: function elmLoop(elm, callback, tester) {
-                    if (!elm)
-                        elm = this;
-
-                    if (!_z.is_z(elm))
-                        elm = _z(elm);
-
-                    if (!callback || !_z.isFunction(callback))
-                        callback = fns.ef;
+                elementMap: function elementMap(elm, callback, tester) {
+                    elm = elm || this;
+                    elm = !_z.is_z(elm) ? _z(elm) : elm;
+                    callback = (!callback || !_z.isFunction(callback)) ? fns.ef : callback;
 
                     let $results = [];
                     if (elm.length) {
                         let $this = this;
-                        tester = tester && _z.isFunction(tester) ? tester : (x) => _z(x).isDOMElement(true);
+                        tester = tester && _z.isFunction(tester) ? tester : (x => _z(x).isDOMElement(true));
                         // if( elm.length == 1 && (e = elm[0]) ) {
                         //     if( tester(e) )
                         //         ( $results.pushSetter = callback.apply( $this, [ e, 0 ]) );
                         // } else
                         elm.each(function (i, e) {
-                            if (tester(e))
-                                return (
-                                    $results.pushSetter = callback.apply($this, [e, ...arguments])
-                                );
+                            if (tester(e)) {
+                                return ($results.pushSetter = callback.apply($this, [e, ...arguments]));
+                            }
                         });
                     }
 
@@ -1180,7 +1028,7 @@
 
                     let elm = this;
                     $q = $q || 'beforebegin';
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         if (!e['insertAdjacentElement']) return;
 
                         if (!_z.isString($val))
@@ -1194,226 +1042,6 @@
                     return this;
                 },
 
-                // fade element/s
-                fade: function fadeElement($q, speed, callback) {
-                    let elm = this,
-                        opacity = false;
-                    $q = $q || 'In';
-
-                    if ($q === 'To') {
-                        if (_z.isNumber(callback)) {
-                            opacity = callback > 1 ? 1 : (
-                                callback < 0 ? 0 : callback
-                            );
-                            callback = false;
-                        }
-
-                        if (arguments.length === 4 && _z.isFunction(arguments[3])) callback = arguments[3];
-
-                        if (_z.isNumber(opacity)) $q = elm.css('opacity') > opacity ? "Out" : "In";
-                    }
-
-                    if (_z.eff === false) {
-                        if ($q === 'In') {
-                            elm.show();
-                        } else {
-                            elm.hide();
-                        }
-                        return this;
-                    }
-
-                    if (opacity === false)
-                        elm.css('opacity', fadeOpacityValue[$q]);
-
-                    let tick = function () {
-                        // check if other fade on this element
-                        if ((
-                            _z.size(gVar['fade']) &&
-                            gVar['fade']['tick'] !== tick &&
-                            gVar['fade']['elm'] === tick.elm
-                        ) || _z.eff === false
-                        ) return false;
-
-                        let fstElement = tick.elm.element(0);
-
-                        tick.opacity = tick.q === 'In' ?
-                            (
-                                +(
-                                    tick.opacity
-                                ) + (
-                                    tick.lastVal
-                                )
-                            ) :
-                            (
-                                +(
-                                    tick.opacity
-                                ) - (
-                                    tick.lastVal
-                                )
-                            );
-                        tick.elm.css('opacity', tick.opacity);
-                        tick.last = +new Date();
-
-                        let doFade = tick.fadeTo !== false ?
-                            (
-                                (
-                                    tick.q === 'In' && +(
-                                        _z(fstElement).css('opacity')
-                                    ) < tick.fadeTo
-                                ) ||
-                                (
-                                    tick.q === 'Out' && +(
-                                        _z(fstElement).css('opacity')
-                                    ) > tick.fadeTo
-                                )
-                            )
-                            :
-                            (
-                                (
-                                    tick.q === 'In' && +(
-                                        _z(fstElement).css('opacity')
-                                    ) < 1
-                                ) ||
-                                (
-                                    tick.q === 'Out' && +(
-                                        _z(fstElement).css('opacity')
-                                    ) > 0
-                                )
-                            );
-
-                        if (
-                            _z.eff !== false && gVar['fadeStatus'] !== false &&
-                            doFade
-                        ) {
-                            setTimeout(function () {
-                                (
-                                    gVar['fade'].aftimeOut = (
-                                        window.requestAnimationFrame && requestAnimationFrame(tick)
-                                    )
-                                ) ||
-                                (
-                                    gVar['fade'].timeOut = setTimeout(tick, tick.speed)
-                                )
-                            }, 16);
-                        } else {
-                            if (tick.fadeTo === false)
-                                elm.css('opacity', +!fadeOpacityValue[tick.q]);
-                            gVar['fade'] = {};
-
-                            if (tick.q === 'Out' && tick.fadeTo === false) tick.elm.hide();
-
-                            if (_z.isFunction(tick.callback))
-                                tick.callback.call(elm, elm);
-                        }
-                    };
-
-                    tick.q = $q;
-                    tick.last = +new Date();
-                    tick.elm = elm;
-                    tick.speed = parseInt(speed) || 1000;
-                    tick.lastVal = (
-                        (
-                            1 / (
-                                (
-                                    tick.speed / 700
-                                ) || 1
-                            )
-                        ) / 10
-                    ) || 0.25;
-                    tick.opacity = opacity === false ? fadeOpacityValue[$q] : Number(elm.css('opacity'));
-                    tick.fadeTo = opacity !== false ? opacity : false;
-                    tick.callback = _z.isFunction(callback) ? callback : false;
-
-                    // check if other fade on this element
-                    if (_z.eff === false || gVar['fadeStatus'] === false || (
-                        isset(gVar['fade']) && _z.size(gVar['fade']) &&
-                        gVar['fade']['tick'] !== tick &&
-                        gVar['fade']['elm'] === tick.elm
-                    )
-                    ) {
-                        if (gVar['fade']['aftimeOut'])
-                            cancelAnimationFrame(gVar['fade']['aftimeOut']);
-                        else if (gVar['fade']['timeOut'])
-                            clearTimeout(gVar['fade']['timeOut']);
-                    }
-
-                    gVar['fade'] = gVar['fade'] || {};
-                    gVar['fade']['tick'] = tick;
-                    gVar['fade']['elm'] = tick.elm;
-
-                    if ($q === 'In' && opacity === false) elm.show();
-
-                    tick();
-                    return this;
-                },
-
-                // region: slides
-                slideUp: function slideUp($elm, duration = 1000, callback) {
-                    var args = fns.argsFix(arguments, this, undefined);
-                    arguments = args("arguments");
-                    $elm = args.call();
-                    duration = args.call();
-                    callback = args.call();
-
-                    callback = callback || false;
-                    callback = _z.isFunction(duration) ? duration : callback;
-                    duration = duration || 1000;
-                    duration = _z.isNumber(callback) ? callback : duration;
-                    callback = !_z.isFunction(callback) ? false : callback;
-                    $elm = is_z($elm) ? $elm : $elm && _z($elm);
-
-                    if (!$elm || !$elm.isDOMElement() || !this.length) {
-                        return this;
-                    }
-
-                    if (_z.eff === false) {
-                        $elm.hide();
-                    } else {
-                        elmFunc.elmLoop($elm, function (e) {
-                            try {
-                                slideUps.toggle(e, duration);
-                            } catch (er) {
-                            }
-                        });
-                    }
-
-                    slideQueue.init();
-                    return this;
-                },
-
-                slideDown: function slideDown($elm, duration = 1000, callback) {
-                    var args = fns.argsFix(arguments, this, undefined);
-                    arguments = args("arguments");
-                    $elm = args.call();
-                    duration = args.call();
-                    callback = args.call();
-
-                    callback = callback || false;
-                    callback = _z.isFunction(duration) ? duration : callback;
-                    duration = duration || 1000;
-                    duration = _z.isNumber(callback) ? callback : duration;
-                    callback = !_z.isFunction(callback) ? false : callback;
-                    $elm = is_z($elm) ? $elm : $elm && _z($elm);
-
-                    if (!$elm || !$elm.isDOMElement() || !this.length) {
-                        return this;
-                    }
-
-                    if (_z.eff === false) {
-                        $elm.show();
-                    } else {
-                        elmFunc.elmLoop($elm, function (e) {
-                            try {
-                                slideDowns.toggle(e, duration);
-                            } catch (er) {
-                            }
-                        });
-                    }
-
-                    slideQueue.init();
-                    return this;
-                },
-                // endregion: slides
             },
             // parse functions
             parssing = {
@@ -1868,7 +1496,7 @@
                 }
 
                 if (elm && elm.length) {
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         if (e && e[selType]) {
                             var str = e[selType].replace(/\[\d*?\]/g, '[') || false;
 
@@ -1986,7 +1614,7 @@
                         ) || (
                             !!_z.is_z(element) &&
                             !!(
-                                elmFunc.elmLoop(element, trueFunction, isWindow).length == element.length
+                                elmFunc.elementMap(element, trueFunction, isWindow).length == element.length
                             )
                         )
                     );
@@ -2413,7 +2041,7 @@
                 ) {
                     $elements = tap(_z(), x => x.push(...elementsFound));
                     return $elements;
-                    // elmFunc.elmLoop(, function (e, k) {
+                    // elmFunc.elementMap(, function (e, k) {
                     //     _z.for($var, function ($k, $v) {
                     //         _z(e).css($k, $v);
                     //     });
@@ -2877,7 +2505,7 @@
             // remove data\s for element
             remData: function removeiData(elm, $var) {
 
-                elmFunc.elmLoop(elm, function (e, v) {
+                elmFunc.elementMap(elm, function (e, v) {
                     if (!isset(e[version]))
                         return;
 
@@ -2987,7 +2615,9 @@
             return $join;
         };
 
-        join()
+        join({
+            join: join,
+        })
             .core();
 
         join({
@@ -3092,7 +2722,7 @@
 
                 if (elm.length || elm.length) {
                     var $return = [];
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         var $value = undefined;
                         if (_z.isFunction(attrValue)) {
                             var eValue = e.getAttribute(attrName);
@@ -3503,7 +3133,7 @@
                     // $var = _z.$underz.prepareCSS( _z($var) );
                     var $return = [];
 
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         if (isset($val)) {
                             if (e['style'])
                                 e['style'][$var] = _z.isFunction($val) ? $val.apply(e, arguments) : $val;
@@ -3521,7 +3151,7 @@
                         ) : $return
                     );
                 } else if ($var && _z.isObject($var)) {
-                    elmFunc.elmLoop(elm, function (e, k) {
+                    elmFunc.elementMap(elm, function (e, k) {
                         _z.for($var, function ($k, $v) {
                             _z(e).css($k, $v);
                         });
@@ -3544,7 +3174,7 @@
                         var rules = sheets[i].rules || sheets[i].cssRules;
                         if (rules.length > 0)
                             for (var r = 0, _rl = rules.length; r < _rl; r++) {
-                                elmFunc.elmLoop(elm, function (e, k) {
+                                elmFunc.elementMap(elm, function (e, k) {
                                     o[k] || (
                                         o[k] = {}
                                     );
@@ -3564,7 +3194,7 @@
                     }
 
                 if ($var) {
-                    elmFunc.elmLoop(elm, function (e, k) {
+                    elmFunc.elementMap(elm, function (e, k) {
                         if (o.length) {
                             o[k] || (
                                 o[k] = {}
@@ -3849,7 +3479,7 @@
                 try {
                     var resp = [];
 
-                    elmFunc.elmLoop(elms, function (e) {
+                    elmFunc.elementMap(elms, function (e) {
                         try {
                             if (doExec) {
                                 e.call(doc);
@@ -4315,7 +3945,7 @@
                 try {
                     var resp;
 
-                    elmFunc.elmLoop(_z(e), (elem) => {
+                    elmFunc.elementMap(_z(e), (elem) => {
                         if (elem.src) {
                             _z.ready({ajax: _z._URL_(elem.src)});
                         } else {
@@ -4481,7 +4111,7 @@
 
                 var result = [false];
                 if (_z.is_z(elm))
-                    result = elm.length ? elmFunc.elmLoop(elm, op['callback'], op['valid']) : [false];
+                    result = elm.length ? elmFunc.elementMap(elm, op['callback'], op['valid']) : [false];
 
                 return op['result'](result, elm);
             },
@@ -4520,6 +4150,8 @@
 
             // foreach( Object|Array, function ), when function return false will break the loop
             for: foreach,
+
+            elementMap: elmFunc.elementMap,
 
             // array map
             map: function map(array, func) {
@@ -4591,6 +4223,13 @@
             .core()
             .prop();
 
+        join({
+            // fix arguments to set this as first var
+            argsFix: fns.argsFix,
+
+        })
+            .core();
+
 // serialize data options
         join({
             // global serialize settings
@@ -4623,7 +4262,7 @@
                 var field, length, $return = [];
                 elm = is_z(this) ? this : _z(elm);
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     try {
                         if (!e['elements']) return;
 
@@ -4658,7 +4297,7 @@
                 var field, length, $return = [];
                 elm = is_z(this) ? this : _z(elm);
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     try {
                         if (!e['elements']) return;
 
@@ -5803,7 +5442,7 @@
                     else add(perfix, object);
                 } else if (typeOf(object) === typeOf.a) {
                     // elements
-                    elmFunc.elmLoop(object, function (e, v) {
+                    elmFunc.elementMap(object, function (e, v) {
                         if (e.name)
                             add(e.name, e.value);
                     }, trueFunction);
@@ -6136,7 +5775,7 @@
                 orIsWindow = orIsWindow || false;
                 if (this.element().length) {
                     return !!(
-                        elmFunc.elmLoop(this, trueFunction, orIsWindow ? _z.isDOMOW : _z.isDOM).length
+                        elmFunc.elementMap(this, trueFunction, orIsWindow ? _z.isDOMOW : _z.isDOM).length
                         === this.length
                     );
                 } else return false;
@@ -6193,7 +5832,7 @@
                 if (!arguments.length) elm = this;
 
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (isset($val) && isset(e['innerHTML'])) {
                         e.innerHTML = $val,
                             $return.push(e.innerHTML);
@@ -6217,7 +5856,7 @@
 
                 var elm = this;
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (isset(e[prop])) {
                         if (isset(val)) e[prop] = val;
                         else $return.push(e[prop]);
@@ -6232,7 +5871,7 @@
             // get element/elements value(val) as number
             numval: function elementValueToNumber() {
                 var $return = [];
-                elmFunc.elmLoop(this, function (e) {
+                elmFunc.elementMap(this, function (e) {
                     try {
                         $return.push((
                             Number(e.value) || 0
@@ -6246,7 +5885,7 @@
 
             // set element/elements value(val) if value = (IFVal)
             valIF: function elementValue(IFVal, val) {
-                elmFunc.elmLoop(this, function (e) {
+                elmFunc.elementMap(this, function (e) {
                     try {
                         if (_z.isFunction(IFVal)) {
                             if (IFVal(e.value, e)) e.value = val;
@@ -6271,7 +5910,7 @@
                 elm = this;
 
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     try {
                         if ( // checkbox || radio
                             e['tagName'] && toLC(e['tagName']) == 'input' &&
@@ -6355,7 +5994,7 @@
                 if (!arguments.length) elm = this;
 
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var findRightAttr = e['innerText'] ? 'innerText' : (
                         e['textContent'] ? 'textContent' : false
                     );
@@ -6386,7 +6025,7 @@
                 if (!elm.length) return 0;
 
                 var $return = 0;
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (_z.isDOM(e))
                         $return += Number(e.value) || 0;
                     else if (_z.isArray(e))
@@ -6425,9 +6064,9 @@
                 if (!elm.length || !elm2.length) return false;
 
                 var $return = null;
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if ($return != false)
-                        elmFunc.elmLoop(elm2, function (e2) {
+                        elmFunc.elementMap(elm2, function (e2) {
                             $return = (
                                 e !== e2 && e.contains(e2)
                             );
@@ -6453,7 +6092,7 @@
                 if (!elm.length) return "";
 
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var tn;
                     if (e['tagName'] && (
                             tn = e.tagName.toLowerCase()
@@ -6479,7 +6118,7 @@
                 elm = this;
 
                 var $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (deep && e['cloneNode'])
                         $return.push(e['cloneNode'](true));
                     else if (e['cloneNode'])
@@ -6505,7 +6144,7 @@
                     callback = elm,
                         elm = this;
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     try {
                         var remThis = true;
                         if (callback && _z.isFunction(callback)) remThis = callback(e, elm);
@@ -6533,7 +6172,7 @@
                 if (_z.isDOM($val) || !_z.is_z($val)) $val = _z($val);
 
                 var elm = this;
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (!e['appendChild']) return;
 
                     $val.for(function (key, value) {
@@ -6577,7 +6216,7 @@
                 if (_z.isDOM($val) || !_z.is_z($val)) $val = _z($val);
 
                 var elm = this;
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (!e['insertBefore'] || !e['firstChild']) return;
 
                     $val.for(function (key, value) {
@@ -6627,7 +6266,7 @@
                     $elm = _z($elm)
                 ).isDOMElement() || !this.length) return this;
 
-                elmFunc.elmLoop(this, function (e) {
+                elmFunc.elementMap(this, function (e) {
                     try {
                         _z(e).before($elm);
                         _z($elm).append(e);
@@ -6640,7 +6279,7 @@
 
             // unwrap element
             unwrap: function unwrap() {
-                elmFunc.elmLoop(this, function (e) {
+                elmFunc.elementMap(this, function (e) {
                     try {
                         var parent = _z(e).parent();
                         if (!parent.is("body")) {
@@ -6662,7 +6301,7 @@
                 if (this.length > 1) {
                     var elm = this,
                         $return = [];
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         if (ret == true && _z(e).isShow())
                             $return.push(e);
                         else if (ret != true)
@@ -6695,7 +6334,7 @@
                     var elm = this,
                         $return = [];
 
-                    elmFunc.elmLoop(elm, function (e) {
+                    elmFunc.elementMap(elm, function (e) {
                         if (ret == true && _z(e).isHidden())
                             $return.push(e);
                         else if (ret != true)
@@ -6743,57 +6382,6 @@
                     || (
                         uBound >= top && uBound <= bottom
                     );
-            },
-
-            // slide element/s up
-            slideUp: elmFunc.slideUp,
-
-            // slide element/s down
-            slideDown: elmFunc.slideDown,
-            // slide: function slide($elm, duration = 1000, callback) {
-            //     slideToggle( this.element( 0 ), $elm || duration );
-            //     return this;
-            // },
-
-            // fade element/s in/out
-            fadeIn: function fadeIn(speed, callback) {
-                callback = _z.isFunction(speed) ? speed : (
-                    callback || false
-                );
-                speed = _z.isNumber(callback) ? callback : (
-                    speed || 1000
-                );
-                callback = !_z.isFunction(callback) ? false : callback;
-
-                return elmFunc.fade.apply(this, ['In', speed, callback]);
-            },
-            // fade element/s in/out
-            fadeOut: function fadeOut(speed, callback) {
-                callback = _z.isFunction(speed) ? speed : (
-                    callback || false
-                );
-                speed = _z.isNumber(callback) ? callback : (
-                    speed || 1000
-                );
-                callback = !_z.isFunction(callback) ? false : callback;
-
-                return elmFunc.fade.apply(this, ['Out', speed, callback]);
-            },
-            // fade element/s to
-            fadeTo: function fadeTo(speed, opacity, callback) {
-                callback = _z.isFunction(callback) ? callback : (
-                    callback || false
-                );
-                speed = _z.isNumber(speed) ? speed : (
-                    speed || 1000
-                );
-                opacity = _z.isNumber(opacity) ? (
-                    (
-                        opacity >= 0 || opacity <= 1
-                    ) ? opacity : 1
-                ) : 1;
-
-                return elmFunc.fade.apply(this, ['To', speed, opacity, callback]);
             },
 
             // todo:animate element
@@ -6900,7 +6488,7 @@
             children: function children($val) {
                 var elm = this,
                     $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e['children'])
                         if (isset($val)) {
                             _z.for(_z.toArray(e['children']), function (k, v) {
@@ -6924,7 +6512,7 @@
                 var elm = this,
                     $returns = [];
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var $return = [],
                         p = e,
                         n = e;
@@ -6964,7 +6552,7 @@
 
                 if (!qSelector) return this;
 
-                elmFunc.elmLoop(elm, function (v) {
+                elmFunc.elementMap(elm, function (v) {
                     v = v == doc ? doc.documentElement : v;
                     v = _z.toNodeList(v)[0];
 
@@ -6989,7 +6577,7 @@
                 var elm = this,
                     $return = [];
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (_z(e).find($_ELM).length) $return.push(e);
                 });
 
@@ -7014,7 +6602,7 @@
                         return wrapper.innerHTML;
                     };
 
-                elmFunc.elmLoop(elm, function (v) {
+                elmFunc.elementMap(elm, function (v) {
                     if (_z.isDOM(v) || _z.type(v) != 'NodeList')
                         v = _z.toNodeList(v)[0];
 
@@ -7054,7 +6642,7 @@
             next: function next($val) {
                 var elm = this,
                     $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e['nextElementSibling'])
                         if (isset($val)) {
                             _z.for([e['nextElementSibling']], function (k, v) {
@@ -7117,7 +6705,7 @@
                 else
                     return this.newSelector($return);
 
-                elmFunc.elmLoop(allElements, function (el) {
+                elmFunc.elementMap(allElements, function (el) {
                     if ($return.length > 0) return;
 
                     if (
@@ -7155,7 +6743,7 @@
             prev: function prev($val) {
                 var elm = this,
                     $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e['previousElementSibling'])
                         if (isset($val)) {
                             _z.for([e['previousElementSibling']], function (k, v) {
@@ -7200,8 +6788,8 @@
 
                 if (!$val) return false;
 
-                elmFunc.elmLoop(elm, function (e) {
-                    elmFunc.elmLoop($val, function (e2) {
+                elmFunc.elementMap(elm, function (e) {
+                    elmFunc.elementMap($val, function (e2) {
                         if (_z.isDOM(e2))
                             $return += _z.toNum(e['isEqualNode'] && e['isEqualNode'](e2));
                         else if (_z.isTypes('selector', e2))
@@ -7229,7 +6817,7 @@
                     returnKey = _z.isBoolean(scrolls) ? false : scrolls,
                     scrolls = _z.isBoolean(scrolls) ? scrolls : true;
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var tResult = {};
 
                     if (isWindow(e)) {
@@ -7385,7 +6973,7 @@
                 var elm = this,
                     $return = [];
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e['offsetLeft'] && e['offsetLeft'])
                         $return.push({
                             top: (
@@ -7404,7 +6992,7 @@
             offsetParent: function offsetParent() {
                 var elm = this,
                     $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     $return.push(e['offsetParent'] || e);
                 });
 
@@ -7417,7 +7005,7 @@
                     selector = selector || "",
                     $return = [];
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (!!selector && e['parentNode'] && _z(e['parentNode']).is(selector))
                         $return.push(e['parentNode']);
                     else if (!!selector && (
@@ -7441,7 +7029,7 @@
                     $return = [],
                     pElement = false;
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     pElement = e;
                     do {
                         pElement = pElement['parentNode'];
@@ -7483,7 +7071,7 @@
                     $return = [],
                     filter = filter || trueFunction;
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e && e["parentElement"]) {
                         e = e.parentElement;
                         while (e && !_z(e).is(selector) && e["parentElement"]) {
@@ -7508,7 +7096,7 @@
                 var elm = elm || this,
                     $return = [];
                 elm = !is_z(elm) ? _z(elm) : elm;
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e && e["contentDocument"])
                         $return.push(e.contentDocument);
                 });
@@ -7527,7 +7115,7 @@
             replace: function replaceElement($html) {
                 var elm = this,
                     $return = [];
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     if (e['outerHTML']) {
                         $return.push(_z(e).clone());
                         e['outerHTML'] = is_z($html) ? $html.toHTML() : $html;
@@ -7543,8 +7131,8 @@
             // replace element with element
             replaceWith: function replaceElementWith($elm) {
                 var elm = this;
-                elmFunc.elmLoop(elm, function (e) {
-                    elmFunc.elmLoop($elm, function ($e) {
+                elmFunc.elementMap(elm, function (e) {
+                    elmFunc.elementMap($elm, function ($e) {
                         e.parentNode.insertBefore($e, e);
                     });
                     e.parentNode.removeChild(e);
@@ -7639,7 +7227,7 @@
                     return this;
                 }
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     // todo: must try to call element.eventname first
                     events.createEventAnddispatch(e, eventName + aliasQry);
                 }, trueFunction);
@@ -7706,7 +7294,7 @@
                     return _z(elm).on(...[eventName, qselector || "", callback || ""].filter(x => x));
                 }
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var elms = e;
 
                     if (!elms) return this;
@@ -7802,7 +7390,7 @@
                     return this;
                 }
 
-                elmFunc.elmLoop(elm, function (e) {
+                elmFunc.elementMap(elm, function (e) {
                     var needleData = false;
 
                     if (needleData == false) {
@@ -8041,7 +7629,7 @@
                 ))
                     return this;
 
-                elmFunc.elmLoop(watch, function (e, k) {
+                elmFunc.elementMap(watch, function (e, k) {
                     _z(e).dchange(function (event) {
                         if (forSelector && _z(event.target).is(forSelector))
                             return callback.apply(event.target, arguments);
@@ -8094,7 +7682,7 @@
                 var element = getSet(element, this),
                     $return = [];
 
-                elmFunc.elmLoop(element, function (e) {
+                elmFunc.elementMap(element, function (e) {
                     var w = isWindow(e) ? e :
                         (
                             e.nodeType === 9 ? (
@@ -8122,7 +7710,7 @@
                 var element = getSet(element, this),
                     $return = [];
 
-                elmFunc.elmLoop(element, function (e) {
+                elmFunc.elementMap(element, function (e) {
                     var w = isWindow(e) ? e :
                         (
                             e.nodeType === 9 ? (
@@ -8220,7 +7808,7 @@
             remData: function removeData($var) {
                 var elm = this;
 
-                elmFunc.elmLoop(elm, function (e, v) {
+                elmFunc.elementMap(elm, function (e, v) {
                     if (!isset(e[version]))
                         return;
 
