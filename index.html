@@ -3,106 +3,22 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="UTF-8">
-    <title>UnderZ library</title>
+    <title>UnderZ Loader library</title>
 
     <script type="text/javascript" src="_z.js" underZ>
-        _z&&
-        ( _z.$Langs = {
-            ok: "OK",
-            styledir: './theme/',
-            varName: "varValue"
-        });
-        // if you have jQuery comment this line
-        $ = _z;
-        //_z.getScript('./addons/jq.js');
+        _z.getScript('./properties.js');
+        _z.getScript('./words.js');
     </script>
 
     <script type="text/javascript">
         // when document ready
-        _z.ready(()=>{
-            // jquery methods * addon
-            _z
-                .declare('jq')
-                .require({ js: [ './addons/jq.js' ] });
-
-            // load plugin: toggle blocks by click
-            _z
-                .declare('toggleByClick', _z.$)
-                .require({ js: [ './plugins/togglebyclick.jPlugin.js' ] })
-                .hook( _z )
-                .init(fns.true);
-
-            // worker
-            _z
-                .declare('worker')
-                .require({ js: [ './plugins/worker.jPlugin.js' ] })
-                .init(()=>{return !!(document.querySelectorAll("script[type^='text\/_z-\']").length); });
-
-            // issetAnd
-            _z
-                .declare('issetAnd')
-                .require({ js: [ './plugins/issetAnd.jPlugin.js' ] })
-                .init(fns.false);
-
-            // sizeFormat * addon
-            _z
-                .declare('sizeFormat')
-                .require({ js: [ './addons/sizeFormat.js' ] });
-
-            // label2
-            _z
-                .declare('label2')
-                .require({ js: [ './plugins/label2.jPlugin.js' ] })
-                .global()
-                .init(function () {
-                    var MObj = _z( ".moveAble" );
-                    MObj.for(function( i, e ) {
-                        new label2({ 'element': e });
-                    });
-
-                    return !!MObj.length;
-                });
-
-            // wrapWith
-            _z
-                .declare('wrapWith', _z.$ )
-                .require({ js: [ './plugins/wrapWith.jPlugin.js' ] })
-                .init(function () {
-                    return !!( !!_z( "[wrapWith]" ).length && _z( '[wrapWith]' ).wrapWith() );
-                });
-
-            // backtotop
-            _z
-                .declare('backtotop')
-                .require({ js: './plugins/backtotop/backtotop.js' })
-                .require({ css: './plugins/backtotop/backtotop.css' })
-                .init(function declarebTTInit() {
-                    var initModule = _z(document).height() > (2 * _z(window).height());
-                    if( initModule && _z.isset(window['backtotop']) && _z.isset(window['backtotop']['onload']) )
-                        _z.ready(window['backtotop']['onload']);
-
-                    return initModule;
-                });
-
-            fns.arg( _z.is_z($), _z.isCore($) );
+        _z.ready(() => {
         });
     </script>
 </head>
 <body>
-    <button onclick="notify()">Notify</button>
-
-    <script type="text/javascript">
-        function notify() {
-            // notification example
-            var notify = new _z.notification({
-                tag: "mainNot",
-                title: 'UnderZ',
-                body: 'UnderZ Running\nClick To Open GitHub.',
-                image: undefined,
-                dir: 'auto',
-                onclick: ()=>window.open("https://github.com/mPhpMaster/UnderZ")&&notify[notify.length-1].close()
-            }).open();
-        }
-    </script>
+<p>
+    sdsdffd
+</p>
 </body>
 </html>
