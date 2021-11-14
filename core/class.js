@@ -250,7 +250,7 @@
                         } else
                             $return.push((
                                 (
-                                    compStyle(e, null) || e.currentStyle
+                                    _z.compStyle(e, null) || e.currentStyle
                                 )[$var] || ""
                             ));
                     });

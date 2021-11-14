@@ -1,6 +1,40 @@
 (
     function (window, document) {
+        // document - private var
+        let doc = window.document || this.document || document || this;
+
 // DOM functions
+        _z.join({
+            getTransitionEventName: function getTransitionEventName(getCSSProp) {
+                getCSSProp = getCSSProp || false;
+                let el = _z.is_z(this) && this.length ? this[0] : _z("body");
+                el = (el.length ? el : [doc["createElement"] && doc.createElement("atestElement")])[0];
+
+                if (!el) {
+                    return "";
+                }
+
+                let transitions = {
+                    "transition": "transitionend",
+                    "OTransition": "oTransitionEnd",
+                    "MozTransition": "transitionend",
+                    "WebkitTransition": "webkitTransitionEnd",
+                };
+                let _style = (_z.compStyle(el, null) || el.currentStyle) || el.style;
+                let _keys = Object.keys(transitions);
+                for (let i = 0, l = _keys.length; i < l; i++) {
+                    let key = _keys[i];
+                    if (_z.isset(_style[key])) {
+                        return getCSSProp ? key : transitions[key];
+                    }
+                }
+
+                return "";
+            },
+        })
+            .core()
+            .prop();
+
         _z.join({
             // todo:animate element
             animate: function animate(params, speed, options) {
@@ -46,7 +80,7 @@
                         var v_ = transition2[cssPN].replaceArray(["+=", "-="], "");
                         var valIPx = _z.trim(v_.match(/\d+/g).map(Number)[0] || 0);
                         var OvalIPx = (
-                            compStyle(_z(elm)[0])[cssPN] || _z(elm).css(cssPN) || "0px"
+                            _z.compStyle(_z(elm)[0])[cssPN] || _z(elm).css(cssPN) || "0px"
                         );
                         var OUnit = _z.trim(OvalIPx.match(/\d+/g).map(Number)[0]);
                         OUnit = OvalIPx.replace(OUnit, "") || "px";
@@ -102,6 +136,7 @@
             },
         })
             .prop();
+
     }
 )
 (

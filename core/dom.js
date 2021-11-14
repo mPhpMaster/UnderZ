@@ -822,6 +822,48 @@
                 return elm.length && elm.length === $return;
             },
 
+            /**
+             * Get the closest matching element up the DOM tree.
+             * @private
+             * @param  {Element} elm     Starting element
+             * @param  {String}  selector Selector to match against
+             * @return {Boolean|Element}  Returns null if not match found
+             */
+            closest: function closest(elm, selector) {
+                if (!_z.is_z(this)) {
+                    return _z(elm).closest(selector);
+                }
+
+                selector = arguments.length === 1 && arguments[0] || selector;
+                elm = arguments.length === 2 && arguments[0] || this;
+
+                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length) {
+                    return this.newSelector([]);
+                }
+
+                elm = _z.is_z(elm) ? elm : _z(elm);
+                if (elm.length || elm.length) {
+                    let $return = [],
+                        copyOfElm;
+                    elm.each(function () {
+                        if (_z.isDOM(this)) {
+                            copyOfElm = this;
+                            // Get closest match
+                            for (; copyOfElm && copyOfElm !== document; copyOfElm = copyOfElm.parentNode) {
+                                if (matches(copyOfElm, selector)) {
+                                    $return.push(copyOfElm);
+                                    copyOfElm = document;
+                                }
+                            }
+                        }
+                    });
+
+                    return this.newSelector($return);
+                }
+
+                return this.newSelector([]);
+            },
+
             // parent of element ( direct parent )
             parent: function elementParent(selector) {
                 let elm = this,
@@ -962,6 +1004,18 @@
                 previous: 'prev',
             })
             .prop();
+
+// element/elements value
+        Object.defineProperty(_z.$, 'value', {
+            get() {
+                return this.val();
+            },
+            set(v) {
+                return this.val(v);
+            },
+            configurable: false,
+        });
+
     }
 )
 (

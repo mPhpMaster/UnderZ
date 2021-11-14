@@ -107,6 +107,80 @@
             },
         })
             .prop();
+
+        _z.join({
+            // is element shown
+            isShow: function isShow(ret) {
+                ret = ret || false;
+                status = false;
+
+                if (this.length > 1) {
+                    let elm = this,
+                        $return = [];
+                    _z.elementMap(elm, function (e) {
+                        if (ret == true && _z(e).isShow()) {
+                            $return.push(e);
+                        } else if (ret != true) {
+                            $return.push(_z(e).isShow());
+                        }
+                    });
+
+                    return ret == true ? this.newSelector($return) : $return;
+                }
+
+                if (_z(this)) {
+                    status = _z(this).hasClass('hidden') ? true : (/hidden|none/i.test(_z(this).css('visibility') + " " + _z(this).css('display')));
+                }
+
+                return ret == true && !status ? this : !status;
+            },
+
+            // is element hidden
+            isHidden: function isHidden(ret) {
+                ret = ret || false;
+                status = false;
+
+                if (this.length > 1) {
+                    let elm = this,
+                        $return = [];
+
+                    _z.elementMap(elm, function (e) {
+                        if (ret == true && _z(e).isHidden()) {
+                            $return.push(e);
+                        } else if (ret != true) {
+                            $return.push(_z(e).isHidden());
+                        }
+                    });
+
+                    return ret == true ? this.newSelector($return) : $return;
+                }
+
+                if (_z(this)) {
+                    status = _z(this).hasClass('hidden') ? true : (/hidden|none/i.test(_z(this).css('visibility') + " " + _z(this).css('display')));
+                }
+
+                return (ret == true && !!status) ? this : !!status;
+            },
+
+            isHide: function isHidden() {
+                return !this.isShow();
+            },
+
+            // is element in view
+            inViewport: function inViewport() {
+                $ele = this;
+                let lBound = _z(window).scrollTop(),
+                    uBound = lBound + _z(window).height(),
+                    top = $ele.offset().top,
+                    bottom = top + $ele.outerHeight(true);
+
+                return (top > lBound && top < uBound) ||
+                    (bottom > lBound && bottom < uBound) ||
+                    (lBound >= top && lBound <= bottom) ||
+                    (uBound >= top && uBound <= bottom);
+            },
+        })
+            .prop();
     }
 )
 (
