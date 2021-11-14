@@ -90,7 +90,7 @@
 
             start(target, duration = 1000) {
                 target.style.removeProperty('display');
-                let display = compStyle(target).display;
+                let display = (window.getComputedStyle || {display: null})(target).display;
                 if (display === 'none') {
                     display = 'block';
                 }
@@ -128,7 +128,7 @@
 
         // const slideToggle = ($e, duration = 1000) => {
         //     const toggle = (e, d) => {
-        //         if( _z( e ).isHidden() || compStyle( e ).display === 'none' ) {
+        //         if( _z( e ).isHidden() || _z.compStyle( e ).display === 'none' ) {
         //             slideDowns.toggle( e, d );
         //         } else {
         //             slideUps.toggle( e, d );

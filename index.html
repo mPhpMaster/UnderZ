@@ -6,23 +6,40 @@
     <title>UnderZ Loader library</title>
 
     <script type="text/javascript" src="_z.js" underZ>
-        _z.getScript('./properties.js');
-        _z.getScript('./words.js');
-        _z.getScript('./fade.js');
-        // _z.getScript('./slide.js');
+        _z.getScript('./core/properties.js');
+        _z.getScript('./core/dom.js');
+        _z.getScript('./core/dom.wrap.js');
+        _z.getScript('./core/dom.display.js');
+        _z.getScript('./core/dom.indexed.js');
+        _z.getScript('./core/val.js');
+        _z.getScript('./core/words.js');
+        _z.getScript('./core/fade.js');
+        _z.getScript('./core/slide.js');
+        _z.getScript('./core/attrs.js');
+        _z.getScript('./core/class.js');
+        _z.getScript('./core/serialize.js');
+        _z.getScript('./core/queue.js');
+        _z.getScript('./core/cssRole.js');
+        _z.getScript('./core/loader.js');
+        _z.getScript('./core/declare.js');
+        _z.getScript('./core/activeElement.js');
+        _z.getScript('./core/animate.js');
+        // _z.getScript('./core/dom.js');
     </script>
-    <script type="text/javascript" src="slide.js">
-    </script>
+<!--    <script type="text/javascript" src="slide.js">-->
+<!--    </script>-->
 
     <script type="text/javascript">
         // when document ready
-        _z.ready(() => {
-        });
+        // _z.ready(() => {
+        // });
     </script>
 </head>
 <body>
 <p>
     sdsdffd
 </p>
+<input id="i1" name="elm[0]" />
+<input id="i2" name="elm[1]" />
 </body>
 </html>

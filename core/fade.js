@@ -2,6 +2,7 @@
     function (window, document) {
         // opacity default values
         const fadeOpacityValue = {In: 0, Out: 1};
+        const gVar = window && window.gVar || {};
 
         const elmFunc = {
             // fade element/s

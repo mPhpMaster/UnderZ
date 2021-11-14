@@ -65,7 +65,7 @@
             version = '1.1.2',
 
             // set prototype of function and return it - private function
-            setFuncPrototype = function setFunctionPtoyotype(f, p) {
+            newClass = function setFunctionPtoyotype(f, p) {
                 let func = f ? f : () => {
                 };
                 try {
@@ -79,7 +79,7 @@
             },
 
             // fix: global Element for workers
-            Element = "Element" in window ? window["Element"] : setFuncPrototype(),
+            Element = "Element" in window ? window["Element"] : newClass(),
 
             // prototypes of objects - public var in _z.$underz.prototypies
             prototypies = {
@@ -331,7 +331,10 @@
                         }
                         // break	=> when callback return: false
                         else if (hasReturn && cbReturn === false) {
-                            object = object.slice(0, i);//.splice(i);
+                            let keys = Object.keys(object);
+                            keys = keys.slice(0, i);
+                            let newObject = keys.map((index) => object[index]);
+                            object = newObject;
                             break;
                         }
                         // update	=> when callback return: !undefined && !false && !null
@@ -509,7 +512,7 @@
             },
 
             // values of all CSS properties of an element
-            compStyle = window.getComputedStyle || falseFunction,
+            compStyle = (...args) => (window.getComputedStyle || falseFunction)(...args),
 
             // clone object
             cloneObj = function cloneObj(obj) {
@@ -537,30 +540,8 @@
                     return false
                 }
                 return true
-            },
+            };
 
-            // Element.matches function
-            matchesFunction = prototypies.element.matches ||
-                prototypies.element.matchesSelector ||
-                prototypies.element.mozMatchesSelector ||
-                prototypies.element.msMatchesSelector ||
-                prototypies.element.oMatchesSelector ||
-                prototypies.element.webkitMatchesSelector ||
-                function (s) {
-                    if (!isValidSelector(s)) return false;
-
-                    let _matches = (
-                            doc
-                            || window.document
-                            || this.document
-                            || this.ownerDocument
-                            || window.ownerDocument
-                        ).querySelectorAll(s),
-                        i = _matches.length;
-                    while (--i >= 0 && _matches.item(i) !== this) {
-                    }
-                    return i > -1;
-                };
 
 // all registeredEvents
         var events = {
@@ -824,129 +805,6 @@
             // todo: use one function for element matches
             // elements functions
             elmFunc = {
-                // Element.matches() polyfill
-                matches: function elementMatches() {
-                    let element = arguments[0] || false,
-                        arg = subArray(1, arguments);
-                    try {
-                        let es,
-                            $return = [];
-
-                        if (arg && element && _z(element).length) {
-                            element = _z(element);
-                            elmFunc.elementMap(
-                                element,
-                                function (e) {
-                                    try {
-                                        e = e === doc ? doc.documentElement : e;
-
-                                        $return.push(
-                                            ..._z.filter(
-                                                toArray(e),
-                                                $e => matchesFunction.call($e, arg),
-                                            ).toArray(),
-                                        );
-                                    } catch (e) {
-
-                                    }
-                                },
-                                (x) => (
-                                    _z(x).isDOMElement(true) || _z.isString(x) || x === doc
-                                ),
-                            );
-                            // }, (x)=>_z(x).isDOMElement( true ) || is_z(x));
-
-                            $return = filterArray($return);
-                        } else $return = _z();
-
-
-                        es = $return && _z.size($return) ? _z($return) : _z();
-
-                        return _z(es).filter().length > 0;
-                    } catch (e1) {
-                        console.error(e1);
-                        return false;
-                    }
-                },
-
-                // Element.matchesAll() polyfill
-                matchesAll: function elementMatchesAll(elm, $elm, $not) {
-                    let tunning = fns.argsFix(arguments, this, undefined);
-                    arguments = tunning("arguments");
-                    elm = tunning.call();
-                    $elm = tunning.call();
-                    $not = tunning.call() || false;
-
-// todo: tunning issue
-//             todo: this commented lines
-                    /*if( arguments.length==2 || _z.isBoolean($elm) )
-                     $not = $elm,
-                     $elm= elm,
-                     elm = this;
-
-                     if( arguments.length==1 || $elm==undefined )
-                     $elm = elm,
-                     elm = this;
-                     */
-                    let $return = [];
-                    if (arguments.length) {
-                        let __sel = typeOf($elm) === typeOf.s ? [$elm] : $elm;
-                        let $arguments = arguments;
-                        $elm = _z(__sel);
-
-                        elmFunc.elementMap(
-                            elm,
-                            function (e) {
-                                let _e = e;
-                                e = e === doc ? doc.documentElement : e;
-                                let $currentElement = [];
-                                elmFunc.elementMap(
-                                    _z($elm),
-                                    function (e2) {
-                                        e2 = e2 === doc ? doc.documentElement : e2;
-
-                                        if (!_z.isDOM(e2) && toLC(typeOf(e2)) === typeOf.s)
-                                            $currentElement.push((
-                                                elmFunc.matches(e, e2)
-                                                !== $not
-                                                && !$return.includes(_e)
-                                            ) ? _e : false);
-                                        else
-                                            $currentElement.push((
-                                                e['isEqualNode']
-                                                && e['isEqualNode'](e2)
-                                                !== $not
-                                                && !$return.includes(_e)
-                                            ) ? _e : false);
-
-                                    },
-                                    (x) => (
-                                        _z(x).isDOMElement(true) || _z.isString(x) || x === doc
-                                    ),
-                                );
-
-                                if (filterArray($currentElement).length === $elm.length) $return.push(_e);
-                            },
-                            (x) => (
-                                _z(x).isDOMElement(true) || _z.isString(x) || x === doc
-                            ),
-                        );
-
-                        $return = filterArray($return);
-                    } else $return = _z();
-
-                    if (is_z(this)) {
-                        let newInstance = this.newSelector($return),
-                            eSelector = _z.Array($return.selector || $return.for((k, e) => _z.cssSelector(
-                                e,
-                                1,
-                            ))).unique();
-                        newInstance.args = eSelector;
-                        newInstance.selector = eSelector.toString();
-
-                        return newInstance;
-                    } else return _z($return);
-                },
 
                 // prepare css style
                 prepareCSS: function prepareCSS(css) {
@@ -1014,32 +872,71 @@
                     return $results;
                 },
 
-                // insert adjacent element
-                insertAdjacentElement: function insertElement($val, $q) {
-                    if (!isset($val) || (
-                        !_z.is_z($val) && !_z.isDOM($val) && !_z.isString($val)
-                    ) || !this.length)
-                        return this;
+                // Element.matchesAll() polyfill
+                where: function elementMatchesAll(elm, $elm, $not) {
+                    let tunning = _z.argsFix(arguments, this, undefined);
+                    arguments = tunning("arguments");
+                    elm = tunning.call();
+                    $elm = tunning.call();
+                    $not = tunning.call() || false;
 
-                    if ((
-                        _z.isDOM($val) || !_z.is_z($val)
-                    ) && !_z.isTypes('str', $val))
-                        $val = _z($val);
+// todo: tunning issue
+//             todo: this commented lines
+                    /*if( arguments.length==2 || _z.isBoolean($elm) )
+                     $not = $elm,
+                     $elm= elm,
+                     elm = this;
 
-                    let elm = this;
-                    $q = $q || 'beforebegin';
-                    elmFunc.elementMap(elm, function (e) {
-                        if (!e['insertAdjacentElement']) return;
+                     if( arguments.length==1 || $elm==undefined )
+                     $elm = elm,
+                     elm = this;
+                     */
+                    let $return = [];
+                    if (arguments.length) {
+                        let __sel = _z.isString($elm) ? [$elm] : $elm;
+                        let $arguments = arguments;
+                        $elm = _z(__sel);
 
-                        if (!_z.isString($val))
-                            $val.for(function (key, value) {
-                                if (_z.isDOM(value)) e['insertAdjacentElement']($q, value);
-                            });
-                        else
-                            e['insertAdjacentHTML']($q, $val);
-                    });
+                        _z.elementMap(
+                            elm,
+                            function (e) {
+                                let _e = e;
+                                e = e === doc ? doc.documentElement : e;
+                                let $currentElement = [];
+                                _z.elementMap(
+                                    _z($elm),
+                                    function (e2) {
+                                        e2 = e2 === doc ? doc.documentElement : e2;
 
-                    return this;
+                                        if (!_z.isDOM(e2) && _z.isString(e2)) {
+                                            $currentElement.push(matches(e, e2) !== $not && !$return.includes(_e) ? _e : false);
+                                        } else {
+                                            $currentElement.push(e['isEqualNode'] && e['isEqualNode'](e2) !== $not && !$return.includes(_e) ? _e : false);
+                                        }
+                                    }, x => _z(x).isDOMElement(true) || _z.isString(x) || x === doc
+                                );
+
+                                if (_z.filter($currentElement).length === $elm.length) {
+                                    $return.push(_e);
+                                }
+                            }, x => _z(x).isDOMElement(true) || _z.isString(x) || x === doc
+                        );
+
+                        $return = _z.filter($return);
+                    } else {
+                        $return = _z();
+                    }
+
+                    if (_z.is_z(this)) {
+                        let newInstance = this.newSelector($return),
+                            eSelector = _z.Array($return.selector || $return.for((k, e) => _z.cssSelector(e, 1))).unique();
+                        newInstance.args = eSelector;
+                        newInstance.selector = eSelector.toString();
+
+                        return newInstance;
+                    }
+
+                    return _z($return);
                 },
 
             },
@@ -1059,18 +956,6 @@
                     } catch (_err) {
                         console.error("Parse Error[parseHTML]:", _err);
                         return false;
-                    }
-                },
-                // text to html node list
-                parseHTMLNode: function parseHTMLNode(str) {
-                    try {
-                        if (doc.isdocument !== true) return;
-
-                        let tmp = document.implementation.createHTMLDocument();
-                        tmp.body.innerHTML = str;
-                        return tmp.body.childNodes;
-                    } catch (_err) {
-                        console.error("Parse Error[parseHTMLNode]:", _err);
                     }
                 },
 
@@ -1470,53 +1355,6 @@
                 },
             },
 
-            /*
-             CSSSELECTOR.indexed(e,['','input']) => "[name$=']'][name^='total[']input"
-             CSSSELECTOR.indexed(e,['input','']) => "input[name$=']'][name^='total[']"
-             CSSSELECTOR.indexed(e) => "[name$=']'][name^='total[']"
-             */
-            cssSelectorsIndexed = function cssSelectorReadIndexedElements(elm, adds, selType, returnAs) {
-                if (!!!elm) elm = this;
-
-                elm = elm || false;
-                returnAs = returnAs || 'elements';
-                adds = adds || [];
-                selType = selType || 'name';
-                // console.info("["+selType+"^='"+elm+"[']["+selType+"$=']']");
-                try {
-                    elm = _z.isString(elm) ? _z("[" + selType + "^='" + elm + "['][" + selType + "$=']']") : elm;
-                    adds = _z.isArray(adds) ? adds : [adds, ''];
-
-                    str = false;
-                    var $return = [];
-
-                    elm = _z(elm);
-                } catch (e) {
-                    return elm.info.selector;
-                }
-
-                if (elm && elm.length) {
-                    elmFunc.elementMap(elm, function (e) {
-                        if (e && e[selType]) {
-                            var str = e[selType].replace(/\[\d*?\]/g, '[') || false;
-
-                            if (str)
-                                $return.push(
-                                    adds.slice(0, parseInt(adds.length / 2)) +
-                                    "[" + selType + "$=']']" +
-                                    "[" + selType + "^='" + str + "']" +
-                                    adds.slice(parseInt(adds.length / 2)),
-                                );
-                        }
-                    }, trueFunction);
-                }
-
-                $return = $return.join(', ') || "";
-                return $return !== '' ? (
-                    returnAs == 'string' ? $return : _z($return)
-                ) : elm.info.selector;
-            },
-
             // search by indexed element
             cssSelectorsIndexedSelector = function cssSelectorReadIndexedSelector(str) {
                 str = str || false;
@@ -1558,83 +1396,12 @@
                 return selectorVal;
             },
 
-            // return css selector by DOM element
-            cssSelector = function getCSSSelectorByElement(node, limit, path, returnType) {
-                path = path || [];
-                limit = limit || 1024;
-                returnType = returnType || "string";
-                path = !_z.isArray(path) ? [path] : path;
-                var _path = Array.from(path) || [""];
-
-                if (node.parentNode && (
-                    limit !== 1
-                ))
-                    path = getCSSSelectorByElement(node.parentNode, limit - 1, path, "array");
-
-                if (node.nodeType === 1)
-                    path.push((
-                        node.nodeName.toLowerCase() +
-                        (
-                            node.id ? "[id='" + node.id + "']" : ''
-                        ) +
-                        (
-                            node.name ? "[name='" + node.name + "']" : ''
-                        ) +
-                        (
-                            node.className ? '.' + node.className.split(' ')
-                                .filter(cn => _z.trim(cn))
-                                .join('.') : ''
-                        )
-                    ));
-
-                limit = (
-                    limit !== false && limit > path.length
-                ) ? path.length : limit;
-                var result = (
-                    (
-                        limit !== false
-                    ) ? Array.from(path).reverse().slice(0, limit).reverse() : path
-                );
-
-                result.unshift(..._path);
-                result = returnType === 'string' ? result.filter(cn => _z.trim(cn)).join(' ') : result;
-
-                return result;
-            },
-
             // is element == window
             isWindow = function isWindow(element) {
-                var isW = !!(
-                    element != null && element["window"] && element == element.window
-                );
-                return element != null &&
-                    (
-                        !!(
-                            isW
-                        ) || (
-                            !!_z.is_z(element) &&
-                            !!(
-                                elmFunc.elementMap(element, trueFunction, isWindow).length == element.length
-                            )
-                        )
-                    );
+                let isW = element != null && element["window"] && element == element.window;
+                return isW || _z.is_z(element) && elmFunc.elementMap(element, trueFunction, isWindow).length == element.length;
             },
 
-            // check if this module is _z declare system & exist
-            isDeclare = function isDeclare(module, obj) {
-                obj = obj || false;
-                if (obj === false)
-                    return isset(_z['declaresMap']) && isset(_z['declaresMap'][module]) && isDeclare(
-                        module,
-                        _z['declaresMap'][module],
-                    ) || false;
-
-                return obj
-                    && isset(obj['declares'])
-                    && isset(obj['declares'][module])
-                    && obj['declares'][module]
-                    || false;
-            },
 
             // find free id
             new_zID = function createNew_zID(isEngine) {
@@ -1696,23 +1463,16 @@
                     : "";
 
         selectorPatterns.indexed = new RegExp(
-            (
-                selectorPatterns.indexedAttr && selectorPatterns.indexedAttr
-            ) ?
-                (
-                    selectorPatterns.indexed.toString()
-                        .replace(/\\/g, "\\")
-                        .replace(/\//g, "")
-                        .replace('[PATTREN]', selectorPatterns.indexedAttr.toString()
-                            .replace(/\/|\(|\)/g, "")
-                            .replace(/\\\\/g, "\\"),
-                        )
-                )
-                : (
-                    selectorPatterns.indexed.toString().replace(/\/|\|\[PATTREN\]/g, "")
-                )
+            selectorPatterns.indexedAttr && selectorPatterns.indexedAttr ?
+                selectorPatterns.indexed.toString()
+                    .replace(/\\/g, "\\")
+                    .replace(/\//g, "")
+                    .replace('[PATTREN]', selectorPatterns.indexedAttr.toString()
+                        .replace(/\/|\(|\)/g, "")
+                        .replace(/\\\\/g, "\\"),
+                    )
+                : selectorPatterns.indexed.toString().replace(/\/|\|\[PATTREN\]/g, "")
             , 'g');
-
 
 // Pass in the objects to merge as arguments.
 // For a deep extend, set the first argument to `true`.
@@ -1745,7 +1505,7 @@
                 for (var prop in obj) {
                     if (
                         (
-                            hasProp(obj, prop) && isDeclare(prop, obj)
+                            hasProp(obj, prop) && !extendFunction.shouldExtend(prop, obj, extended)
                         ) ||
                         obj[prop] === extended
                     ) continue;
@@ -1767,6 +1527,18 @@
 
             return extended;
         };
+
+        extendFunction.shouldExtend = function (prop, obj, extended) {
+            for (var validators = extendFunction.validators, i = 0, len = validators.length; i < len; i++) {
+                if (!validators[i](prop, obj, extended)) {
+                    return false;
+                }
+            }
+
+            return true;
+        };
+
+        extendFunction.validators = [];
 
 // extend objects
         var extendObjFunction = function extendObjects() {
@@ -1892,10 +1664,9 @@
             'Undefined',
         ].forEach(function (name) {
             // do not override// if( isset( _z['is' + name] ) && !override )// return;
-            if (!isset(_z['is' + name]))
-                _z['is' + name] = function (obj) {
-                    return typeOf(obj) == toLC(name);
-                };
+            if (!isset(_z['is' + name])) {
+                _z['is' + name] = obj => typeOf(obj) == toLC(name);
+            }
         });
 
 // do not return if NaN #fix
@@ -2615,613 +2386,87 @@
             return $join;
         };
 
+        // main
         join({
             join: join,
+            // fix arguments to set this as first var
+            argsFix: fns.argsFix,
+            time: fns.time,
         })
             .core();
 
         join({
-            // check if element has an attribute
-            hasAttr: function hasAttr(elm, attrName) {
-                var args = fns.argsFix(arguments, this, undefined);
-                arguments = args("arguments");
-                elm = args.call();
-                attrName = args.call();
-
-                if (_z.isArray(attrName) && attrName.length) {
-                    var $return = true;
-                    _z(attrName).each(function () {
-                        if ($return === false) return;
-
-                        $return = _z(elm).hasAttr(this);
-                    });
-
-                    return $return;
-                }
-
-                attrName = _z.trim(attrName);
-                if (!!!attrName) return false;
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length) return false;
-                else if (!_z.is_z(elm)) elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    var $return = false;
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        if ($return !== false) return;
-
-                        if (_z.isDOM(this)) $return = this.hasAttribute(attrName);
-                    });
-
-                    return $return;
+            // is this element/elements = HTMLDOM
+            isDOMElement: function isDOMElement(orIsWindow) {
+                orIsWindow = orIsWindow || false;
+                if (this.element().length) {
+                    return _z.elementMap(this, _z.trueFunction, orIsWindow ? _z.isDOMOW : _z.isDOM).length === this.length;
                 }
 
                 return false;
             },
-
-            // remove attribute from element
-            remAttr: function removeAttr(elm, attrName) {
-                if (arguments.length === 1 || (
-                    !!!attrName && elm
-                )) {
-                    attrName = elm;
-                    elm = this;
-                }
-
-                if (_z.isArray(attrName) && attrName.length) {
-                    _z(attrName).each(function () {
-                        _z(elm).removeAttr(this);
-                    });
-
-                    return this;
-                }
-
-                attrName = _z.trim(attrName);
-                if (!!!attrName || (
-                    !_z.isDOM(elm) && !_z.is_z(elm) && !elm.length
-                ))
-                    return this;
-
-                if (!_z.is_z(elm)) elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    (
-                        elm
-                    ).each(function () {
-                        if (_z.isDOM(this)) this.removeAttribute(attrName);
-                    });
-
-                    return this;
-                }
-
-                return this;
-            },
-
-            // set & get attribute of an element
-            attr: function attr(elm, attrName, attrValue) {
-                var tunning = fns.argsFix(arguments, this, undefined);
-                arguments = tunning("arguments");
-                elm = tunning.call();
-                attrName = tunning.call();
-                attrValue = tunning.call();
-
-                var attrValueExist = isset(attrValue);
-                // todo: if attrName is null
-                attrName = triming.call(attrName);
-                isset(attrValue) && !_z.isFunction(attrValue) && (
-                    attrValue = triming.call(attrValue)
-                );
-
-                if (!!!attrName) return false;
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length) return false;
-
-                if (!_z.is_z(elm)) elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    var $return = [];
-                    elmFunc.elementMap(elm, function (e) {
-                        var $value = undefined;
-                        if (_z.isFunction(attrValue)) {
-                            var eValue = e.getAttribute(attrName);
-                            $value = isset($value = attrValue.call(e, attrName, eValue)) ? $value : eValue;
-                        } else $value = attrValue;
-
-                        if ( // checkbox || radio
-                            e['tagName'] && toLC(e['tagName']) == 'input' &&
-                            e['type'] &&
-                            (
-                                e['type'] == 'checkbox' || e['type'] == 'radio'
-                            ) &&
-                            toLC(attrName) == 'checked' && isset($value)
-                        )
-                            e['checked'] = (
-                                $value !== false && $value !== triming.call(false)
-                            ) ? $value = 'checked' : '';
-
-                        if (toLC(attrName) == 'checked' && (
-                            $value === false || $value === triming.call(false)
-                        ))
-                            e.removeAttribute('checked');
-                        else
-                            $return.push(
-                                (
-                                    isset($value) ? e.setAttribute(attrName, $value) : e.getAttribute(
-                                        attrName)
-                                ) || "",
-                            );
-                    });
-
-                    return (
-                        attrValueExist ? this : (
-                            $return.length === 1 ? (
-                                $return[0] || ""
-                            ) : $return
-                        )
-                    );
-                }
-
-                return attrValueExist ? this : "";
-            },
-
-            // get all attributes
-            attrs: function getAllElementAttributes() {
-                var idxOF = "",
-                    deleteAttr = -1,
-                    returnAttr = -1,
-                    obj = {},
-                    thisElement = this;
-
-                if (arguments.length === 2 || arguments.length === 3) {
-                    if (
-                        (
-                            arguments[0] && (
-                                _z.isTypes("string", arguments[0]) || _z.isTypes(true, arguments[0])
-                            ) || true
-                        ) &&
-                        (
-                            arguments[1] && (
-                                _z.isTypes("string", arguments[1]) || _z.isTypes(true, arguments[1])
-                            ) || true
-                        )
-                    ) {
-                        deleteAttr = (
-                            arguments[0] === true
-                            || toLC(arguments[0]) == 'delete'
-                            || toLC(arguments[1]) == 'delete'
-                        );
-                        returnAttr = (
-                            arguments[1] === true
-                            || toLC(arguments[0]) == 'return'
-                            || toLC(arguments[1]) == 'return'
-                        );
-                    }
-                    var _arguments = [];
-                    _arguments = (
-                        arguments[0] !== true && toLC(arguments[0]) != 'return' && toLC(
-                            arguments[0]) != 'delete'
-                    ) ? [...arguments] : subArray(1, [...arguments]);
-
-                    if (!!!(
-                        arguments[1]
-                        !== true
-                        && toLC(arguments[1])
-                        != 'return'
-                        && toLC(arguments[1])
-                        != 'delete'
-                    ))
-                        _arguments = subArray(1, _arguments);
-
-                    arguments = _arguments;
-                }
-
-                if (arguments.length === 1 && (
-                    _z.isDOM(arguments[0]) || _z.is_z(arguments[0])
-                )) {
-                    thisElement = arguments[0];
-                    arguments = [];
-                } else thisElement = this;
-
-                // search for attributes
-                if (arguments.length === 1) {
-                    if (arguments[0] && (
-                        _z.isTypes("string", arguments[0]) || _z.isArray(arguments[0])
-                    ))
-                        idxOF = toLC(arguments[0]);
-
-                    arguments = [];
-                }
-
-                if (arguments.length === 0) {
-                    if (_z.size(thisElement) === 0) return null;
-
-                    var pushIt = _z.size(thisElement) > 1;
-                    obj = pushIt ? [] : {};
-
-                    if (idxOF && _z.isArray(idxOF) && idxOF.length > 1) {
-                        var $__return = {};
-                        foreach(idxOF, function (__k, __v) {
-                            var $__val = _z(thisElement).attrs(deleteAttr, returnAttr, __v);
-                            $__return = _z.extend($__return, $__val);
-                        });
-
-                        return $__return;
-                    }
-
-                    _z(thisElement).each(function () {
-                        var $elm = this;
-                        var subObj = {};
-                        _z.each(_z.toArray($elm.attributes), function () {
-                            if (idxOF !== "") {
-                                if (_z.isString(idxOF) && this.name.indexOf(idxOF) === -1)
-                                    return;
-                                else if (_z.isArray(idxOF) && idxOF.length == 1 && toLC(this.name) != toLC(
-                                    idxOF[0]))
-                                    return;
-                            }
-
-                            if (this.specified) {
-                                if (deleteAttr === true)
-                                    $elm.removeAttribute(this.name);
-
-                                if (
-                                    (
-                                        returnAttr === true && deleteAttr === true
-                                    ) ||
-                                    (
-                                        returnAttr === true && deleteAttr === false
-                                    ) ||
-                                    (
-                                        returnAttr === -1 && deleteAttr === -1
-                                    )
-                                ) {
-                                    if (pushIt) subObj[this.name] = this.value;
-                                    else obj[this.name] = this.value;
-                                } else if (
-                                    (
-                                        returnAttr === false && deleteAttr === false
-                                    ) ||
-                                    (
-                                        returnAttr === false && deleteAttr === true
-                                    )
-                                )
-                                    obj = obj;
-                            }
-                        });
-
-                        if (pushIt) {
-                            subObj = [$elm, subObj];
-                            obj.push(subObj);
-                        }
-                    });
-
-                }
-
-                return obj;
-            },
-
         })
-            .alias({removeAttr: "remAttr"})
             .prop();
 
         join({
-            // check if element has class
-            hasClass: function hasClass(elm, className) {
-                if (arguments.length === 1 || (
-                    !!!className && elm
-                )) {
-                    className = elm;
-                    elm = this;
+            compStyle,
+            toLowerCase: toLC,
+            toUpperCase: toUC,
+            trim: triming,
+        })
+            .core();
+
+        join({
+            emptyFunction,
+            trueFunction,
+            falseFunction,
+            Undefined,
+        })
+            .core();
+
+        join({
+            getSet,
+            newClass,
+            isValidSelector,
+
+            // return css selector from dom element
+            cssSelector: function getCSSSelectorByElement(node, limit, path, returnType) {
+                path = path || [];
+                limit = limit || 1024;
+                returnType = returnType || "string";
+                path = !_z.isArray(path) ? [path] : path;
+                let _path = Array.from(path) || [""];
+
+                if (node.parentNode && limit !== 1) {
+                    path = getCSSSelectorByElement(node.parentNode, limit - 1, path, "array");
                 }
 
-                if (_z.isArray(className) && className.length) {
-                    var $return = true;
-                    _z(className).each(function () {
-                        if ($return === false) return;
+                if (node.nodeType === 1) {
+                    let _selector = node.nodeName.toLowerCase();
+                    _selector += node.id ? "[id='" + node.id + "']" : '';
+                    _selector += node.name ? "[name='" + node.name + "']" : '';
+                    _selector += node.className ? '.' + node.className.split(' ').filter(cn => _z.trim(cn)).join('.') : '';
 
-                        $return = _z(elm).hasClass(this);
-                    });
-
-                    return $return;
+                    path.push(_selector);
                 }
 
-                className = _z.trim(className);
-                if (!!!className) return false;
+                limit = limit !== false && limit > path.length ? path.length : limit;
 
-                // className = ' ' + className + ' ';
+                let result = limit !== false ? Array.from(path).reverse().slice(0, limit).reverse() : path;
 
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length)
-                    return false;
-                else if (!_z.is_z(elm))
-                    elm = _z(elm);
+                result.unshift(..._path);
+                result = returnType === 'string' ? result.filter(cn => _z.trim(cn)).join(' ') : result;
 
-
-                if (elm.length || elm.length) {
-                    var $return = false;
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        if ($return !== false) return;
-
-                        if (_z.isDOM(this))
-                            $return = this.classList.contains(className);// (' ' + this.className + ' ');
-
-                    });
-
-                    return $return;
-                }
-
-                return false;
-            },
-
-            // add class to element
-            addClass: function addClass(elm, className) {
-                if (arguments.length === 1 || (
-                    !!!className && elm
-                )) {
-                    className = elm;
-                    elm = this;
-                }
-
-                if (_z.isArray(className) && className.length) {
-                    _z(className).each(function () {
-                        _z(elm).addClass(this);
-                    });
-
-                    return this;
-                }
-
-                className = _z.trim(className);
-                if (!!!className) return this;
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length)
-                    return this;
-                else if (!_z.is_z(elm))
-                    elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        if (_z.isDOM(this) && !_z(this).hasClass(className))
-                            this.className = _z.trim(this.className + ' ' + className);
-                    });
-                    return this;
-                }
-                return this;
-            },
-
-            // remove class from element
-            remClass: function removeClass(elm, className) {
-                if (arguments.length === 1 || (
-                    !!!className && elm
-                )) {
-                    className = elm;
-                    elm = this;
-                }
-
-                if (_z.isArray(className) && className.length) {
-                    _z(className).each(function () {
-                        _z(elm).removeClass(this);
-                    });
-
-                    return this;
-                }
-
-                className = _z.trim(className);
-                if (!!!className)
-                    return this;
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length)
-                    return this;
-                else if (!_z.is_z(elm))
-                    elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        if (_z.isDOM(this)) {
-                            var newClass = ' ' + this.className.replace(/[\t\r\n]/g, ' ') + ' ';
-                            if (_z(this).hasClass(className)) {
-                                while (newClass.indexOf(' ' + className + ' ') >= 0)
-                                    newClass = newClass.replace(' ' + className + ' ', ' ');
-
-                                this.className = newClass.replace(/^\s+|\s+$/g, '');
-                            }
-                        }
-                    });
-                    return this;
-                }
-                return this;
-            },
-
-            // toggle class from element
-            toggleClass: function toggleClass(elm, className) {
-                if (arguments.length === 1 || (
-                    !!!className && elm
-                )) {
-                    className = elm;
-                    elm = this;
-                }
-
-                if (!!!className || !!!elm)
-                    return this;
-
-                if (!_z.isArray(className))
-                    className = [className];
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length)
-                    return this;
-                else if (!_z.is_z(elm))
-                    elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        var $elm = this;
-                        _z(className).each(function () {
-                            if (_z.isDOM($elm))
-                                $elm.classList.toggle(this);
-                            else if (_z($elm).hasClass(this))
-                                _z($elm).removeClass(this);
-                            else
-                                _z($elm).addClass(this);
-                        });
-                    });
-                    return this;
-                }
-                return this;
-            },
-
-            // toggle class from element
-            classList: function classList(elm, unique) {
-                if (arguments.length == 1 && !_z.isDOM(elm) && !_z.is_z(elm))
-                    unique = elm, elm = this;
-
-                var elm = elm || this,
-                    unique = unique === false ? false : (
-                        unique || true
-                    ),
-                    $classList = [];
-
-                if (!_z.isDOM(elm) && !_z.is_z(elm) && !elm.length)
-                    return $classList;
-                else if (!_z.is_z(elm))
-                    elm = _z(elm);
-
-                if (elm.length || elm.length) {
-                    (
-                        _z.is_z(elm) ? elm : _z(elm)
-                    ).each(function () {
-                        if (_z.isDOM(this))
-                            $classList.add(..._z.toArray(this.classList || []));
-                    });
-                }
-                return unique && $classList.unique() || $classList;
-            },
-
-            // css of element
-            css: function css(elm, $var, $val) {
-                if (isset(elm)) {
-                    if (_z.isDOM(elm)) elm = _z(elm);
-
-                    if (!_z.is_z(elm)) {
-                        if (isset($var)) $val = $var;
-
-                        $var = elm,
-                            elm = this;
-                    }
-                } else elm = this;
-
-                elm = (
-                    _z.is_z(elm) ? elm :
-                        (
-                            (
-                                _z.isDOM(elm) || _z.isArray(elm)
-                            ) ? _z(elm) : false
-                        )
-                );
-                if (elm === false) return this;
-
-                // get style
-                if ($var && !!!_z.isObject($var)) {
-                    $var = _z.cssPropName($var);
-                    // $var = _z.$underz.prepareCSS( _z($var) );
-                    var $return = [];
-
-                    elmFunc.elementMap(elm, function (e) {
-                        if (isset($val)) {
-                            if (e['style'])
-                                e['style'][$var] = _z.isFunction($val) ? $val.apply(e, arguments) : $val;
-                        } else
-                            $return.push((
-                                (
-                                    compStyle(e, null) || e.currentStyle
-                                )[$var] || ""
-                            ));
-                    });
-
-                    return isset($val) ? this : (
-                        elm.length == 1 ? (
-                            $return[0] || ""
-                        ) : $return
-                    );
-                } else if ($var && _z.isObject($var)) {
-                    elmFunc.elementMap(elm, function (e, k) {
-                        _z.for($var, function ($k, $v) {
-                            _z(e).css($k, $v);
-                        });
-                    });
-                    return this;
-                }
-
-                var $return = [];
-                if (elm.length > 1) {
-                    elm.each(function () {
-                        $return.add(..._z.toArray(_z(this).css()));
-                    });
-                    return $return;
-                }
-
-                var $var = $var || false;
-                var sheets = doc.styleSheets, o = [];
-                if (sheets.length > 0)
-                    for (var i = 0, _sl = sheets.length; i < _sl; i++) {
-                        var rules = sheets[i].rules || sheets[i].cssRules;
-                        if (rules.length > 0)
-                            for (var r = 0, _rl = rules.length; r < _rl; r++) {
-                                elmFunc.elementMap(elm, function (e, k) {
-                                    o[k] || (
-                                        o[k] = {}
-                                    );
-                                    // console.lopg(k,e);
-                                    if (elmFunc.matches(e, rules[r].selectorText)) {
-                                        // console.lopg(rules[r].selectorText,e);
-                                        var pcss1 = elmFunc.prepareCSS(rules[r].style) || {},
-                                            pcss2 = _z(e).attr('style');
-                                        pcss2 = pcss2 ? (
-                                            elmFunc.prepareCSS(pcss2) || {}
-                                        ) : {};
-
-                                        o[k] = _z.extend(o[k], pcss2, pcss1);
-                                    }
-                                }, trueFunction);
-                            }
-                    }
-
-                if ($var) {
-                    elmFunc.elementMap(elm, function (e, k) {
-                        if (o.length) {
-                            o[k] || (
-                                o[k] = {}
-                            );
-
-                            if (o[k] && (
-                                $var in o[k]
-                            ))
-                                o[k] = o[k][$var];
-                            else
-                                o[k] = "";
-                        } else
-                            o[k] = {};
-                    });
-                }
-
-                return elm.length == 1 ? o[0] : o;
+                return result;
             },
         })
-            .alias({removeClass: "remClass"})
-            .prop();
+            .core();
 
         join({
             // add last selector elements, elm = filter by selector
             addBack: function addBack(elm) {
                 return this.newSelector(this.add(...(
-                    isset(elm) ? this.end().whereIs(elm) : this.end()
+                    isset(elm) ? this.end().whereIn(elm) : this.end()
                 ).element()));
             },
 
@@ -3254,129 +2499,6 @@
                         --aMemberCount;
 
                 return aMemberCount ? false : true;
-            },
-
-            // hide element
-            hide: function hide(elm) {
-                var elm = elm || this;
-
-                if (!_z.isDOM(elm) && !elm.length && !elm.length) return false;
-
-                if (elm.length || elm.length) {
-                    (
-                        elm.length ? elm : _z(elm)
-                    ).each(function () {
-                        if (_z.isDOM(this))
-                            this.style.display = 'none';
-                    });
-                }
-                return this;
-            },
-
-            // show element
-            show: function show(elm, displayStyle) {
-                var displayStyle = getSet(
-                    displayStyle,
-                    (
-                        is_z(elm) ? false : elm
-                    ),
-                );
-                var elm = (
-                    is_z(elm) ? elm : this
-                ) || false;
-
-                if (!_z.isDOM(elm) && !elm.length && !elm.length) return false;
-
-                if (elm.length || elm.length) {
-                    elm = (
-                        elm.length ? elm : _z(elm)
-                    );
-                    elm.each(function () {
-                        if (_z.isDOM(this))
-                            this.style.display = (
-                                displayStyle || elm.defaultDisplayStyle()
-                            );
-                    });
-                }
-                return this;
-            },
-
-            // toggle show/hide
-            toggle: function toggle(elm, displayStyle) {
-                var displayStyle = getSet(
-                    displayStyle,
-                    (
-                        is_z(elm) ? 'toggle' : elm
-                    ) || 'toggle',
-                );
-                var elm = (
-                    is_z(elm) ? elm : this
-                ) || false;
-
-                if (!_z.isDOM(elm) && !elm.length && !elm.length) return this;
-
-                if (elm.length || elm.length) {
-                    (
-                        elm.length ? elm : _z(elm)
-                    ).each(function () {
-                        if (_z.isDOM(this)) {
-                            var display;
-                            if (displayStyle == 'toggle')
-                                display = (
-                                    compStyle(this, null) || this.currentStyle
-                                ).display == 'none' ?
-                                    (
-                                        _z(this).defaultDisplayStyle() || ''
-                                    ) : 'none';
-                            else
-                                display = (
-                                    displayStyle || (
-                                        _z(this).defaultDisplayStyle() || ''
-                                    )
-                                );
-
-                            this.style.display = display;
-                        }
-                    });
-                }
-
-                return this;
-            },
-
-            // get default display css value
-            defaultDisplayStyle: function defaultDisplayStyle(tag) {
-                var tag = tag || this.element(0).tagName || false;
-                if (!tag)
-                    return '';
-                gVar["defaultDisplayStyleLog"] = gVar["defaultDisplayStyleLog"] || {};
-                tag = String(tag).replace(/^\s+|\s+$/g, '');
-
-                if (isset(gVar["defaultDisplayStyleLog"][tag]))
-                    return gVar["defaultDisplayStyleLog"][tag];
-
-                var iframe = document.createElement('iframe');
-                iframe.setAttribute('frameborder', 0);
-                iframe.setAttribute('width', 0);
-                iframe.setAttribute('height', 0);
-                document.documentElement.appendChild(iframe);
-
-                var doc = (
-                    iframe.contentWindow || iframe.contentDocument
-                ).document;
-
-                // IE support
-                doc.write();
-                doc.close();
-
-                var testEl = doc.createElement(tag);
-                doc.documentElement.appendChild(testEl);
-                var display = (
-                    compStyle(testEl, null) || testEl.currentStyle
-                ).display
-                iframe.parentNode.removeChild(iframe);
-
-                gVar["defaultDisplayStyleLog"][tag] = display;
-                return display;
             },
 
             // scroll To element
@@ -3618,44 +2740,6 @@
                 }
 
                 return false;
-            },
-
-        }, {
-            // add css role in head
-            cssRole: function cssRole(c) {
-                if (!isset(_z.cssRole['styleSheet'])) {
-                    _z.cssRole['styleSheet'] = document.createElement('style');
-                    document.head.appendChild(_z.cssRole['styleSheet']);
-                }
-                if (arguments.length == 0) return this;
-
-                var styleSheet = _z.cssRole['styleSheet']['sheet'];
-
-                c = _z.isArray(c) ? c : [c];
-                _z.for(c, (_IDc, _Vc) => {
-                    _Vc && styleSheet.insertRule(_Vc, 0);
-                });
-
-                return this;
-            },
-
-            cssPropName: function cssPropNameFix(prop, toJS) {
-                toJS = toJS || false;
-                if (toJS)
-                    return prop.replace(/([A-Z])/g, "-$1").toLowerCase();
-
-                return prop.replace(/^-ms-/, "ms-").replace(/-([\da-z])/gi, (all, fst) => fst.toUpperCase())
-                    || "";
-                // return prop.replace(/-([a-z])/g, function( str, letter ) { return letter.toUpperCase(); } );
-            },
-
-            // get current active dom element as _z()
-            activeElment: function activeElement() {
-                try {
-                    return _z(document.activeElement);
-                } catch (err) {
-                    return _z();
-                }
             },
 
         }, {
@@ -4223,592 +3307,14 @@
             .core()
             .prop();
 
+
         join({
-            // fix arguments to set this as first var
-            argsFix: fns.argsFix,
-
-        })
-            .core();
-
-// serialize data options
-        join({
-            // global serialize settings
-            serializeSetting: {
-                // do not serialize these
-                not: [
-                    '[type="file"]',
-                    '[type="reset"]',
-                    '[type="submit"]',
-                    '[type="button"]',
-                    ':disabled',
-                    '[readonly]',
-                    '[type="checkbox"]:not(:checked)',
-                    '[type="radio"]:not(:checked)',
-                ],
-            },
-
-        })
-            .core();
-
-// serialize data
-        join({
-            // serialize Json
-            // serializeJson: function serializeJson(elm) {
-            //
-            // },
-
-            // serialize array
-            serializeArray: function serializeArray(elm) {
-                var field, length, $return = [];
-                elm = is_z(this) ? this : _z(elm);
-
-                elmFunc.elementMap(elm, function (e) {
-                    try {
-                        if (!e['elements']) return;
-
-                        $currentGroup = _z(e.elements);
-                        if (_z.serializeSetting && _z.size(_z.serializeSetting))
-                            _z.for(_z.serializeSetting, function (ssk, ssv) {
-                                if ($currentGroup[ssk])
-                                    $currentGroup = $currentGroup[ssk](ssv);
-                            });
-
-                        $currentGroup.for(function (IK, input) {
-                            if ((
-                                input = _z(input)
-                            ) && input.prop('name')) {
-                                var _IVal = input.val();
-                                _IVal = _z.isArray(_IVal) ? _IVal : [_IVal];
-                                _z.for(_IVal, (_IValK, _IValV) => {
-                                    $return.push({name: input.prop('name'), value: _IValV});
-                                });
-                            }
-                        });
-
-                    } catch (err) {
-                    }
-                }, (f) => _z(f).is('form'));
-
-                return $return;
-            },
-
-            // serialize string
-            serialize: function serialize(elm) {
-                var field, length, $return = [];
-                elm = is_z(this) ? this : _z(elm);
-
-                elmFunc.elementMap(elm, function (e) {
-                    try {
-                        if (!e['elements']) return;
-
-                        $currentGroup = _z(e.elements);
-                        if (_z.serializeSetting && _z.size(_z.serializeSetting))
-                            _z.for(_z.serializeSetting, function (ssk, ssv) {
-                                if ($currentGroup[ssk])
-                                    $currentGroup = $currentGroup[ssk](ssv);
-                            });
-
-                        $currentGroup.for(function (IK, input) {
-                            if ((
-                                input = _z(input)
-                            ) && input.prop('name')) {
-                                var _IVal = input.val();
-                                _IVal = _z.isArray(_IVal) ? _IVal : [_IVal];
-                                _z.for(_IVal, (_IValK, _IValV) => {
-                                    $return.push(encodeURIComponent(input.prop('name'))
-                                        + "="
-                                        + encodeURIComponent(_IValV));
-                                });
-                            }
-                        });
-
-                    } catch (err) {
-                    }
-                }, (f) => _z(f).is('form'));
-
-                return $return.join("&").replace(/%20/g, "+");
-            },
-
-        })
-            .prop();
-
-// timer
-        var interval = function interval() {
-            $this = (
-                this && this.window === this
-            ) ? interval : (
-                this instanceof interval
-            ) ? this : interval;
-
-            if (arguments.length === 1 && arguments[0] instanceof interval)
-                return arguments[0];
-
-            return new (
-                $this.init.bind($this)
-            )(...arguments);
-        };
-// hold timer
-        interval.hold = false;
-// timer default interval = 1 second
-        interval.interval = 1000;
-// timer inestanss
-        interval.instances = [];
-// stop all timers
-        interval.stopAll = function stopAll() {
-            for (var i = 0, iL = this.instances.length; i < iL; i++)
-                this.instances[i].stop();
-
-            return this;
-        };
-// start all timers
-        interval.startAll = function startAll() {
-            for (var i = 0, iL = this.instances.length; i < iL; i++)
-                this.instances[i].start();
-
-            return this;
-        };
-// remove all timers
-        interval.removeAll = function removeAll(keepData) {
-            // do not delete data
-            keepData = keepData || false;
-            for (var i = 0, iL = this.instances.length; i < iL; i++)
-                this.instances[i].remove(keepData);
-
-            return this;
-        };
-
-// _z.interval timer prototype
-        interval.timer = interval.prototype = {
-// timer version
-            version: "0.0.1",
-// timer id
-            id: 0,
-// timer interval
-            interval: 0,
-// timer isrunning
-            isRunning: false,
-// timer for one execution
-            isOnce: false,
-// timer for one execution is runned
-            executionCount: 0,
-// assign time
-            stamp: 0,
-// timer callback
-            callback: falseFunction,
-
-            constructor: interval,
-
-// create new instance _z()
-            init: function timer(fn, iv) {
-                // run once
-                if (this.stamp !== 0) return false;
-
-                fn = fn || falseFunction;
-                iv = iv || interval.interval;
-
-                // register timer interval
-                this.interval = (
-                    _z.isNumber(fn) && fn
-                ) || (
-                    _z.isNumber(iv) && iv
-                ) || interval.interval;
-                // register timer callback
-                this.callback = (
-                    _z.isFunction(iv) && iv
-                ) || (
-                    _z.isFunction(fn) && fn
-                ) || falseFunction;
-
-                // register timer created time
-                this.stamp = fns.time();
-
-                // register this instance
-                interval.instances.push(this);
-                return this;
-            },
-
-// run callback
-            execFunction: function execFunction(force) {
-                if (this.stamp === undefined) return false;
-
-                // do not check timer class status
-                force = force || false;
-
-                // check timer class status
-                if (interval.hold !== false && force === false) {
-                    this.isRunning = false;
-                    return this;
-                }
-
-                // if its timer once
-                if (this.isOnce === true)
-                    this.stop();
-                else
-                    this.isRunning = true;
-
-
-                this.executionCount++;
-                // execute function
-                return this.callback.call(this);
-            },
-
-// check if this timer can start
-            isReady: function isReady() {
-                if (this.stamp === undefined) return false;
-
-                return (
-// timer system not on hold
-                    interval.hold === false &&
-                    // no already running
-                    this.isRunning === false &&
-                    // if its once ? not run yet
-                    (
-                        (
-                            this.isOnce === true && this.executionCount < 1
-                        ) || this.isOnce === false
-                    )
-                );
-            },
-
-// set interval timer - must restart the timer
-// s = new interval
-// run = run timer after interval set ? true||false
-            setInterval: function setInterval(s, run/*undefined*/) {
-                s = _z.toNum(s);
-                run = run || undefined;
-                var restart = false;
-
-                // is it already running ? stop
-                if (restart = (
-                    this.isRunning !== false
-                ))
-                    this.stop();
-
-                // change interval
-                this.interval = s;
-
-                // was it running ? run it
-                if (restart || run !== false)
-                    this.start(true);
-
-                return this;
-            },
-
-// start timer once
-            once: function once(status) {
-                status = arguments.length ? !!status : null;
-                if (status === null) return this.isOnce;
-
-// change timer typer
-                this.isOnce = !!status;
-
-                return this;
-            },
-
-// start timer
-            start: function start(froce) {
-                froce = froce || false;
-                if (this.stamp === undefined) return false;
-
-                // is it already running ?
-                if (this.isRunning === false) {
-                    // if its timer once
-                    if (this.isOnce === true && (
-                        this.executionCount > 0 && froce === false
-                    )) return this;
-
-                    // create interval & register id & change status
-                    this.isRunning = !!(
-                        this.id = setInterval(this.execFunction.bind(this), this.interval)
-                    );
-                }
-
-                return this;
-            },
-
-// stop timer
-            stop: function stop() {
-                if (this.stamp === undefined) return false;
-
-                if (this.id && this.id != 0) {
-                    // stop interval
-                    clearInterval(this.id);
-                    // update status
-                    this.isRunning = false;
-                    // remove interval id
-                    this.id = 0;
-                }
-
-                return this;
-            },
-
-// delete timer
-            remove: function remove(keepData) {
-                if (this.stamp === undefined) return false;
-
-                // do not delete data
-                keepData = keepData || false;
-                var thisIndex = interval.instances.indexOf(this);
-                if (thisIndex !== -1) {
-                    // if timer running stop it
-                    if (this.isRunning) return this.stop().remove(keepData);
-                    // remove it
-                    interval.instances.remove(thisIndex);
-                } else
-                    return false;
-
-                // delete data
-                if (keepData !== true)
-                    _z.for(this, (k, v) => this[k] = undefined);
-
-                return true;
-            },
-        };
-        interval.timer.init.prototype = interval.timer;
-
-// timer system
-        join({
-            timer: interval,
             Keys: Keys,
             Row: Row,
             tap: tap,
-
         })
             .core()
             .window();
-
-// declare module system
-        join({
-            // defaultValues
-            dec_Default: {
-                // moduleName
-                id: "",
-
-                // registery of all requirments
-                requires: "",
-
-                // is module requirments loaded
-                loaded: false,
-
-                // default main function
-                callback: false,
-
-                // default init function
-                initFunction: "",
-
-                // call when module requesting function, return false = cancel load
-                whenRequest: "",
-
-                // register this module in window.[MODULE]
-                global: function global() {
-                    if (_z.isset(this.global.registered) && this.global.registered === true) return this;
-
-                    this.global.registered = true;
-                    return this.hook(window);
-                    var w = window;
-                    if (!_z.isWindow(w)) return console.error("UnderZ["
-                        + this.id
-                        + "]: No Window Found."), this;
-
-                    if (_z.isset(w[this.id])) return console.error("UnderZ["
-                        + this.id
-                        + "]: Already Exist!"), this;
-
-                    this.global.registered = true;
-                    return this.hook(window);
-                },
-
-                // recall function after while
-                timeout: function timeout(method, limiter) {
-                    if (!!method && _z.isFunction(method)) {
-                        if (limiter) { // limiter = seconds of tryng
-                            limiter = (
-                                (
-                                    parseFloat(limiter - 1) * 1000
-                                ) / 10
-                            ) || 0;
-                            this.limiter = this.limiter || 0;
-
-                            if (limiter)
-                                if ((
-                                    parseFloat(this.limiter) * 10
-                                ) > limiter) return;
-                                else this.limiter++;
-                        }
-
-                        if (this.timeout.timeoutHandler)
-                            clearTimeout(this.timeout.timeoutHandler);
-
-                        this.timeout.timeoutHandler = setTimeout(method, 100);
-                    }
-
-                    return this;
-                },
-
-                // set requirment of module ( execute before load module )
-                require: function require(req) {
-                    if (!!req) this.requires.push(req);
-
-                    return this;
-                },
-
-                // call when module requesting, return false = cancel load
-                onRequest: function whenRequest(fn) {
-                    if (!!fn && _z.isFunction(fn))
-                        this.whenRequest = fn;
-
-                    return this;
-                },
-
-                // set main module function ( execute when function called )
-                method: function method(method) {
-                    if (!!method && _z.isFunction(method))
-                        this.callback = method;
-
-                    // check if load request sent
-                    if (this.loaded && this.loaded === true)
-                        this.init(trueFunction);
-
-                    return this;
-                },
-
-                // execute right now, if return true load all requirments
-                init: function init(method) {
-                    if (!!method && _z.isFunction(method))
-                        if (method.apply(this) == true && this.whenRequest.apply(this) !== false)
-                            this.loadDeclare.apply(this);
-
-                    return this;
-                },
-
-                // todo: load method when called
-                // try to load requirments
-                loadDeclare: function loadDeclare() {
-                    var module = this || false;
-                    if (!!!module || module.loaded) return this.callback || this;
-
-                    if (module.whenRequest.apply(module) === false) return this;
-
-                    if (module.requires.length) {
-                        _z(module.requires).each(function () {
-                            if (!!!this || this['loaded']) return this;
-
-                            if (_z.isFunction(this)) {
-                                this.apply(this);
-
-                            } else if (this['js']) {
-                                _z.loader.js(this['js']);
-
-                            } else if (this['css']) {
-                                _z.loader.css(this['css']);
-                            }
-                            this.loaded = true;
-                        });
-                    }
-                    this.loaded = true;
-
-                    return this.callback || this;
-                },
-
-                // declare new module in specifiec object
-                hook: function hookObject(obj) {
-                    if (!_z.isObject(obj)
-                        && !_z.isArray(obj)
-                        && !_z.isFunction(obj)
-                        && !_z.isWindow(obj))
-                        obj = false;
-
-                    if (obj) {
-                        // register main function
-                        var loadDeclareCallback = this.loadDeclare.bind(this);
-
-                        // register loader
-                        Object.defineProperty(
-                            obj,
-                            this.id,
-                            {get: loadDeclareCallback, configurable: !!!isCore(obj)},
-                        );
-                    }
-
-                    return this;
-                },
-            },
-
-            // registery of all declareed modules for this Object
-            declares: {},
-
-            // registery of all declareed modules => object
-            declaresMap: {},
-
-            // check if this module is _z declare system & exist
-            isDeclare: isDeclare,
-
-            // declare new module
-            declare: function declare(module, obj) {
-                var hook = {
-                    obj: getSet(obj, this),
-                    module: module,
-                };
-                var newDeclare = _z.extend({}, _z.dec_Default);
-
-                if (!_z.isArray(newDeclare.requires))
-                    newDeclare.requires = [];
-
-                if (!_z.isFunction(newDeclare.initFunction))
-                    newDeclare.initFunction = trueFunction;
-
-                if (!_z.isFunction(newDeclare.whenRequest))
-                    newDeclare.whenRequest = trueFunction;
-
-                if (!!!module) return newDeclare;
-
-                if (!isset(hook.obj['declares'])) hook.obj['declares'] = {};
-
-                if (isDeclare(module)) return isDeclare(module);
-
-                newDeclare.id = module;
-                hook.obj['declares'][module] = newDeclare;
-
-                // register this plugin in Map
-                _z.declaresMap[module] = hook.obj;
-
-                // register main function
-                hook.obj[module] = _z.getDeclare.bind(hook.obj, module);
-                var loadDeclareCallback = () => {
-                    return newDeclare.loadDeclare.apply(newDeclare);
-                };
-
-                // register loader
-                Object.defineProperty(
-                    hook.obj,
-                    module,
-                    {get: loadDeclareCallback, configurable: !!!isCore(obj)},
-                );
-
-                return newDeclare;
-            },
-
-            // main function loader
-            getDeclare: function getDeclare(moduleName) {
-                var module = this.declares[moduleName] || false;
-
-                if (!!!module)
-                    return fns.wrn("Module Not Found: " + moduleName), fns.ef;
-
-                // try to load requirments
-                module.loadDeclare();
-
-                if (module.callback && _z.isFunction(module.callback)) {
-                    var handler = this,
-                        arg = arguments;
-                    return module.callback.apply(handler, _z(arg).subArray(1) || []);
-                } else {
-                }
-
-                return this;
-            },
-        })
-            .core();
 
 // ajax system
         var ajax = function ajax() {
@@ -5687,612 +4193,24 @@
         })
             .core();
 
-// queue by element
-        var queue = function queue(elm, func, doNotRun) {
-            doNotRun = doNotRun || false;
-            var e = is_z(elm) ? elm[0] : elm;
-
-            var qI;
-            func = func instanceof _z.timer ? func : func;
-
-            if ((
-                qI = queue.qElm.inArray(e)
-            ) === -1) {
-                qI = queue.qElm.push(e) - 1;
-            }
-
-            queue.q[qI] = queue.q[qI] || [];
-            queue.q[qI].push(func);
-
-            // queue length
-            var qLength = () => _z.queue.q.filter((fqi, fqa) => {
-                // var x2Times = 0;
-                // temp1.each((x1,x2)=>_z.isset(x2)||++x2Times)
-                // temp1.getSize() == x2Times
-
-                var rr = fqi.filter((_fqi, _fqa) => {
-                    if (!isset(_fqi.stamp)) return false;
-
-                    return !(
-                        _fqi.executionCount > 0 && !_fqi.isRunning && !_fqi.isReady()
-                    );
-                });
-                // console.log(rr);
-                return _z.size(rr) > 0;
-            }).length;
-
-            // queue handler
-            if (!isset(queue.qT)) {
-                queue.qT = (
-                    new _z.timer(function runQueue() {
-                        _z.for(queue.qElm, function (qei, qe) {
-                            if (isset(queue.q[qei]) && _z.isArray(queue.q[qei]) && queue.q[qei].length > 0) {
-                                if (!isset(queue.q[qei][0].stamp) ||
-                                    (
-                                        queue.q[qei][0].executionCount
-                                        > 0
-                                        && !queue.q[qei][0].isRunning
-                                        && !queue.q[qei][0].isReady()
-                                    ) ||
-                                    (
-                                        queue.q[qei][0].isReady() && queue.q[qei][0].executionCount != 0
-                                    )
-                                ) queue.q[qei].shift();
-
-                                if (isset(queue.q[qei][0]))
-                                    queue.q[qei][0].isReady() && queue.q[qei][0].start();
-                            }
-                        });
-
-                        if (qLength() == 0) {
-                            queue.q = [];
-                            queue.qElm = [];
-                            queue.qT.stop();
-                        }
-                    }, 100)
-                );
-            }
-
-            // run queue handler
-            if (qLength() > 0 && queue.qT.isReady() && doNotRun === false)
-                queue.qT.start();
-
-            return queue.qT;
-        };
-        queue.q = [];
-        queue.qElm = [];
-        queue.qT = undefined;
-
-        join({
-            queue: queue,
-        })
-            .core();
-
 // DOM functions
         join({
-            // is this element/elements = HTMLDOM
-            isDOMElement: function isDOMElement(orIsWindow) {
-                orIsWindow = orIsWindow || false;
-                if (this.element().length) {
-                    return !!(
-                        elmFunc.elementMap(this, trueFunction, orIsWindow ? _z.isDOMOW : _z.isDOM).length
-                        === this.length
-                    );
-                } else return false;
+            // get equal elements
+            whereIn: function isEqual2() {
+                return elmFunc.where.apply(this, [...arguments, false]);
             },
 
-            // get indexed element
-            indexed: cssSelectorsIndexed,
-
-            // index element in elements list
-            index: function indexOfElement(elms, elm) {
-                elm = elm ? _z((
-                    arguments.length == 1 && elms
-                ) ? elms : elm) : false;
-                elms = (
-                    arguments.length == 1
-                ) ? this : (
-                    elms ? _z(elms) : false
-                );
-
-                if (!arguments.length) elms = this;
-
-                if (elm !== false)
-                    return _z.inArray(elm.element(0), elms.element());
-
-                var newElm = _z((
-                    (
-                        elm !== false
-                    ) ? elm : elms
-                ).subArray(-1));
-
-                if (newElm.length == 0) return false;
-
-                var _name = newElm.attr('name') || newElm.attr('id') || "";
-                var _ex;
-                _name = (
-                    _ex = /\[(\d+)\]/.exec(_name)
-                ) != null ? _ex[1] : false;
-                return _name;
+            // get not equal elements
+            whereNotIn: function isNotEqual2() {
+                return elmFunc.where.apply(this, [...arguments, true]);
             },
-
-            // element/elements HTML
-            html: function html(elm, $val) {
-                $val = (
-                    arguments.length == 1 && (
-                        _z.isString(elm) || _z.isNumber(elm)
-                    )
-                ) ? elm : $val;
-                elm = (
-                    arguments.length == 1 && (
-                        _z.isString(elm) || _z.isNumber(elm)
-                    )
-                ) ? this : _z(elm);
-
-                if (!arguments.length) elm = this;
-
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (isset($val) && isset(e['innerHTML'])) {
-                        e.innerHTML = $val,
-                            $return.push(e.innerHTML);
-
-                        let scriptElements = _z($val).filter((_e) => _z(_e).is("script"));
-                        if (scriptElements.length > 0)
-                            _z.execScript(scriptElements);
-                    } else if (isset(e['innerHTML'])) $return.push(e.innerHTML);
-                });
-
-                return isset($val) ? this : (
-                    elm.length == 1 ? (
-                        $return[0] || ""
-                    ) : $return
-                );
-            },
-
-            // element/elements prop
-            prop: function elementProp(prop, val) {
-                if (arguments.length == 0) return this;
-
-                var elm = this;
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (isset(e[prop])) {
-                        if (isset(val)) e[prop] = val;
-                        else $return.push(e[prop]);
-                    }
-                });
-
-                return isset(val) ? this : (
-                    this.length == 1 ? $return[0] : $return
-                );
-            },
-
-            // get element/elements value(val) as number
-            numval: function elementValueToNumber() {
-                var $return = [];
-                elmFunc.elementMap(this, function (e) {
-                    try {
-                        $return.push((
-                            Number(e.value) || 0
-                        ));
-                    } catch (err) {
-                    }
-                });
-
-                return this.length > 1 ? $return : $return[0];
-            },
-
-            // set element/elements value(val) if value = (IFVal)
-            valIF: function elementValue(IFVal, val) {
-                elmFunc.elementMap(this, function (e) {
-                    try {
-                        if (_z.isFunction(IFVal)) {
-                            if (IFVal(e.value, e)) e.value = val;
-                        } else if (e.value == IFVal)
-                            e.value = val;
-
-                    } catch (err) {
-                    }
-                });
-
-                return this;
-            },
-
-            // element/elements value
-            val: function elementValue(val) {
-
-                if (isset(val))
-                    val = _z.map(_z.isArray(val) ? val : [val], function () {
-                        return triming.call(this);
-                    }).filter(k => !!k);
-
-                elm = this;
-
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    try {
-                        if ( // checkbox || radio
-                            e['tagName'] && toLC(e['tagName']) == 'input' &&
-                            e['type'] &&
-                            (
-                                e['type'] == 'checkbox' || e['type'] == 'radio'
-                            )
-                        )
-                            $return.push(isset(val) ? (
-                                e['value'] = val
-                            ) : (
-                                e['value'] || "on"
-                            ));
-                        // ( e['checked'] && ( e['checked'] = ( _z.inArray( e['value'], val )!==-1 ) ) )
-                        else if ( // select
-                            e['tagName'] && toLC(e['tagName']) == 'select' &&
-                            e['options'] && e['options'].length
-                        ) {
-                            var $return_options = [];
-                            _z.each(e['options'], function (k, oE) {
-                                // set
-                                if (isset(val) && (
-                                    oE['selected'] = (
-                                        _z.inArray(oE['value'], val) !== -1
-                                    )
-                                ))
-                                    $return_options.push(oE['value']);
-
-                                // get
-                                if (
-                                    !isset(val) &&	// not in set mode
-                                    oE['selected'] &&	// selected option
-                                    !oE['disabled'] &&	// not disabled
-                                    oE['parentNode'] &&	// has parentNode & not disabled
-                                    (
-                                        !oE['parentNode']['disabled']
-                                        || toLC(oE['parentNode']['tagName'])
-                                        != 'optgroup'
-                                    )
-                                )
-                                    $return_options.push(oE['value']);
-                            });
-
-                            if (isset(val) && $return_options.length == 0) e['selectedIndex'] = -1;
-
-                            if (!isset(val) && toLC(e['type']) === "select-multiple")
-                                $return.push($return_options);
-                            else if (!isset(val))
-                                $return.push($return_options[0]);
-                        } else {
-                            e['value'] = e['value'] || "";
-                            if (isset(val)) e['value'] = val;
-                            $return.push(e['value'] || "");
-                        }
-
-                    } catch (err) {
-                        console.error(err);
-                    }
-                });
-
-                return isset(val) ? this : (
-                    elm.length == 1 ? $return[0] : (
-                        !elm.length ? "" : $return
-                    )
-                );
-            },
-
-            // element/elements TEXT
-            text: function text(elm, $val) {
-                $val = (
-                    arguments.length == 1 && (
-                        _z.isString(elm) || _z.isNumber(elm)
-                    )
-                ) ? elm : $val;
-                elm = (
-                    arguments.length == 1 && (
-                        _z.isString(elm) || _z.isNumber(elm)
-                    )
-                ) ? this : _z(elm);
-
-                if (!arguments.length) elm = this;
-
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    var findRightAttr = e['innerText'] ? 'innerText' : (
-                        e['textContent'] ? 'textContent' : false
-                    );
-                    if (!findRightAttr) return;
-
-                    if (isset($val) && e[findRightAttr]) e[findRightAttr] = $val;
-                    else if (e[findRightAttr]) $return.push(e[findRightAttr]);
-                });
-                return isset($val) ? this : (
-                    (
-                        elm.length == 1 ? $return[0] : $return
-                    ) || ""
-                );
-            },
-
-            // sum all vallues
-            sum: function sumValues(elm) {
-                elm = elm || this;
-                elm = (
-                    _z.isDOM(elm) || _z.isArray(elm)
-                ) ? _z(elm) : (
-                    _z.is_z(elm) ? elm : (
-                        _z.isArray(elm) ? elm : false
-                    )
-                );
-
-                if (!elm) elm = this;
-                if (!elm.length) return 0;
-
-                var $return = 0;
-                elmFunc.elementMap(elm, function (e) {
-                    if (_z.isDOM(e))
-                        $return += Number(e.value) || 0;
-                    else if (_z.isArray(e))
-                        e.filter((x) => {
-                            $return += Number(x.value) || 0;
-                        });
-                    else if (_z.isNumber(e) || _z.isString(e))
-                        $return += Number(e) || 0;
-
-                }, () => {
-                    return true;
-                });
-
-                return Number($return) || 0;
-            },
-
-            // is element/s contains elm2
-            contains: function contains(elm2) {
-                var elm = this;
-                elm = (
-                    _z.isDOM(elm) || _z.isArray(elm)
-                ) ? _z(elm) : (
-                    _z.is_z(elm) ? elm : (
-                        _z.isArray(elm) ? elm : false
-                    )
-                );
-                elm2 = (
-                    _z.isDOM(elm2) || _z.isArray(elm2)
-                ) ? _z(elm2) : (
-                    _z.is_z(elm2) ? elm2 : (
-                        _z.isArray(elm2) ? elm2 : false
-                    )
-                );
-
-                if (!elm) elm = this;
-                if (!elm.length || !elm2.length) return false;
-
-                var $return = null;
-                elmFunc.elementMap(elm, function (e) {
-                    if ($return != false)
-                        elmFunc.elementMap(elm2, function (e2) {
-                            $return = (
-                                e !== e2 && e.contains(e2)
-                            );
-                        });
-                });
-
-                return $return;
-            },
-
-            // element/s tagName
-            tagName: function tagName(filter) {
-                filter = filter || trueFunction;
-                var elm = elm || this;
-                elm = (
-                    _z.isDOM(elm) || _z.isArray(elm)
-                ) ? _z(elm) : (
-                    _z.is_z(elm) ? elm : (
-                        _z.isArray(elm) ? elm : false
-                    )
-                );
-
-                if (!elm) elm = this;
-                if (!elm.length) return "";
-
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    var tn;
-                    if (e['tagName'] && (
-                            tn = e.tagName.toLowerCase()
-                        ) ||
-                        e['outerHTML'] && (
-                            tn = (
-                                /<([\w:]+)/.exec(e.outerHTML) ||
-                                ["", ""]
-                            )[1].toLowerCase()
-                        ))
-                        if (_z.isFunction(filter) && filter.callSelf(tn) || !_z.isFunction(filter))
-                            $return.push(tn);
-                });
-
-                return elm.length == 1 ? (
-                    $return[0] || ""
-                ) : $return;
-            },
-
-            // clone element/elements
-            clone: function cloneNode(deep) {
-                deep = deep || false;
-                elm = this;
-
-                var $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (deep && e['cloneNode'])
-                        $return.push(e['cloneNode'](true));
-                    else if (e['cloneNode'])
-                        $return.push(e['cloneNode']());
-                });
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-
-            // remove element/elements
-            remove: function () {
-                return this.rem.apply(this, arguments);
-            },
-            rem: function removeElement(elm) {
-                var elm = elm || this,
-                    callback = false;
-
-                if (_z.isFunction(elm))
-                    callback = elm,
-                        elm = this;
-
-                elmFunc.elementMap(elm, function (e) {
-                    try {
-                        var remThis = true;
-                        if (callback && _z.isFunction(callback)) remThis = callback(e, elm);
-
-                        if (remThis === true) e.parentNode.removeChild(e);
-                    } catch (er) {
-                    }
-                });
-
-                return this;
-            },
-
-            // append element
-            append: function append($val) {
-                if (!isset($val) || (
-                    !_z.is_z($val) && !_z.isDOM($val) && !_z.isString($val)
-                ) || !this.length)
-                    return this;
-
-                if (_z.isString($val)) {
-                    var _$val = _z.parse.parseHTMLNode($val);
-                    if (_z.isNodeList(_$val)) $val = _z.toArray(_$val);
-                }
-
-                if (_z.isDOM($val) || !_z.is_z($val)) $val = _z($val);
-
-                var elm = this;
-                elmFunc.elementMap(elm, function (e) {
-                    if (!e['appendChild']) return;
-
-                    $val.for(function (key, value) {
-                        if (_z.isDOM(value) || _z.type(value) == 'text') {
-
-                            e['appendChild'](value);
-
-                            if (_z(value).tagName() == "script") {
-                                _z.execScript(value);
-                            }
-                        }
-                    });
-                });
-                return this;
-            },
-
-            // append to element
-            appendTo: function appendTo($elm) {
-                if (!isset($elm) || !(
-                    $elm = _z($elm)
-                ).isDOMElement() || !this.length) return this;
-
-                return $elm.append(this), this.newSelector(null);
-            },
-
-            // prepend element
-            prepend: function prepend($val) {
-                if (!isset($val) || (
-                    !_z.is_z($val) && !_z.isDOM($val) && !_z.isString($val)
-                ) || !this.length)
-                    return this;
-
-                if (_z.isString($val)) {
-                    var _$val = _z.parse.parseHTMLNode($val);
-                    if (_z.isNodeList(_$val)) {
-                        $val = _z.toArray(_$val);
-                        if ($val['reverse']) $val.reverse();
-                    }
-                }
-
-                if (_z.isDOM($val) || !_z.is_z($val)) $val = _z($val);
-
-                var elm = this;
-                elmFunc.elementMap(elm, function (e) {
-                    if (!e['insertBefore'] || !e['firstChild']) return;
-
-                    $val.for(function (key, value) {
-                        if (_z.isDOM(value) || _z.type(value) == 'text') {
-                            e['insertBefore'](value, e['firstChild']);
-
-                            if (_z(value).tagName() == "script")
-                                _z.execScript(value);
-                        }
-                    });
-                });
-                return this;
-            },
-
-            // prepend to element
-            prependTo: function prependTo($elm) {
-                if (!isset($elm) || !(
-                    $elm = _z($elm)
-                ).isDOMElement() || !this.length) return this;
-
-                return $elm.prepend(this), this.newSelector(null);
-            },
-
-            // insert after element
-            after: function after($val) {
-                return elmFunc.insertAdjacentElement.apply(this, [$val, 'afterend']);
-            },
-
-            // insert before element
-            before: function before($val) {
-                return elmFunc.insertAdjacentElement.apply(this, [$val, 'beforebegin']);
-            },
-
-            // insert element after element
-            insertAfter: function insertAfter($val) {
-                return _z($val).after(this), this.newSelector(null);
-            },
-
-            // insert element before element
-            insertBefore: function insertBefore($val) {
-                return _z($val).before(this), this.newSelector(null);
-            },
-
-            // wrap element
-            wrap: function wrap($elm) {
-                if (!isset($elm) || !(
-                    $elm = _z($elm)
-                ).isDOMElement() || !this.length) return this;
-
-                elmFunc.elementMap(this, function (e) {
-                    try {
-                        _z(e).before($elm);
-                        _z($elm).append(e);
-                    } catch (er) {
-                    }
-                });
-
-                return this;
-            },
-
-            // unwrap element
-            unwrap: function unwrap() {
-                elmFunc.elementMap(this, function (e) {
-                    try {
-                        var parent = _z(e).parent();
-                        if (!parent.is("body")) {
-                            parent.before(parent.children());
-                            parent.remove();
-                        }
-                    } catch (er) {
-                    }
-                });
-
-                return this;
-            },
-
+        })
+            .alias({
+                not: 'whereNotIn'
+            })
+            .prop();
+
+        join({
             // is element shown
             isShow: function isShow(ret) {
                 ret = ret || false;
@@ -6382,431 +4300,6 @@
                     || (
                         uBound >= top && uBound <= bottom
                     );
-            },
-
-            // todo:animate element
-            animate: function animate(params, speed, options) {
-                var elm = this;
-                speed = _z.isNumber(speed) ? speed : _z.trim((
-                    speed || "normal"
-                )).toLocaleLowerCase();
-                speed = !_z.isNumber(speed) ? (
-                    speed == "slow" ? 800 : (
-                        speed == "fast" ? 200 : 500
-                    )
-                ) : speed;
-
-                var _speed = " " + Number((
-                    speed / 1000
-                ).toFixed(2)) + "s";
-
-                var transition = {};
-                var oldTransition = {};
-                var transition2 = {};
-
-                // test
-                function pxToEm(px, element) {
-                    element = element === null || element === undefined ? doc.documentElement : element;
-                    var temporaryElement = doc.createElement('div');
-                    temporaryElement.style.setProperty('position', 'absolute', 'important');
-                    temporaryElement.style.setProperty('visibility', 'hidden', 'important');
-                    temporaryElement.style.setProperty('font-size', '1em', 'important');
-                    element.appendChild(temporaryElement);
-                    var baseFontSize = parseFloat(getComputedStyle(temporaryElement).fontSize);
-                    temporaryElement.parentNode.removeChild(temporaryElement);
-                    return px / baseFontSize;
-                }
-
-                Object.keys(params).forEach((key) => {
-                    var cssPN = _z.cssPropName(key, true);
-                    var cssVal;
-                    transition2[cssPN] = params[key];
-
-                    var _MathType = transition2[cssPN].indexOf("+=") != -1 ? "+" : (
-                        transition2[cssPN].indexOf("-=") != -1 ? "-" : false
-                    );
-
-                    if (_MathType !== false) {
-                        var v_ = transition2[cssPN].replaceArray(["+=", "-="], "");
-                        var valIPx = _z.trim(v_.match(/\d+/g).map(Number)[0] || 0);
-                        var OvalIPx = (
-                            compStyle(_z(elm)[0])[cssPN] || _z(elm).css(cssPN) || "0px"
-                        );
-                        var OUnit = _z.trim(OvalIPx.match(/\d+/g).map(Number)[0]);
-                        OUnit = OvalIPx.replace(OUnit, "") || "px";
-                        OvalIPx = OvalIPx.match(/\d+/g).map(Number)[0] || 0;
-                        transition2[cssPN] = "" + (
-                            _MathType == "+" ? (
-                                Number(OvalIPx) + Number(valIPx)
-                            ) : (
-                                Number(OvalIPx) - Number(valIPx)
-                            )
-                        ) + "px";
-                    }
-
-                    if (cssVal = _z(elm).css(cssPN))
-                        _z(elm).css(cssPN, cssVal);
-                });
-
-                // var _trans = Object.keys( transition2 ).join(_speed+" linear,") + _speed + " linear";
-                var _trans = "all" + _speed + " linear";
-
-                if (_z.eff !== false) {
-                    _z.for([
-                        "-webkit-transition",
-                        "-moz-transition",
-                        "-ms-transition",
-                        "-o-transition",
-                        "transition",
-                    ], function (oPK, oPV) {
-                        var cssPN = _z.cssPropName(oPV, true);
-                        oldTransition[cssPN] = _z(elm).css(cssPN);
-                        transition[cssPN] = _trans;
-                    });
-                    _z(elm).css(transition);
-                }
-                // console.log(transition2, transition, oldTransition);
-                // start
-                setTimeout(() => _z(elm).css(transition2), 1);
-
-
-                // when finish
-                _z(elm).once(_z.getTransitionEventName(0), function () {
-                    var _keys = Object.keys(transition2);
-                    for (var i = 0, l = _keys.length; i < l; i++) {
-                        var key = _keys[i];
-                        if (transition2[key] != _z(elm).css(key))
-                            return false;
-                    }
-
-                    setTimeout(() => _z(elm).css(oldTransition), 1);
-                });
-                return this;
-            },
-
-            // get childrens of an element
-            children: function children($val) {
-                var elm = this,
-                    $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (e['children'])
-                        if (isset($val)) {
-                            _z.for(_z.toArray(e['children']), function (k, v) {
-                                if (_z.isDOM($val)) {
-                                    if (v['isEqualNode'] && v['isEqualNode']($val)) $return.push(v);
-                                } else if (_z.isTypes('selector', $val))
-                                    if (elmFunc.matches(v, $val)) $return.push(v);
-                            });
-                        } else $return.add(..._z.toArray(e['children']));
-                });
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-
-            // get element siblings
-            brothers: function elementSiblings($val) {
-                var elm = this,
-                    $returns = [];
-
-                elmFunc.elementMap(elm, function (e) {
-                    var $return = [],
-                        p = e,
-                        n = e;
-
-                    while (p = p['previousElementSibling']) {
-                        if (isset($val) && !_z(p).is($val) || $returns.concat($return)
-                            .includes(p)) continue;
-
-                        $return.push(p);
-                    }
-
-                    $returns.push(...(
-                        $return.reverse() || []
-                    ));
-                    while (n = n['nextElementSibling']) {
-                        if (isset($val) && !_z(n).is($val) || $returns.includes(n)) continue;
-
-                        $returns.push(n);
-                    }
-                });
-
-                var newInstance = this.newSelector($returns);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-            siblings: function elementInSameLeve() {
-                return this.brothers.apply(this, arguments);
-            },
-
-            // find in this elements
-            find: function findChildren(qSelector) {
-                var qSelector = qSelector || false,
-                    $return = [],
-                    elm = this;
-
-                if (!qSelector) return this;
-
-                elmFunc.elementMap(elm, function (v) {
-                    v = v == doc ? doc.documentElement : v;
-                    v = _z.toNodeList(v)[0];
-
-                    if (v && v['querySelectorAll']) {
-                        v = v.querySelectorAll(qSelector);
-                        if (v.length) $return.add(..._z(v).element());
-                    }
-                }, (v) => {
-                    return (
-                        _z.isDOM(v) || _z.type(v) != 'NodeList'
-                    );
-                });
-
-                var newInstance = this.newSelector(_z.unique($return));
-                newInstance.args = arguments;
-                newInstance.selector = qSelector;
-                return newInstance;//_z( _z.unique( $return ) );
-            },
-
-            // get element has child $_ELM
-            has: function hasChild($_ELM) {
-                var elm = this,
-                    $return = [];
-
-                elmFunc.elementMap(elm, function (e) {
-                    if (_z(e).find($_ELM).length) $return.push(e);
-                });
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-
-            // elements to html
-            toHTML: function outerHTML() {
-                var $return = [],
-                    elm = this,
-                    getHTML = function getHTML(node) {
-                        if (!node || !node.tagName) return '';
-                        if (node.outerHTML) return node.outerHTML;
-
-                        // polyfill:
-                        var wrapper = document.createElement('div');
-                        wrapper.appendChild(node.cloneNode(true));
-                        return wrapper.innerHTML;
-                    };
-
-                elmFunc.elementMap(elm, function (v) {
-                    if (_z.isDOM(v) || _z.type(v) != 'NodeList')
-                        v = _z.toNodeList(v)[0];
-
-                    if (v) $return.push(getHTML(v));
-                });
-
-                return this.length == 1 ? $return[0] : $return;
-            },
-
-            // todo: do like $.eq
-            // get last element as _z
-            last: function lastElement(len) {
-                if (_z.isArray(len)) return _z.subArray(-1, len);
-
-                len = parseInt(len) || 1;
-                var newInstance = this.newSelector(this.subArray(len <= 0 ? len : len * -1));
-                newInstance.args = arguments;
-                newInstance.selector = "::last";
-
-                return newInstance;
-            },
-
-            // get first element as _z
-            first: function firstElement(len) {
-                if (_z.isArray(len)) return _z.subArray(0, 1, len);
-
-                len = parseInt(len) || 1;
-
-                var newInstance = this.newSelector(this.subArray(0, len >= 0 ? len : len * -1));
-                newInstance.args = arguments;
-                newInstance.selector = "::first";
-
-                return newInstance;
-            },
-
-            // get next element
-            next: function next($val) {
-                var elm = this,
-                    $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (e['nextElementSibling'])
-                        if (isset($val)) {
-                            _z.for([e['nextElementSibling']], function (k, v) {
-                                if (_z.isDOM($val)) {
-                                    if (v['isEqualNode'] && v['isEqualNode']($val)) $return.push(v);
-                                } else if (_z.isTypes('selector', $val))
-                                    if (elmFunc.matches(v, $val)) $return.push(v);
-                            });
-                        } else $return.push(e['nextElementSibling']);
-                });
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-
-            // get next element in document
-            // nextElement( selector )
-            // nextElement( cb )
-            // nextElement( selector, cb )
-            nextElement: function nextElement(selector, cb) {
-                var elm = this,
-                    $return = [];
-
-                if (arguments.length < 1)
-                    try {
-                        selector = 'input, select, textarea, button';
-                        arguments = [selector];
-                    } catch (e) {
-                        selector = undefined;
-                        arguments = [];
-                    }
-
-                if (arguments.length < 1 || this.length != 1)
-                    return this.newSelector($return);
-
-                // case selector || cb
-                if (arguments.length == 1 && !!selector) {
-                    cb = _z.isFunction(selector) ? selector : trueFunction;
-                    selector = !_z.isFunction(selector) ? selector : "";
-                } // case cb && selector
-                else if (arguments.length == 2 && !!selector && !!cb) {
-                    cb = _z.isFunction(selector) ? selector : (
-                        _z.isFunction(cb) ? cb : trueFunction
-                    );
-                    selector = !_z.isFunction(selector) ? selector : (
-                        !_z.isFunction(cb) ? cb : ""
-                    );
-                }
-
-                var allElements = selector ? _z(selector).element() : _z('input').element(),
-                    ElementIndex = _z.inObject(allElements, elm.element(0));
-
-                if (ElementIndex != -1)
-                    allElements = _z.subArray((
-                        +ElementIndex
-                    ) + 1, allElements);
-                else
-                    return this.newSelector($return);
-
-                elmFunc.elementMap(allElements, function (el) {
-                    if ($return.length > 0) return;
-
-                    if (
-                        (
-                            selector && _z(el).is(selector) && cb && _z.isFunction(cb) && (
-                                cb.call(el, el, selector) == true
-                            )
-                        )
-                        ||
-                        (
-                            !!!selector && cb && _z.isFunction(cb) && (
-                                cb.call(el, el, selector) == true
-                            )
-                        )
-                        ||
-                        (
-                            (
-                                !!selector && _z(el).is(selector)
-                            ) && !!!cb || !_z.isFunction(cb)
-                        )
-                    )
-                        return $return.push(el), false;
-                });
-
-                var newInstance = this.newSelector((
-                    $return.length > 0
-                ) ? $return[0] : []);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-
-            // get previous element
-            prev: function prev($val) {
-                var elm = this,
-                    $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (e['previousElementSibling'])
-                        if (isset($val)) {
-                            _z.for([e['previousElementSibling']], function (k, v) {
-                                if (_z.isDOM($val)) {
-                                    if (v['isEqualNode'] && v['isEqualNode']($val)) $return.push(v);
-                                } else if (_z.isTypes('selector', $val))
-                                    if (elmFunc.matches(v, $val))
-                                        $return.push(v);
-                            });
-                        } else $return.push(e['previousElementSibling']);
-                });
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = "";
-
-                return newInstance;
-            },
-            previous: function () {
-                return this.prev.apply(this, arguments);
-            },
-
-            // get equal elements
-            whereIs: function isEqual2() {
-                return elmFunc.matchesAll.apply(this, [...arguments, false]);
-            },
-            // get not equal elements
-            not: function isNotEqual2() {
-                return elmFunc.matchesAll.apply(this, [...arguments, true]);
-            },
-            // is equal elements ?
-            is: function isEqual($val) {
-                var elm = this,
-                    $return = 0,
-                    $val =
-                        (
-                            _z.isDOM($val) || _z.isArray($val)
-                        ) && _z($val) ||
-                        _z.is_z($val) && $val ||
-                        _z.isString($val) && _z([$val]) ||
-                        false;
-
-                if (!$val) return false;
-
-                elmFunc.elementMap(elm, function (e) {
-                    elmFunc.elementMap($val, function (e2) {
-                        if (_z.isDOM(e2))
-                            $return += _z.toNum(e['isEqualNode'] && e['isEqualNode'](e2));
-                        else if (_z.isTypes('selector', e2))
-                            elmFunc.matches(e, e2) && (
-                                ++$return
-                            );
-                    }, (_e) => {
-                        return (
-                            _z.isDOM(_e) || _z.isString(_e)
-                        );
-                    });
-                });
-
-                $return = _z.toNum($return) || 0;
-                return !!(
-                    elm.length && elm.length === $return
-                );
             },
 
             // element rect (top/left/height/width)
@@ -6998,149 +4491,10 @@
 
                 return this.length === 1 ? $return[0] : $return;
             },
+        })
+            .prop();
 
-            // parent of element ( direct parent )
-            parent: function elementParent(selector) {
-                var elm = this,
-                    selector = selector || "",
-                    $return = [];
-
-                elmFunc.elementMap(elm, function (e) {
-                    if (!!selector && e['parentNode'] && _z(e['parentNode']).is(selector))
-                        $return.push(e['parentNode']);
-                    else if (!!selector && (
-                        !e['parentNode'] || !_z(e['parentNode']).is(selector)
-                    )) {
-                    } else if (!!!selector)
-                        $return.push(e['parentNode']);
-                });
-
-                var newInstance = this.newSelector(this.length === 1 ? $return[0] : $return);
-                newInstance.args = arguments;
-                newInstance.selector = selector;
-
-                return newInstance;
-            },
-
-            // parents of element ( all parents )
-            parents: function elementParents(selector) {
-                var elm = this,
-                    selector = selector || "",
-                    $return = [],
-                    pElement = false;
-
-                elmFunc.elementMap(elm, function (e) {
-                    pElement = e;
-                    do {
-                        pElement = pElement['parentNode'];
-
-                        if (!!selector && pElement && _z.isDOM(pElement) && _z(pElement).is(selector)) {
-                            if (!$return.includes(pElement)) $return.push(pElement);
-                        } else if (!!!selector)
-                            $return.push(pElement);
-
-                    } while (
-                        (
-                            !!!selector && pElement && _z.isDOM(pElement)
-                        ) ||
-                        (
-                            !!selector && pElement && _z.isDOM(pElement)
-                        )
-                        );
-                });
-
-                if (!!!$return.length) $return = [];
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = selector;
-
-                return newInstance;
-                newInstance.head = elm.length == 1 ? elm[0] : newInstance.head;
-
-                var newReturn = _z(...this.args);
-                newReturn.newSelector($return);
-                newReturn.head = elm.length == 1 ? elm[0] : newReturn.head;
-                return newReturn;
-            },
-
-            // parents of element ( until the selector )
-            parentsUntil: function parentsUntil(selector, filter) {
-                var elm = this,
-                    selector = selector || "",
-                    $return = [],
-                    filter = filter || trueFunction;
-
-                elmFunc.elementMap(elm, function (e) {
-                    if (e && e["parentElement"]) {
-                        e = e.parentElement;
-                        while (e && !_z(e).is(selector) && e["parentElement"]) {
-                            if (!filter || filter.callSelf(e))
-                                $return.push(e);
-                            e = e.parentElement;
-                        }
-                    }
-                });
-
-                if (!!!$return.length) $return = [];
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.selector = selector;
-
-                return newInstance;
-            },
-
-            // iframe contentDocument
-            contents: function contents(elm) {
-                var elm = elm || this,
-                    $return = [];
-                elm = !is_z(elm) ? _z(elm) : elm;
-                elmFunc.elementMap(elm, function (e) {
-                    if (e && e["contentDocument"])
-                        $return.push(e.contentDocument);
-                });
-
-                if (!!!$return.length)
-                    $return = [];
-
-                var newInstance = this.newSelector($return);
-                newInstance.args = arguments;
-                newInstance.head = elm.length == 1 ? elm[0] : elm;
-
-                return newInstance;
-            },
-
-            // replace element with HTML
-            replace: function replaceElement($html) {
-                var elm = this,
-                    $return = [];
-                elmFunc.elementMap(elm, function (e) {
-                    if (e['outerHTML']) {
-                        $return.push(_z(e).clone());
-                        e['outerHTML'] = is_z($html) ? $html.toHTML() : $html;
-                    } else if (e['replaceWith']) {
-                        $return.push(_z(e).clone());
-                        e['replaceWith']($html);
-                    }
-                });
-
-                return this.length === 1 ? $return[0] : $return;
-            },
-
-            // replace element with element
-            replaceWith: function replaceElementWith($elm) {
-                var elm = this;
-                elmFunc.elementMap(elm, function (e) {
-                    elmFunc.elementMap($elm, function ($e) {
-                        e.parentNode.insertBefore($e, e);
-                    });
-                    e.parentNode.removeChild(e);
-                });
-
-                return this;
-            },
-
+        join({
             // trigger an event
             trigger: function triggerEvent(eventName) {
                 var elm = this,
@@ -7638,7 +4992,6 @@
 
                 return this;
             },
-
         })
             .prop();
 
@@ -7733,18 +5086,199 @@
             },
 
         }, {
+
+            // element rect (top/left/height/width)
+            rect: function elementRect(scrolls) {
+                scrolls = _z.isset(scrolls) ? scrolls : true;
+                let elm = this,
+                    $return = [],
+                    returnKey = _z.isBoolean(scrolls) ? false : scrolls;
+                scrolls = _z.isBoolean(scrolls) ? scrolls : true;
+
+                _z.elementMap(elm, function (e) {
+                    let tResult = {};
+
+                    if (isWindow(e)) {
+                        let height = e.innerHeight ||
+                                e.document.documentElement.clientHeight ||
+                                e.document.body.clientHeight || 0,
+
+                            width = e.innerWidth ||
+                                e.document.documentElement.clientWidth ||
+                                e.document.body.clientWidth || 0;
+
+                        tResult = {
+                            top: e.document.documentElement["client" + 'Top'] | 0,
+                            right: e.document.documentElement["client" + 'Width'] | 0,
+                            left: e.document.documentElement["client" + 'Left'] | 0,
+                            bottom: e.document.documentElement["client" + 'Height'] | 0,
+
+                            outerHeight: height,
+                            outerHeightWP: height,
+                            innerHeight: height,
+                            height: height,
+
+                            outerWidth: width,
+                            outerWidthWP: width,
+                            innerWidth: width,
+                            width: width,
+                        };
+                    }// document
+                    else if (e.nodeType === 9) {
+                        let height = Math.max(
+                                e.body["scroll" + 'Height'], e.documentElement["scroll" + 'Height'],
+                                e.body["offset" + 'Height'], e.documentElement["offset" + 'Height'],
+                                e.documentElement["client" + 'Height'],
+                            ),
+                            width = Math.max(
+                                e.body["scroll" + 'Width'], e.documentElement["scroll" + 'Width'],
+                                e.body["offset" + 'Width'], e.documentElement["offset" + 'Width'],
+                                e.documentElement["client" + 'Width'],
+                            );
+
+                        tResult = {
+                            top: Math.max(
+                                e.body["scroll" + 'Top'], e.documentElement["scroll" + 'Top'],
+                                e.body["offset" + 'Top'], e.documentElement["offset" + 'Top'],
+                                e.documentElement["client" + 'Top'],
+                            ) | 0,
+                            right: Math.max(
+                                e.body["scroll" + 'Width'], e.documentElement["scroll" + 'Width'],
+                                e.body["offset" + 'Width'], e.documentElement["offset" + 'Width'],
+                                e.documentElement["client" + 'Width'],
+                            ) | 0,
+                            left: Math.max(
+                                e.body["scroll" + 'Left'], e.documentElement["scroll" + 'Left'],
+                                e.body["offset" + 'Left'], e.documentElement["offset" + 'Left'],
+                                e.documentElement["client" + 'Left'],
+                            ) | 0,
+                            bottom: Math.max(
+                                e.body["scroll" + 'Height'], e.documentElement["scroll" + 'Height'],
+                                e.body["offset" + 'Height'], e.documentElement["offset" + 'Height'],
+                                e.documentElement["client" + 'Height'],
+                            ) | 0,
+
+                            outerHeight: height,
+                            outerHeightWP: height,
+                            innerHeight: height,
+                            height: height,
+
+                            outerWidth: width,
+                            outerWidthWP: width,
+                            innerWidth: width,
+                            width: width,
+                        };
+                    } else {
+                        let rect = (
+                            e['getBoundingClientRect']
+                        ) ? e.getBoundingClientRect() : {
+                            top: 0,
+                            left: 0,
+                            bottom: 0,
+                            right: 0,
+                        };
+                        let style = compStyle(e) || e.currentStyle;
+                        tResult = {
+                            top: (
+                                rect.top || 0
+                            ) + (
+                                scrolls ? (
+                                    document.body.scrollTop || 0
+                                ) : 0
+                            ),
+                            right: (
+                                rect.right || 0
+                            ),
+                            left: (
+                                rect.left || 0
+                            ) + (
+                                scrolls ? (
+                                    document.body.scrollLeft || 0
+                                ) : 0
+                            ),
+                            bottom: (
+                                rect.bottom || 0
+                            ),
+                            // height of element
+                            height: parseInt(style.height),
+
+                            // outer
+                            // the height of an element (includes padding and border).
+                            outerHeight: e.offsetHeight,
+
+                            // outer
+                            // the height of an element (includes padding, border and margin).
+                            outerHeightWP: (
+                                e.offsetHeight +
+                                parseInt(style.marginTop) +
+                                parseInt(style.marginBottom)
+                            ),
+
+                            // inner
+                            // the height of an element (includes padding).
+                            innerHeight: e.clientHeight || e.scrollHeight,
+
+                            width: parseInt(style.width),
+
+                            // the width of an element (includes padding and border).
+                            outerWidth: e.offsetWidth,
+
+                            // the width of an element (includes padding, border and margin).
+                            outerWidthWP: (
+                                e.offsetWidth +
+                                parseInt(style.marginLeft) +
+                                parseInt(style.marginRight)
+                            ),
+
+                            innerWidth: e.clientWidth || e.scrollWidth,
+                        };
+                    }
+
+                    if (returnKey !== false && _z.isset(tResult[returnKey]))
+                        tResult = tResult[returnKey];
+
+                    $return.push(tResult);
+
+                }, x => _z.isDOM(x) || _z.isWindow(x) || x.nodeType === 9);
+
+                return this.length === 1 ? $return[0] : $return;
+            },
+
             // offset
             offset: function offset() {
                 var rect = this.rect.call(this);
                 return {
-                    top: +(
-                        rect['top'] || 0
-                    ),
-                    left: +(
-                        rect['left'] || 0
-                    ),
+                    top: +(rect['top'] || 0),
+                    left: +(rect['left'] || 0),
                 };
             },
+
+            // element position (top/left)
+            position: function position() {
+                let elm = this,
+                    $return = [];
+
+                _z.elementMap(elm, function (e) {
+                    if (e['offsetLeft'] && e['offsetLeft']) {
+                        $return.push({
+                            top: +(e['offsetTop'] || 0),
+                            left: +(e['offsetLeft'] || 0),
+                        });
+                    }
+                });
+
+                return this.length === 1 ? $return[0] : $return;
+            },
+
+            // offsetParent of element ( closest visable parent)
+            offsetParent: function offsetParent() {
+                let elm = this,
+                    $return = [];
+                _z.elementMap(elm, e => $return.push(e['offsetParent'] || e));
+
+                return this.length === 1 ? $return[0] : $return;
+            },
+
         })
             .prop();
 
@@ -8093,9 +5627,7 @@
             },
 
             // type of `val`
-            type: function type(val, cb) {
-                return typeOf(val, cb);
-            },
+            type: typeOf,
 
             // check if object is Object
             isPlainObject: (x) => Object.is(Object.getPrototypeOf(x), Object.getPrototypeOf({})),
@@ -8745,159 +6277,6 @@
                 }
             },
 
-            // return css selector from dom element
-            cssSelector: cssSelector,
-
-        })
-            .core();
-
-// loader include js, css, data
-        join({
-            // loaded files
-            __loaders: [],
-
-            // check if file has been loaded
-            isLoaded: function (f) {
-                // var f = "a/b/c.d";
-                if (!!!f) return false;
-
-                var a = String(f).split('/');
-                a = _z.isArray(a) ? a.reverse() : [];
-
-                var returns = false;
-                for (var ii = 0, LIL = this.__loaders.length; ii < LIL; ii++) {
-                    var a2 = this.__loaders[ii];
-                    a2 = _z.isArray(a2) ? Array.from(a2).reverse() : [];
-
-                    returns = true;
-                    for (var i = 0, aL = a.length; i < aL; i++)
-                        if (a[i] != a2[i]) {
-                            returns = false;
-                            break;
-                        }
-
-                    if (returns) return returns;
-                }
-
-                return returns;
-            },
-
-            // load single
-            loader: (
-                function () {
-                    // Function which returns a function: https://davidwalsh.name/javascript-functions
-                    function _load(tag) {
-                        return function (url) {
-                            if (_z.isArguments(url)) url = _z.Array(url);
-
-                            var cb = _z.isArray(url) ? url.slice(1) : false;
-                            url = _z.isArray(url) ? url[0] : url;
-                            cb = cb && cb.length ? (
-                                cb[0] || false
-                            ) : false;
-
-
-                            if (_z['isLoaded'] && _z['isLoaded'](url))
-                                return new Promise(function (resolve, reject) {
-                                    reject("file exist");
-                                });
-
-                            let _url = String(url).split('/');
-                            if (_url && _url.length)
-                                _z.__loaders.push(_url);
-                            else
-                                _z.__loaders.push(url.replace(/^.*[\\\/]/, ''));
-
-                            var loadInBody = false;
-                            if ((
-                                document.readyState !== 'complete' && tag == 'script'
-                            ) || (
-                                (
-                                    loadInBody = true
-                                ) && tag == 'script'
-                            )) {
-                                return new Promise(function (resolve, reject) {
-                                    try {
-                                        // _z.execScript({ src: url });
-                                        _z(loadInBody ? "body" : "head").append(
-                                            '<script type="text/javascript" class="_z-loader" src="'
-                                            + url
-                                            + '"></script>');
-                                    } catch (_err) {
-                                        reject(_err);
-                                    }
-
-                                    try {
-                                        if (cb && _z.isFunction(cb)) cb();
-                                    } catch (_err) {
-                                        reject(_err);
-                                    }
-
-                                    resolve(true);
-                                });
-                            } else {
-                                // todo: when this code is active
-                                console.log([
-                                    document.readyState,
-                                    tag,
-                                    cb,
-                                    url,
-                                ]);
-                            }
-
-                            if (tag == 'data') {
-                                try {
-                                    if (cb && _z.isFunction(cb)) {
-                                        return _z.URLToBlob64(url, cb);
-                                    }
-                                } catch (_err) {
-                                }
-                                return false;
-                            }
-                            // This promise will be used by Promise.all to determine success or failure
-                            return new Promise(function (resolve, reject) {
-                                var element = document.createElement(tag);
-                                var parent = 'body';
-                                var attr = 'src';
-
-                                // Important success and error for the promise
-                                element.onload = function () {
-                                    if (cb && _z.isFunction(cb)) cb();
-
-                                    resolve(url);
-                                };
-                                element.onerror = function () {
-                                    reject(url);
-                                };
-
-                                // Need to set different attributes depending on tag type
-                                switch (tag) {
-                                    case 'script':
-                                        element.async = false;
-                                        break;
-                                    case 'link':
-                                        element.type = 'text/css';
-                                        element.rel = 'stylesheet';
-                                        attr = 'href';
-                                        parent = 'head';
-                                }
-
-                                // Inject into document to kick off loading
-                                element[attr] = url;
-                                document[parent].appendChild(element);
-                                resolve([element]);
-                            });
-                        };
-                    }
-
-                    return {
-                        css: _load('link'),
-                        js: _load('script'),
-                        data: _load('data'),
-                    }
-                }
-            )(),
-
         })
             .core();
 
@@ -9083,7 +6462,6 @@
 
                 return _z(doc);
             },
-
         })
             .core();
 
