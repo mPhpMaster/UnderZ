@@ -9,7 +9,7 @@
  * @copyright Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
  * @license Licensed under MIT License: https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt
  *
- * @version 1.1.2
+ * @version 1.1.3
  * @author hlaCk
  */
 (function (window, document) {
@@ -548,7 +548,7 @@
         globaljQuery = window["jQuery"] || new Function("return false"),
 
         // engine version - public var in _z.$.underZ, _z.selectorHistoryController.prototype.underZ, _z.$.newSelector.prototype.underZ
-        version = '1.1.2',
+        version = '1.1.3',
 
         // set prototype of function and return it - private function
         setFuncPrototype = function setFunctionPtoyotype(f, p) {

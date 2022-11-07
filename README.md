@@ -82,7 +82,7 @@ $ composer require mphpmaster/underz
 
 ## Copyright and license
 
-Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
+Copyright © 2008-2022 hlaCk (https://github.com/mPhpMaster)
 
 Licensed under the **MIT License** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt) license.
 
