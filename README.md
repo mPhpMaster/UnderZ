@@ -69,6 +69,8 @@ $ composer require mphpmaster/underz
 
 * [TurkiRF](https://github.com/BlackEagleSA)
 
+* [Simalle](https://github.com/Simalle-99)
+
 ***
 
 ## Built With JetBrains Support ❤
