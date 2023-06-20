@@ -6,10 +6,9 @@
  * [github](https://github.com/mPhpMaster/UnderZ)
  * [npm](https://www.npmjs.com/package/@mphpmaster/underz)
  *
- * @copyright Copyright © 2008-2020 hlaCk (https://github.com/mPhpMaster)
+ * @copyright Copyright © 2008-2023 hlaCk (https://github.com/mPhpMaster)
  * @license Licensed under MIT License: https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt
  *
- * @version 1.1.4
  * @author hlaCk
  */
 (function (window, document) {
