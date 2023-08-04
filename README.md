@@ -16,6 +16,8 @@
 
 ***
 
+## I stand with Palestine 🇵🇸 <small>#FreePalestine #SavePalestine #GazaUnderAttack</small>
+
 
 # Links:
 
