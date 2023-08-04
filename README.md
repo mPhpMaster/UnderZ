@@ -13,10 +13,7 @@
 
 > Write and rewrite until it is right. _By: **hard coder**_
 
-
 ***
-
-## I stand with Palestine 🇵🇸 <small>#FreePalestine #SavePalestine #GazaUnderAttack</small>
 
 
 # Links:
@@ -87,6 +84,12 @@ $ composer require mphpmaster/underz
 Copyright © 2008-2023 hlaCk (https://github.com/mPhpMaster)
 
 Licensed under the **MIT License** (https://github.com/mPhpMaster/UnderZ/blob/master/LICENSE.txt) license.
+
+
+***
+
+## Stand with Palestine 🇵🇸 <i>#FreePalestine</i>
+
 
 ***
 
