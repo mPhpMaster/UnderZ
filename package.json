@@ -1,7 +1,7 @@
 {
   "name": "@mphpmaster/underz",
   "title": "UnderZ",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "UnderZ JS Library",
   "main": "_z.js",
   "directories": {
@@ -30,9 +30,9 @@
   "author": "hlaCk <mrhlaCk@gmail.com>, TurkiRF <turkiaamer@gmail.com>, Simalle <sumeyaabduljawad@gmail.com>",
   "license": "MIT",
   "wiki": {
-    "url": "https://underz.hlack.net/UnderZ/"
+    "url": "https://underz.hlack.net/"
   },
-  "homepage": "https://underz.hlack.net/UnderZ/",
+  "homepage": "https://underz.hlack.net/",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
   }
