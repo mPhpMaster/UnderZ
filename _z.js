@@ -547,7 +547,7 @@
         globaljQuery = window["jQuery"] || new Function("return false"),
 
         // engine version - public var in _z.$.underZ, _z.selectorHistoryController.prototype.underZ, _z.$.newSelector.prototype.underZ
-        version = '1.1.4',
+        version = '1.1.5',
 
         // set prototype of function and return it - private function
         setFuncPrototype = function setFunctionPtoyotype(f, p) {
