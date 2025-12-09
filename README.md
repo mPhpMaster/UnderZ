@@ -74,7 +74,7 @@ $ composer require mphpmaster/underz
 
 ## Built With JetBrains Support ❤
 
-[![https://www.jetbrains.com/?from=UnderZ](http://hlack.net/jetbrains.svg)](https://www.jetbrains.com/?from=UnderZ)
+[![https://www.jetbrains.com/?from=UnderZ](https://upload.wikimedia.org/wikipedia/en/thumb/0/08/JetBrains_beam_logo.svg/256px-JetBrains_beam_logo.svg.png)](https://www.jetbrains.com/?from=UnderZ)
 
 ***
 
